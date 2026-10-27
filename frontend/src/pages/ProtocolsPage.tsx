@@ -152,3 +152,4 @@ function NewProtocolForm({ onCreated }: { onCreated: () => Promise<void> }) {
     </details>
   );
 }
+

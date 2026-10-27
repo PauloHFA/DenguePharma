@@ -26,3 +26,4 @@ export async function api<T>(session: Session, path: string, init: RequestInit =
   }
   return (res.status === 204 ? undefined : await res.json()) as T;
 }
+
