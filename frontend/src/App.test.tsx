@@ -20,7 +20,28 @@ function mockApi(roles: string[]) {
     "fetch",
     vi.fn(async (url: string) => {
       if (url === "/api/auth/login") return new Response(JSON.stringify({ token: "t" }), { status: 200 });
-      return new Response(JSON.stringify({ email: "u@x.org", roles }), { status: 200 });
+      if (url === "/api/auth/me") return new Response(JSON.stringify({ email: "u@x.org", roles }), { status: 200 });
+      if (url === "/api/ops/summary") {
+        return new Response(JSON.stringify({ jobs: [], outbox: [], reassessments: [] }), { status: 200 });
+      }
+      if (url === "/api/screening/flowchart") {
+        return new Response(
+          JSON.stringify({
+            identified: 0,
+            deduplicated: 0,
+            screened: 0,
+            excludedTitleAbstract: 0,
+            limitedAccessOrAbstractOnly: 0,
+            excludedFullText: 0,
+            includedCore: 0,
+            includedNoResults: 0,
+            complementaryPreClinical: 0,
+            reasonsBreakdown: {},
+          }),
+          { status: 200 },
+        );
+      }
+      return new Response("[]", { status: 200 });
     }),
   );
 }
@@ -30,7 +51,7 @@ afterEach(() => {
   vi.unstubAllGlobals();
 });
 
-describe("acesso", () => {
+describe("acesso e telas principais", () => {
   it("redireciona para o login sem sessão", () => {
     renderAt("/catalogo");
     expect(screen.getByRole("heading", { name: "Entrar" })).toBeInTheDocument();
@@ -52,7 +73,7 @@ describe("acesso", () => {
     await userEvent.type(screen.getByLabelText("Senha"), "senha");
     await userEvent.click(screen.getByRole("button", { name: "Entrar" }));
 
-    expect(await screen.findByRole("heading", { name: "Catálogo" })).toBeInTheDocument();
+    expect(await screen.findByRole("heading", { name: /Catálogo/i })).toBeInTheDocument();
     const nav = screen.getByRole("navigation", { name: "Principal" });
     expect(nav).toHaveTextContent("Catálogo");
     expect(nav).not.toHaveTextContent("Painel operacional");
@@ -67,7 +88,7 @@ describe("acesso", () => {
   });
 
   it("pesquisador vê protocolos e importações com estado vazio", async () => {
-    vi.stubGlobal("fetch", vi.fn(async () => new Response("[]", { status: 200 })));
+    mockApi(["PESQUISADOR"]);
     sessionStorage.setItem("dp.session", JSON.stringify({ token: "t", email: "p@x.org", roles: ["PESQUISADOR"] }));
     const first = renderAt("/protocolos");
     expect(await screen.findByText(/Nenhum protocolo registrado/)).toBeInTheDocument();
@@ -88,5 +109,30 @@ describe("acesso", () => {
     expect(await screen.findByRole("button", { name: "Registrar" })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Congelar" })).toBeInTheDocument();
   });
-});
 
+  it("renderiza triagem, revisão, comparador, relatórios e painel operacional conforme perfis autorizados", async () => {
+    const roles = ["REVISOR", "ADJUDICADOR", "ADMINISTRADOR"];
+    mockApi(roles);
+    sessionStorage.setItem("dp.session", JSON.stringify({ token: "t", email: "adm@x.org", roles }));
+
+    const r1 = renderAt("/triagem");
+    expect(await screen.findByRole("heading", { name: /^Triagem$/i })).toBeInTheDocument();
+    r1.unmount();
+
+    const r2 = renderAt("/revisao");
+    expect(await screen.findByRole("heading", { name: /Revisão Lado a Lado/i })).toBeInTheDocument();
+    r2.unmount();
+
+    const r3 = renderAt("/comparador");
+    expect(await screen.findByRole("heading", { name: /Comparador Metodológico/i })).toBeInTheDocument();
+    r3.unmount();
+
+    const r4 = renderAt("/relatorios");
+    expect(await screen.findByRole("heading", { name: /Relatórios Auditáveis/i })).toBeInTheDocument();
+    r4.unmount();
+
+    const r5 = renderAt("/painel");
+    expect(await screen.findByRole("heading", { name: /Painel Operacional/i })).toBeInTheDocument();
+    r5.unmount();
+  });
+});

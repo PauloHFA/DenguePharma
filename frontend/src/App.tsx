@@ -1,9 +1,15 @@
 import { Navigate, NavLink, Outlet, Route, Routes } from "react-router-dom";
 import { useAuth } from "./auth/AuthContext";
 import { hasAnyRole } from "./auth/roles";
-import { LoginPage } from "./pages/LoginPage";
+import { CatalogPage } from "./pages/CatalogPage";
+import { ComparatorPage } from "./pages/ComparatorPage";
 import { ImportsPage } from "./pages/ImportsPage";
+import { LoginPage } from "./pages/LoginPage";
+import { OperationalPanelPage } from "./pages/OperationalPanelPage";
 import { ProtocolsPage } from "./pages/ProtocolsPage";
+import { ReportsPage } from "./pages/ReportsPage";
+import { ReviewPage } from "./pages/ReviewPage";
+import { ScreeningPage } from "./pages/ScreeningPage";
 import { ScreenPage } from "./pages/ScreenPage";
 import { SCREENS } from "./screens";
 
@@ -54,6 +60,12 @@ function Guarded({ path }: { path: string }) {
   }
   if (path === "protocolos") return <ProtocolsPage />;
   if (path === "importacoes") return <ImportsPage />;
+  if (path === "triagem") return <ScreeningPage />;
+  if (path === "revisao") return <ReviewPage />;
+  if (path === "catalogo") return <CatalogPage />;
+  if (path === "comparador") return <ComparatorPage />;
+  if (path === "relatorios") return <ReportsPage />;
+  if (path === "painel") return <OperationalPanelPage />;
   return <ScreenPage screen={screen} />;
 }
 
@@ -71,4 +83,3 @@ export function App() {
     </Routes>
   );
 }
-

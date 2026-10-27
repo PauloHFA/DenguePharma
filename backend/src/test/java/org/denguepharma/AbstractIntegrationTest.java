@@ -51,14 +51,25 @@ abstract class AbstractIntegrationTest {
 
     @BeforeEach
     void seedUsersAndCleanData() {
-        for (Role role : new Role[] {Role.ADMINISTRADOR, Role.PESQUISADOR, Role.LEITOR}) {
+        for (Role role : Role.values()) {
             String email = role.name().toLowerCase() + "@test.org";
             if (users.findByEmailIgnoreCase(email).isEmpty()) {
                 users.save(new AppUser(email, encoder.encode(PASSWORD), email, EnumSet.of(role)));
             }
         }
+        if (users.findByEmailIgnoreCase("revisor2@test.org").isEmpty()) {
+            users.save(new AppUser("revisor2@test.org", encoder.encode(PASSWORD), "revisor2@test.org", EnumSet.of(Role.REVISOR)));
+        }
         // TRUNCATE não dispara os triggers de imutabilidade; isola os testes entre si.
-        jdbc.execute("TRUNCATE protocol, study, document, outbox, audit_log RESTART IDENTITY CASCADE");
+        jdbc.execute("TRUNCATE protocol, study, document, substance, outbox, audit_log RESTART IDENTITY CASCADE");
+    }
+
+    protected String tokenForEmail(String email) throws Exception {
+        String body = json.writeValueAsString(Map.of("email", email, "password", PASSWORD));
+        String res = mvc.perform(post("/api/auth/login").contentType(MediaType.APPLICATION_JSON).content(body))
+                .andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
+        JsonNode node = json.readTree(res);
+        return "Bearer " + node.get("token").asText();
     }
 
     protected String tokenFor(Role role) throws Exception {

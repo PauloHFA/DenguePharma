@@ -181,7 +181,15 @@ public class ImportService {
                 int n = jdbc.update("insert into study_identifier (study_id, source, id_type, value) values (?, ?, ?, ?)"
                         + " on conflict (source, id_type, value) do nothing", studyId, id.source(), id.idType(), id.value());
                 if (n == 0) {
-                    // Mesmo DOI/PMCID já ligado a outro estudo: possível relato do mesmo ensaio. Não funde sozinho.
+                    // Mesmo DOI/PMCID já ligado a outro estudo: possível relato do mesmo ensaio. Não funde sozinho (T3).
+                    UUID existingStudyId = findStudy(id.source(), id.idType(), id.value());
+                    if (existingStudyId != null && !existingStudyId.equals(studyId)) {
+                        jdbc.update("""
+                                insert into study_link_proposal (primary_study_id, candidate_study_id, shared_identifier, id_type, reason)
+                                values (?, ?, ?, ?, ?)
+                                """, existingStudyId, studyId, id.value(), id.idType(),
+                                "Identificador compartilhado detectado na importacao (" + r.source() + ": " + r.externalId() + ")");
+                    }
                     audit.record(null, "IDENTIFIER_CONFLICT", "study", studyId.toString(), null,
                             write(Map.of("identifier", id.value(), "type", id.idType(), "record", r.externalId())),
                             "revisar vinculo entre estudos");
@@ -222,6 +230,10 @@ public class ImportService {
         UUID documentId = (UUID) last.get("document_id");
         int nextVersion = ((Number) last.get("version_no")).intValue() + 1;
         UUID versionId = insertVersion(documentId, nextVersion, hash, r, canonical);
+        jdbc.update("""
+                insert into reassessment_task (study_id, document_version_id, trigger_type, notes)
+                values (?, ?, 'FONTE_ALTERADA', ?)
+                """, studyId, versionId, "Nova versao v" + nextVersion + " detectada em " + r.source());
         outbox("FonteAlterada", versionId, documentId, studyId, r, hash);
         return Outcome.UPDATED;
     }

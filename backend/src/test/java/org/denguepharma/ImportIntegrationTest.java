@@ -179,6 +179,8 @@ class ImportIntegrationTest extends AbstractIntegrationTest {
 
         assertThat(count("select count(*) from study")).isEqualTo(3);
         assertThat(count("select count(*) from audit_log where action = 'IDENTIFIER_CONFLICT'")).isEqualTo(1);
+        assertThat(count("select count(*) from study_link_proposal where status = 'PENDING' and shared_identifier = '10.1/111'"))
+                .isEqualTo(1);
     }
 
     @Test
