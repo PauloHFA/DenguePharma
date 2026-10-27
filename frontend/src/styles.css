@@ -1,0 +1,23 @@
+:root { font-family: system-ui, sans-serif; color: #1a1a1a; background: #fafafa; }
+body { margin: 0; }
+.muted { color: #555; }
+.notice { font-size: 0.9rem; color: #333; border-left: 4px solid #444; padding: 0.5rem 0.75rem; background: #eee; }
+.error { color: #8a0000; font-weight: 600; }
+.empty { border: 1px dashed #777; padding: 1rem; background: #fff; }
+button, input { font: inherit; padding: 0.4rem 0.6rem; }
+:focus-visible { outline: 3px solid #0b57d0; outline-offset: 2px; }
+
+.login { max-width: 28rem; margin: 3rem auto; padding: 0 1rem; }
+.login form { display: grid; gap: 0.5rem; margin: 1.5rem 0; }
+
+.shell { display: grid; grid-template-columns: 14rem 1fr; grid-template-rows: auto 1fr auto; min-height: 100vh; }
+.shell header { grid-column: 1 / -1; display: flex; gap: 1rem; align-items: center; padding: 0.75rem 1rem; background: #fff; border-bottom: 1px solid #ccc; }
+.shell header .muted { margin-left: auto; }
+.shell nav { padding: 1rem; background: #fff; border-right: 1px solid #ccc; }
+.shell nav ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.25rem; }
+.shell nav a { display: block; padding: 0.4rem 0.6rem; color: inherit; text-decoration: none; }
+/* Estado ativo indicado por sublinhado e negrito, não só por cor. */
+.shell nav a.active { font-weight: 700; text-decoration: underline; background: #e8eefc; }
+.shell main { padding: 1.5rem; }
+.shell footer { grid-column: 1 / -1; margin: 0; }
+
