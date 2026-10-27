@@ -36,6 +36,7 @@ export function OperationalPanelPage() {
   const { session } = useAuth();
   const [summary, setSummary] = useState<OpsSummary | null>(null);
   const [reproPkg, setReproPkg] = useState<string | null>(null);
+  const [expOutput, setExpOutput] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   async function load() {
@@ -72,16 +73,61 @@ export function OperationalPanelPage() {
     setReproPkg(JSON.stringify(pkg, null, 2));
   }
 
+  async function seedPilotCorpus() {
+    if (!session) return;
+    const res = await api<Record<string, unknown>>(session, "/api/admin/seed-pilot", { method: "POST" });
+    setExpOutput(JSON.stringify(res, null, 2));
+    await load();
+  }
+
+  async function relayOutbox() {
+    if (!session) return;
+    const res = await api<Record<string, unknown>>(session, "/api/ops/outbox/relay", { method: "POST" });
+    setExpOutput(JSON.stringify(res, null, 2));
+    await load();
+  }
+
+  async function splitByStudyFamily() {
+    if (!session) return;
+    const res = await api<Record<string, unknown>>(session, "/api/experiment/split", { method: "POST" });
+    setExpOutput(JSON.stringify(res, null, 2));
+  }
+
+  async function loadExperimentMetrics() {
+    if (!session) return;
+    const res = await api<Record<string, unknown>>(session, "/api/experiment/metrics");
+    setExpOutput(JSON.stringify(res, null, 2));
+  }
+
   return (
     <section aria-labelledby="ops-heading">
-      <h1 id="ops-heading">Painel Operacional: Filas, Reavaliação e Pacote de Reprodução (RF-10, RF-11, RF-12)</h1>
+      <h1 id="ops-heading">Painel Operacional: Filas, Reavaliação, Experimento e Pacote de Reprodução (RF-10, RF-11, RF-12)</h1>
       {error && <p role="alert">{error}</p>}
 
-      <div>
+      <div className="filter-bar">
+        <button type="button" onClick={seedPilotCorpus}>
+          Carregar Piloto de 20 Registros (Seção 20)
+        </button>
+        <button type="button" onClick={relayOutbox}>
+          Publicar Outbox Pendente (Seção 13)
+        </button>
+        <button type="button" onClick={splitByStudyFamily}>
+          Particionar Famílias 25/25/50 (Seção 15)
+        </button>
+        <button type="button" onClick={loadExperimentMetrics}>
+          Métricas do Experimento & Kappa (Seção 16)
+        </button>
         <button type="button" onClick={exportReproductionPackage}>
           Exportar Pacote de Reprodução Respeitando Licenças (RF-12 / T9)
         </button>
       </div>
+
+      {expOutput && (
+        <div>
+          <h2>Resultado da Operação / Avaliação Experimental (E5)</h2>
+          <pre>{expOutput}</pre>
+        </div>
+      )}
 
       {reproPkg && (
         <div>

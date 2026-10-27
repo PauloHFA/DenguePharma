@@ -259,3 +259,4 @@ public class CatalogService {
         return s != null && !s.isBlank();
     }
 }
+

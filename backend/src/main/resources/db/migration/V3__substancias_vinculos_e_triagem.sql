@@ -53,3 +53,4 @@ ALTER TABLE study
 CREATE UNIQUE INDEX ux_screening_reviewer_stage
     ON screening_decision (study_id, reviewer_id, stage)
     WHERE is_adjudication = FALSE;
+

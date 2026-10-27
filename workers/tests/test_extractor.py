@@ -1,9 +1,12 @@
 import pytest
 
 from denguepharma_workers.extractor import (
+    BudgetExceededError,
+    BudgetGuard,
     CandidateField,
     compute_extraction_metrics,
     extract_from_structured_metadata,
+    run_ablation_h3,
     validate_and_abstain,
 )
 
@@ -115,3 +118,29 @@ def test_extracao_por_regras_e_metricas_excluindo_verdadeiro_negativo():
     assert m["recall"] == 0.5
     assert m["f1"] == 0.5
     assert m["absence_accuracy"] == 1.0
+
+
+def test_orcamento_e_ablacao_h3_nunca_publica_sem_revisao():
+    guard = BudgetGuard(max_cost_usd=0.05)
+    assert guard.record_call(0.02) == 0.02
+    with pytest.raises(BudgetExceededError):
+        guard.record_call(0.04)
+
+    doc = "We randomized 50 adult patients."
+    cand = [
+        CandidateField(
+            field_name="outcome",
+            original_value="Fever clearance 48h",
+            normalized_value="48h",
+            absence_status="PRESENTE",
+            quoted_text="Trecho nao presente no texto",
+        )
+    ]
+    with_span = run_ablation_h3(doc, cand, require_span_and_abstention=True)
+    without_span = run_ablation_h3(doc, cand, require_span_and_abstention=False)
+    assert with_span[0].absence_status == "INCERTO"
+    assert without_span[0].absence_status == "PRESENTE"
+    assert with_span[0].published is False
+    assert without_span[0].published is False
+
+

@@ -259,3 +259,65 @@ def compute_extraction_metrics(
         "f1": round(f1, 4),
         "absence_accuracy": round(absence_accuracy, 4),
     }
+
+
+class BudgetExceededError(RuntimeError):
+    """Lançada quando o custo acumulado da execução ultrapassa o teto de orçamento (Seções 13 e 17)."""
+
+
+class BudgetGuard:
+    """Controla o teto de orçamento por execução de extração assistida por IA."""
+
+    def __init__(self, max_cost_usd: float) -> None:
+        if max_cost_usd <= 0:
+            raise ValueError("max_cost_usd deve ser positivo")
+        self.max_cost_usd = max_cost_usd
+        self.spent_usd = 0.0
+
+    def record_call(self, call_cost_usd: float) -> float:
+        if call_cost_usd < 0:
+            raise ValueError("call_cost_usd nao pode ser negativo")
+        if self.spent_usd + call_cost_usd > self.max_cost_usd:
+            raise BudgetExceededError(
+                f"teto de orcamento excedido ({self.spent_usd + call_cost_usd:.4f} > {self.max_cost_usd:.4f} USD)"
+            )
+        self.spent_usd += call_cost_usd
+        return round(self.spent_usd, 6)
+
+
+def run_ablation_h3(
+    document_text: str,
+    candidates: list[CandidateField],
+    require_span_and_abstention: bool,
+) -> list[ValidatedField]:
+    """Ablação offline H3 (Seção 14): compara extração automática com e sem exigência de trecho/abstenção.
+
+    Nenhuma saída da ablação é publicada sem revisão (`published=False` em ambas as condições).
+    """
+    if require_span_and_abstention:
+        return validate_and_abstain(document_text, candidates)
+
+    out: list[ValidatedField] = []
+    for c in candidates:
+        warnings: list[str] = ["H3_ABLATION: sem exigencia de trecho literal"]
+        orig = sanitize_data_only(c.original_value, c.field_name, warnings)
+        norm = sanitize_data_only(c.normalized_value, c.field_name, warnings)
+        quote = sanitize_data_only(c.quoted_text, c.field_name, warnings)
+        out.append(
+            ValidatedField(
+                field_name=c.field_name,
+                original_value=orig,
+                normalized_value=norm,
+                absence_status=c.absence_status,
+                section=c.section,
+                page=c.page,
+                locator=c.locator,
+                quoted_text=quote,
+                review_status="ABLACAO_OFFLINE_H3",
+                published=False,
+                warnings=warnings,
+            )
+        )
+    return out
+
+

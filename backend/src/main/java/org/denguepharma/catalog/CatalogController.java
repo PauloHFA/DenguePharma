@@ -54,3 +54,4 @@ public class CatalogController {
         return service.retractStudy(id, req.reason(), UUID.fromString(jwt.getSubject()));
     }
 }
+

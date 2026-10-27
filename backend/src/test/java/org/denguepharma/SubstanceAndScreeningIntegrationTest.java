@@ -254,3 +254,4 @@ class SubstanceAndScreeningIntegrationTest extends AbstractIntegrationTest {
         return studyId;
     }
 }
+

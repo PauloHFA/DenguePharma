@@ -77,3 +77,4 @@ public class ExtractionController {
                 UUID.fromString(jwt.getSubject()), isAdjudicator);
     }
 }
+

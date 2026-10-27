@@ -23,6 +23,28 @@ public class IngestConfig {
                 p.ctgovPageSize());
     }
 
+    @Bean
+    SourceConnector europePmcConnector(IngestProperties p, ObjectMapper om) {
+        return new EuropePmcConnector("EUROPE_PMC", p.europePmcBaseUrl(),
+                HttpSupport.standard(p.userAgent(), 250), om, 100);
+    }
+
+    @Bean
+    SourceConnector pmcOaConnector(IngestProperties p, ObjectMapper om) {
+        return new EuropePmcConnector("PMC_OA", p.europePmcBaseUrl(),
+                HttpSupport.standard(p.userAgent(), 250), om, 100);
+    }
+
+    @Bean
+    SourceConnector lilacsConnector(ObjectMapper om) {
+        return new AssistedSourceConnector("LILACS", "OUTRO", "PUBLICACAO", om);
+    }
+
+    @Bean
+    SourceConnector whoIctrpConnector(ObjectMapper om) {
+        return new AssistedSourceConnector("WHO_ICTRP", "OUTRO", "REGISTRO_ENSAIO", om);
+    }
+
     /** Uma importação por vez: respeita as quotas das fontes. */
     @Bean(destroyMethod = "shutdown")
     ExecutorService importExecutor() {
@@ -33,4 +55,3 @@ public class IngestConfig {
         });
     }
 }
-

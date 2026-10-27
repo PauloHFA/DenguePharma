@@ -294,6 +294,85 @@ class ExtractionCatalogReportOpsIntegrationTest extends AbstractIntegrationTest 
         }
     }
 
+    @Test
+    void E2_E5_piloto20RegistrosParticaoFamiliaCrossoverSessoesKappaERelayOutbox() throws Exception {
+        String adminToken = tokenFor(Role.ADMINISTRADOR);
+        String rev1Token = tokenFor(Role.REVISOR);
+        UUID rev1Id = users.findByEmailIgnoreCase("revisor@test.org").orElseThrow().getId();
+        UUID rev2Id = users.findByEmailIgnoreCase("revisor2@test.org").orElseThrow().getId();
+
+        // 1) Seção 20 (E2): Semente idempotente do piloto com 20 registros recuperados
+        mvc.perform(post("/api/admin/seed-pilot").header("Authorization", adminToken))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.status").value("SEEDED"))
+                .andExpect(jsonPath("$.recordsCreated").value(20));
+
+        // Chamada repetida não duplica o piloto
+        mvc.perform(post("/api/admin/seed-pilot").header("Authorization", adminToken))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.status").value("ALREADY_SEEDED"))
+                .andExpect(jsonPath("$.totalStudies").value(20));
+
+        // 2) Seção 15 (E5): Partição estratificada 25% DEV / 25% VAL / 50% TEST_FROZEN por família de estudo
+        mvc.perform(post("/api/experiment/split").header("Authorization", adminToken))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.totalFamilies").value(20))
+                .andExpect(jsonPath("$.devFamilies").value(5))
+                .andExpect(jsonPath("$.valFamilies").value(5))
+                .andExpect(jsonPath("$.testFrozenFamilies").value(10));
+
+        // 3) Seção 15 (E5): Alocação crossover A_MANUAL vs C_AI_ASSISTED em blocos balanceados
+        mvc.perform(post("/api/experiment/allocate").header("Authorization", adminToken)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(json.writeValueAsString(Map.of("reviewer1", rev1Id, "reviewer2", rev1Id))))
+                .andExpect(status().isUnprocessableEntity());
+
+        mvc.perform(post("/api/experiment/allocate").header("Authorization", adminToken)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(json.writeValueAsString(Map.of("reviewer1", rev1Id, "reviewer2", rev2Id))))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.allocatedDocuments").value(20));
+
+        // 4) Seção 15 e 16 (E5): Registra sessões cronometradas com pausas para A_MANUAL e C_AI_ASSISTED
+        UUID sampleDocVer = jdbc.queryForObject("select id from document_version limit 1", UUID.class);
+        mvc.perform(post("/api/experiment/sessions").header("Authorization", rev1Token)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(json.writeValueAsString(Map.of(
+                                "documentVersionId", sampleDocVer,
+                                "conditionCode", "A_MANUAL",
+                                "activeSeconds", 300,
+                                "pauseSeconds", 30,
+                                "correctionsCount", 0,
+                                "criticalErrorsCount", 0,
+                                "documentDifficulty", "MEDIA"))))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.totalSeconds").value(330));
+
+        mvc.perform(post("/api/experiment/sessions").header("Authorization", rev1Token)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(json.writeValueAsString(Map.of(
+                                "documentVersionId", sampleDocVer,
+                                "conditionCode", "C_AI_ASSISTED",
+                                "activeSeconds", 210,
+                                "pauseSeconds", 15,
+                                "correctionsCount", 1,
+                                "criticalErrorsCount", 0,
+                                "documentDifficulty", "MEDIA"))))
+                .andExpect(status().isCreated());
+
+        // 5) Seção 16 (E5): Consulta métricas experimentais (F1, fidelidade, rastreabilidade, redução de 30% >= meta de 20%)
+        mvc.perform(get("/api/experiment/metrics").header("Authorization", adminToken))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.extractionPrecision").value(1.0))
+                .andExpect(jsonPath("$.extractionRecall").value(1.0))
+                .andExpect(jsonPath("$.extractionF1").value(1.0))
+                .andExpect(jsonPath("$.trueNegativesExcludedFromF1").value(true))
+                .andExpect(jsonPath("$.fidelityRate").value(1.0))
+                .andExpect(jsonPath("$.traceabilityRate").value(1.0))
+                .andExpect(jsonPath("$.timingComparison.relativeTimeReductionPercent").value(30.0))
+                .andExpect(jsonPath("$.timingComparison.meets20PercentTarget").value(true));
+    }
+
     private UUID seedStudyWithCorpus(String title, String metadataJson, String license) {
         UUID studyId = jdbc.queryForObject("insert into study (title, screening_status) values (?, 'INCLUIDO_NUCLEO') returning id",
                 UUID.class, title);

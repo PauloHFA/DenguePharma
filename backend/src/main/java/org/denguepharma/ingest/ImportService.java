@@ -239,10 +239,12 @@ public class ImportService {
     }
 
     private UUID insertVersion(UUID documentId, int versionNo, String hash, RawRecord r, JsonNode canonical) {
+        String license = canonical.hasNonNull("license") ? canonical.get("license").asText() : null;
+        String storageUri = "s3://denguepharma-corpus/" + r.source().toLowerCase() + "/" + hash + ".json";
         return jdbc.queryForObject("""
-                insert into document_version (document_id, version_no, content_hash, origin, access_status, retrieved_at, metadata)
-                values (?, ?, ?, ?, ?, now(), ?::jsonb) returning id
-                """, UUID.class, documentId, versionNo, hash, r.source(), r.accessStatus(), write(canonical));
+                insert into document_version (document_id, version_no, content_hash, origin, license, storage_uri, access_status, retrieved_at, metadata)
+                values (?, ?, ?, ?, ?, ?, ?, now(), ?::jsonb) returning id
+                """, UUID.class, documentId, versionNo, hash, r.source(), license, storageUri, r.accessStatus(), write(canonical));
     }
 
     /** Evento na mesma transação da mutação; só referências, nunca o texto integral. */

@@ -387,6 +387,48 @@ public class ReportAndOpsService {
         return Map.of("jobId", jobId, "status", "PENDING");
     }
 
+    /**
+     * Publicador Outbox transacional (Seção 13): publica eventos pendentes preservando event_id,
+     * registra consumo idempotente no dispatcher interno e enfileira job correspondente sem duplicar.
+     */
+    @Transactional
+    public Map<String, Object> relayOutboxBatch(int limit) {
+        List<Map<String, Object>> pending = jdbc.queryForList("""
+                select id, event_id, aggregate_type, aggregate_id, event_type
+                from outbox
+                where published_at is null
+                order by id asc
+                limit ?
+                """, Math.max(1, limit));
+        int publishedCount = 0;
+        int jobsCreated = 0;
+        for (Map<String, Object> row : pending) {
+            long id = ((Number) row.get("id")).longValue();
+            UUID eventId = (UUID) row.get("event_id");
+            String eventType = (String) row.get("event_type");
+            String aggregateId = (String) row.get("aggregate_id");
+
+            boolean firstTime = registerInboxDelivery(eventId, "outbox-job-dispatcher");
+            if (firstTime) {
+                String jobType = switch (eventType) {
+                    case "DocumentoImportado", "FonteAlterada" -> "EXTRACT_DOCUMENT";
+                    case "RelatorioSolicitado" -> "GENERATE_REPORT";
+                    default -> null;
+                };
+                if (jobType != null) {
+                    jdbc.update("""
+                            insert into job (id, job_type, ref_id, status, max_attempts)
+                            values (?, ?, ?, 'PENDING', 5)
+                            """, UUID.randomUUID(), jobType, aggregateId);
+                    jobsCreated++;
+                }
+            }
+            jdbc.update("update outbox set published_at = now(), attempts = attempts + 1 where id = ?", id);
+            publishedCount++;
+        }
+        return Map.of("relayedEvents", publishedCount, "jobsCreated", jobsCreated);
+    }
+
     public Map<String, Object> operationalSummary() {
         List<Map<String, Object>> jobs = jdbc.queryForList(
                 "select id, job_type, ref_id, status, attempts, max_attempts, last_error, updated_at from job order by created_at desc limit 100");

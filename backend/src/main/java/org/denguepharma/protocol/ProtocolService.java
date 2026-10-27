@@ -22,7 +22,8 @@ import org.springframework.web.server.ResponseStatusException;
 @Service
 public class ProtocolService {
 
-    public static final Set<String> SOURCES = Set.of("PUBMED", "CLINICALTRIALS");
+    public static final Set<String> SOURCES = Set.of(
+            "PUBMED", "CLINICALTRIALS", "EUROPE_PMC", "PMC_OA", "LILACS", "WHO_ICTRP");
 
     public record ProtocolInput(String code, String title, String question, JsonNode sources,
                                 JsonNode strategy, JsonNode eligibility, LocalDate cutoffDate) {}

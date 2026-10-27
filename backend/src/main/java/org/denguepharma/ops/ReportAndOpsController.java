@@ -30,6 +30,10 @@ public class ReportAndOpsController {
                                       String design, String serotype, String phase) {}
     public record EnqueueJobRequest(@NotBlank String jobType, @NotBlank String refId, int maxAttempts) {}
     public record ReasonRequest(String reason) {}
+    public record InboxDeliveryRequest(UUID eventId, @NotBlank String consumer) {}
+    public record LeaseRequest(int leaseSeconds) {}
+    public record CompleteJobRequest(UUID leaseToken) {}
+    public record FailJobRequest(@NotBlank String errorMessage) {}
 
     private final ReportAndOpsService service;
 
@@ -104,9 +108,42 @@ public class ReportAndOpsController {
         return service.retryJob(id, req == null ? null : req.reason(), UUID.fromString(jwt.getSubject()));
     }
 
+    @PostMapping("/ops/outbox/relay")
+    @PreAuthorize("hasAnyRole('PESQUISADOR','ADMINISTRADOR')")
+    public Map<String, Object> relayOutbox(@RequestParam(defaultValue = "50") int limit) {
+        return service.relayOutboxBatch(limit);
+    }
+
+    @PostMapping("/ops/inbox/register")
+    @PreAuthorize("hasAnyRole('PESQUISADOR','ADMINISTRADOR')")
+    public Map<String, Object> registerInbox(@Valid @RequestBody InboxDeliveryRequest req) {
+        boolean firstDelivery = service.registerInboxDelivery(req.eventId(), req.consumer());
+        return Map.of("eventId", req.eventId(), "consumer", req.consumer(), "firstDelivery", firstDelivery);
+    }
+
+    @PostMapping("/ops/jobs/{id}/lease")
+    @PreAuthorize("hasAnyRole('PESQUISADOR','ADMINISTRADOR')")
+    public Map<String, Object> acquireLease(@PathVariable UUID id,
+                                            @RequestBody(required = false) LeaseRequest req) {
+        return service.acquireLease(id, req == null ? 60 : req.leaseSeconds());
+    }
+
+    @PostMapping("/ops/jobs/{id}/complete")
+    @PreAuthorize("hasAnyRole('PESQUISADOR','ADMINISTRADOR')")
+    public void completeJob(@PathVariable UUID id, @Valid @RequestBody CompleteJobRequest req) {
+        service.completeJobWithLease(id, req.leaseToken());
+    }
+
+    @PostMapping("/ops/jobs/{id}/fail")
+    @PreAuthorize("hasAnyRole('PESQUISADOR','ADMINISTRADOR')")
+    public Map<String, Object> failJob(@PathVariable UUID id, @Valid @RequestBody FailJobRequest req) {
+        return service.failJob(id, req.errorMessage());
+    }
+
     @GetMapping("/admin/reproduction-package")
     @PreAuthorize("hasRole('ADMINISTRADOR')")
     public Map<String, Object> reproductionPackage() {
         return service.exportReproductionPackage();
     }
 }
+

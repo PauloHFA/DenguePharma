@@ -61,7 +61,7 @@ abstract class AbstractIntegrationTest {
             users.save(new AppUser("revisor2@test.org", encoder.encode(PASSWORD), "revisor2@test.org", EnumSet.of(Role.REVISOR)));
         }
         // TRUNCATE não dispara os triggers de imutabilidade; isola os testes entre si.
-        jdbc.execute("TRUNCATE protocol, study, document, substance, outbox, audit_log RESTART IDENTITY CASCADE");
+        jdbc.execute("TRUNCATE protocol, study, document, substance, outbox, inbox, job, audit_log RESTART IDENTITY CASCADE");
     }
 
     protected String tokenForEmail(String email) throws Exception {

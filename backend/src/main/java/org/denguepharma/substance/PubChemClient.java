@@ -70,3 +70,4 @@ public class PubChemClient {
         return Optional.of(new PubChemEntry(cid, title, iupac, synonyms));
     }
 }
+

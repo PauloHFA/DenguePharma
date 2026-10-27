@@ -97,3 +97,4 @@ public class SubstanceAndLinkController {
         links.undo(id, req == null ? null : req.reason(), UUID.fromString(jwt.getSubject()));
     }
 }
+
