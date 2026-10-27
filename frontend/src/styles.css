@@ -21,3 +21,10 @@ button, input { font: inherit; padding: 0.4rem 0.6rem; }
 .shell main { padding: 1.5rem; }
 .shell footer { grid-column: 1 / -1; margin: 0; }
 
+.stack { display: grid; gap: 0.4rem; max-width: 36rem; margin: 1rem 0; }
+textarea, select { font: inherit; padding: 0.4rem 0.6rem; }
+table { border-collapse: collapse; width: 100%; background: #fff; margin-top: 1rem; }
+caption { text-align: left; font-weight: 700; padding: 0.25rem 0; }
+th, td { border: 1px solid #ccc; padding: 0.4rem 0.6rem; text-align: left; vertical-align: top; }
+.actions { display: flex; gap: 0.4rem; flex-wrap: wrap; }
+

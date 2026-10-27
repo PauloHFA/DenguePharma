@@ -25,6 +25,11 @@ denguepharma:
     admin-email: ${BOOTSTRAP_ADMIN_EMAIL:}
     admin-password: ${BOOTSTRAP_ADMIN_PASSWORD:}
 
+  ingest:
+    # Opcionais: a chave do NCBI aumenta a quota das E-utilities; o e-mail identifica o cliente.
+    ncbi-api-key: ${NCBI_API_KEY:}
+    contact-email: ${NCBI_CONTACT_EMAIL:}
+
 management:
   endpoints:
     web:

@@ -65,5 +65,28 @@ describe("acesso", () => {
     renderAt("/painel");
     expect(await screen.findByRole("alert")).toHaveTextContent("Acesso limitado");
   });
+
+  it("pesquisador vê protocolos e importações com estado vazio", async () => {
+    vi.stubGlobal("fetch", vi.fn(async () => new Response("[]", { status: 200 })));
+    sessionStorage.setItem("dp.session", JSON.stringify({ token: "t", email: "p@x.org", roles: ["PESQUISADOR"] }));
+    const first = renderAt("/protocolos");
+    expect(await screen.findByText(/Nenhum protocolo registrado/)).toBeInTheDocument();
+    first.unmount();
+
+    renderAt("/importacoes");
+    expect(await screen.findByText(/Nenhuma importação executada/)).toBeInTheDocument();
+  });
+
+  it("protocolo registrado oferece congelar; rascunho oferece registrar", async () => {
+    const protocols = [
+      { id: "1", code: "A", version: 1, title: "T", question: "Q", sources: ["PUBMED"], cutoffDate: "2026-10-26", status: "DRAFT" },
+      { id: "2", code: "B", version: 1, title: "T", question: "Q", sources: ["PUBMED"], cutoffDate: "2026-10-26", status: "REGISTERED" },
+    ];
+    vi.stubGlobal("fetch", vi.fn(async () => new Response(JSON.stringify(protocols), { status: 200 })));
+    sessionStorage.setItem("dp.session", JSON.stringify({ token: "t", email: "p@x.org", roles: ["PESQUISADOR"] }));
+    renderAt("/protocolos");
+    expect(await screen.findByRole("button", { name: "Registrar" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Congelar" })).toBeInTheDocument();
+  });
 });
 

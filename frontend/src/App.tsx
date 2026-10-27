@@ -2,6 +2,8 @@ import { Navigate, NavLink, Outlet, Route, Routes } from "react-router-dom";
 import { useAuth } from "./auth/AuthContext";
 import { hasAnyRole } from "./auth/roles";
 import { LoginPage } from "./pages/LoginPage";
+import { ImportsPage } from "./pages/ImportsPage";
+import { ProtocolsPage } from "./pages/ProtocolsPage";
 import { ScreenPage } from "./pages/ScreenPage";
 import { SCREENS } from "./screens";
 
@@ -50,6 +52,8 @@ function Guarded({ path }: { path: string }) {
   if (!hasAnyRole(session, screen.roles)) {
     return <p role="alert">Acesso limitado: seu perfil não tem permissão para esta tela.</p>;
   }
+  if (path === "protocolos") return <ProtocolsPage />;
+  if (path === "importacoes") return <ImportsPage />;
   return <ScreenPage screen={screen} />;
 }
 
