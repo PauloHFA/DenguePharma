@@ -1,0 +1,4 @@
+intervention_type,count,denominator,proportion,overlapping
+BIOLOGICAL,8,10,0.8,True
+DRUG,1,10,0.1,True
+OTHER,2,10,0.2,True

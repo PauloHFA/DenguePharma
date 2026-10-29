@@ -1,0 +1,3 @@
+source,query,status,executed_at,finished_at,reported_total,retrieved_documents,retrieved_fraction
+CLINICALTRIALS,query.cond=Dengue [LastUpdatePostDate <= 2026-10-28],COMPLETED,2026-10-28T14:38:09.049+00:00,2026-10-28T14:38:10.199+00:00,322,10,0.031055900621118012
+PUBMED,(dengue[MeSH Terms] OR dengue[Title/Abstract] OR DENV[Title/Abstract]) AND (drug therapy[Subheading] OR antiviral agents[MeSH Terms] OR drug*[Title/Abstract] OR pharmacolog*[Title/Abstract] OR therapeut*[Title/Abstract] OR treatment*[Title/Abstract] OR analges*[Title/Abstract] OR antipyretic*[Title/Abstract] OR symptomatic[Title/Abstract]) [pdat <= 2026-10-28],COMPLETED,2026-10-28T14:37:30.811+00:00,2026-10-28T14:38:07.092+00:00,7765,10,0.00128783000643915

@@ -16,6 +16,9 @@ spring:
     locations: classpath:db/migration
 
 denguepharma:
+  pipeline:
+    # Vazio desabilita acesso dos workers; nao reutilizar JWT_SECRET.
+    token: ${PIPELINE_TOKEN:}
   security:
     # Segredo HMAC do JWT: obrigatório, mínimo de 32 caracteres. Sem valor padrão.
     jwt-secret: ${JWT_SECRET}

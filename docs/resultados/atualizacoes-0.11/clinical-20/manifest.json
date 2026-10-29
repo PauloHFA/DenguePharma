@@ -1,0 +1,20 @@
+{
+  "artifacts": {
+    "comparison.json": "4dfb41b683bc827e09f95fccc62f674d616551605dd5e4d75e4dc75c18412198",
+    "document_changes.csv": "07199c978846399fb1a469c571fd7803206e7615831dc7762b6861ede750595d",
+    "table_changes.csv": "4073929b6c544ceea16f9755b0256f2665bdd84a717a110f3293184b309e6604"
+  },
+  "comparison_id": "772a3a15932911a604941f152d74fea4adc93a6f30d5e24b3019b3b429c9ea43",
+  "configuration": {
+    "baseline": "234e2aab4c96ee7ffb287e735439db3bf4d6f4c2a0d3dbf63ec16c0d56239df6",
+    "baseline_input_hash": "6170bd7583d266c2954a503b630098e7d8c32fbbbbb248f3984ce106077e24eb",
+    "baseline_manifest_hash": "b8c09ff5338a0995bdcc9f4b567521312aeaaa53feea8bfdd4cba562a4ec996c",
+    "code_hash": "a66f5b9ca5575c13383624792e86fcf4b8e9191ea50c711571d2ff1a8888b1c6",
+    "current": "19d81d238efa1134b188a06e7cffe45dc2e7166af1f8de9b8ffbef146d7685ed",
+    "current_input_hash": "6170bd7583d266c2954a503b630098e7d8c32fbbbbb248f3984ce106077e24eb",
+    "current_manifest_hash": "a86c04e90aff8c51fb81af6d37f81a4c0e33eeb0272b84b896ade066c9cb96be",
+    "schema_version": "published-comparison-1",
+    "software_version": "0.11.0"
+  },
+  "schema_version": "comparison-artifacts-1"
+}

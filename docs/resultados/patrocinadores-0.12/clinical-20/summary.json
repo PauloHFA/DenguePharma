@@ -1,0 +1,110 @@
+{
+  "completeness": [
+    {
+      "conflicts": 0,
+      "denominator": 10,
+      "field": "sponsor_name",
+      "missing": 0,
+      "present": 10,
+      "proportion": 1.0,
+      "unit": "registro_consolidado_por_NCT_ou_documento"
+    },
+    {
+      "conflicts": 0,
+      "denominator": 10,
+      "field": "sponsor_type",
+      "missing": 0,
+      "present": 10,
+      "proportion": 1.0,
+      "unit": "registro_consolidado_por_NCT_ou_documento"
+    }
+  ],
+  "distributions": [
+    {
+      "category": "gadjah mada university",
+      "count": 1,
+      "denominator": 10,
+      "field": "sponsor_name",
+      "proportion": 0.1,
+      "status": "PRESENTE",
+      "unit": "registro_consolidado_por_NCT_ou_documento"
+    },
+    {
+      "category": "national institute of allergy and infectious diseases (niaid)",
+      "count": 2,
+      "denominator": 10,
+      "field": "sponsor_name",
+      "proportion": 0.2,
+      "status": "PRESENTE",
+      "unit": "registro_consolidado_por_NCT_ou_documento"
+    },
+    {
+      "category": "research and publication office",
+      "count": 1,
+      "denominator": 10,
+      "field": "sponsor_name",
+      "proportion": 0.1,
+      "status": "PRESENTE",
+      "unit": "registro_consolidado_por_NCT_ou_documento"
+    },
+    {
+      "category": "takeda",
+      "count": 4,
+      "denominator": 10,
+      "field": "sponsor_name",
+      "proportion": 0.4,
+      "status": "PRESENTE",
+      "unit": "registro_consolidado_por_NCT_ou_documento"
+    },
+    {
+      "category": "university hospital, strasbourg, france",
+      "count": 1,
+      "denominator": 10,
+      "field": "sponsor_name",
+      "proportion": 0.1,
+      "status": "PRESENTE",
+      "unit": "registro_consolidado_por_NCT_ou_documento"
+    },
+    {
+      "category": "university of maryland, baltimore",
+      "count": 1,
+      "denominator": 10,
+      "field": "sponsor_name",
+      "proportion": 0.1,
+      "status": "PRESENTE",
+      "unit": "registro_consolidado_por_NCT_ou_documento"
+    },
+    {
+      "category": "INDUSTRY",
+      "count": 4,
+      "denominator": 10,
+      "field": "sponsor_type",
+      "proportion": 0.4,
+      "status": "PRESENTE",
+      "unit": "registro_consolidado_por_NCT_ou_documento"
+    },
+    {
+      "category": "NIH",
+      "count": 2,
+      "denominator": 10,
+      "field": "sponsor_type",
+      "proportion": 0.2,
+      "status": "PRESENTE",
+      "unit": "registro_consolidado_por_NCT_ou_documento"
+    },
+    {
+      "category": "OTHER",
+      "count": 4,
+      "denominator": 10,
+      "field": "sponsor_type",
+      "proportion": 0.4,
+      "status": "PRESENTE",
+      "unit": "registro_consolidado_por_NCT_ou_documento"
+    }
+  ],
+  "invalid_nct": 0,
+  "missing_nct": 0,
+  "notice": "Metadados dos registros coletados, com elegibilidade pendente. Patrocinador responsavel nao comprova financiamento, risco de vies ou eficacia. Nomes agrupados apenas por espacos e caixa, sem resolucao institucional.",
+  "source_documents": 10,
+  "trials": 10
+}

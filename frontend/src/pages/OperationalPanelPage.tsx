@@ -14,12 +14,15 @@ interface OpsSummary {
     updated_at: string;
   }>;
   outbox: Array<{
-    id: number;
+    id: string;
     event_id: string;
     aggregate_type: string;
     event_type: string;
     attempts: number;
     created_at: string;
+    published_at: string | null;
+    next_attempt_at: string;
+    last_error: string | null;
   }>;
   reassessments: Array<{
     id: string;
@@ -47,6 +50,8 @@ export function OperationalPanelPage() {
 
   useEffect(() => {
     load().catch((e) => setError((e as Error).message));
+    const timer = setInterval(() => { load().catch((e) => setError((e as Error).message)); }, 5000);
+    return () => clearInterval(timer);
   }, [session]);
 
   async function resolveReassessment(id: string) {
@@ -87,44 +92,27 @@ export function OperationalPanelPage() {
     await load();
   }
 
-  async function splitByStudyFamily() {
-    if (!session) return;
-    const res = await api<Record<string, unknown>>(session, "/api/experiment/split", { method: "POST" });
-    setExpOutput(JSON.stringify(res, null, 2));
-  }
-
-  async function loadExperimentMetrics() {
-    if (!session) return;
-    const res = await api<Record<string, unknown>>(session, "/api/experiment/metrics");
-    setExpOutput(JSON.stringify(res, null, 2));
-  }
-
   return (
     <section aria-labelledby="ops-heading">
-      <h1 id="ops-heading">Painel Operacional: Filas, Reavaliação, Experimento e Pacote de Reprodução (RF-10, RF-11, RF-12)</h1>
+      <h1 id="ops-heading">Painel Operacional: Filas, Reavaliação e Pacote de Reprodução</h1>
       {error && <p role="alert">{error}</p>}
 
       <div className="filter-bar">
         <button type="button" onClick={seedPilotCorpus}>
-          Carregar Piloto de 20 Registros (Seção 20)
+          Carregar 20 registros demonstrativos
         </button>
         <button type="button" onClick={relayOutbox}>
-          Publicar Outbox Pendente (Seção 13)
-        </button>
-        <button type="button" onClick={splitByStudyFamily}>
-          Particionar Famílias 25/25/50 (Seção 15)
-        </button>
-        <button type="button" onClick={loadExperimentMetrics}>
-          Métricas do Experimento & Kappa (Seção 16)
+          Solicitar envio dos eventos pendentes
         </button>
         <button type="button" onClick={exportReproductionPackage}>
           Exportar Pacote de Reprodução Respeitando Licenças (RF-12 / T9)
         </button>
       </div>
+      <p>Os registros demonstrativos são sintéticos e ficam fora do catálogo e dos relatórios científicos. O piloto científico exige importação e curadoria de fontes reais.</p>
 
       {expOutput && (
         <div>
-          <h2>Resultado da Operação / Avaliação Experimental (E5)</h2>
+          <h2>Resultado da operação</h2>
           <pre>{expOutput}</pre>
         </div>
       )}
@@ -138,6 +126,19 @@ export function OperationalPanelPage() {
 
       {summary && (
         <>
+          <h2>Envio de eventos para processamento</h2>
+          <p>O envio é confirmado pelo RabbitMQ. Falhas e tarefas interrompidas são retomadas pelo worker; apenas a revisão humana publica evidências.</p>
+          <table>
+            <thead><tr><th>Evento</th><th>Tipo</th><th>Entrega</th><th>Tentativas</th><th>Próxima tentativa / erro</th></tr></thead>
+            <tbody>
+              {summary.outbox.map((event) => <tr key={event.id}>
+                <td><code>{event.event_id}</code></td><td>{event.event_type}</td>
+                <td>{event.published_at ? "Confirmado pelo broker" : ["DocumentoImportado", "FonteAlterada", "RelatorioSolicitado", "AnaliseSolicitada"].includes(event.event_type) ? "Pendente" : "Aguardando integração"}</td><td>{event.attempts}</td>
+                <td>{event.published_at ? "—" : event.next_attempt_at} {event.last_error}</td>
+              </tr>)}
+              {summary.outbox.length === 0 && <tr><td colSpan={5}>Nenhum evento registrado.</td></tr>}
+            </tbody>
+          </table>
           <h2>Fila de Reavaliação por Mudança de Fonte / Errata / Retratação (RF-10, RC-06)</h2>
           <table>
             <thead>

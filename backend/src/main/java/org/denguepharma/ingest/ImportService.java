@@ -113,11 +113,17 @@ public class ImportService {
             while (true) {
                 final JsonNode checkpointIn = checkpoint;
                 Page page = connector.fetch(strategy, cutoff, checkpointIn);   // fora de transação
-                tx.executeWithoutResult(st -> persistPage(runId, page, checkpointIn));
-                if (page.nextCheckpoint() == null) {
+                int maxRecords = strategy.path("maxRecords").asInt(0);
+                int seen = jdbc.queryForObject("select records_seen from search_run where id=?", Integer.class, runId);
+                int remaining = maxRecords > 0 ? Math.max(0, maxRecords - seen) : Integer.MAX_VALUE;
+                Page bounded = new Page(page.records().subList(0, Math.min(remaining, page.records().size())),
+                        maxRecords > 0 && seen + page.records().size() >= maxRecords ? null : page.nextCheckpoint(),
+                        page.total(), page.apiVersion(), page.params());
+                tx.executeWithoutResult(st -> persistPage(runId, bounded, checkpointIn));
+                if (bounded.nextCheckpoint() == null) {
                     return;
                 }
-                checkpoint = page.nextCheckpoint();
+                checkpoint = bounded.nextCheckpoint();
             }
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
@@ -141,6 +147,12 @@ public class ImportService {
                 case UPDATED -> updated++;
                 case UNCHANGED -> unchanged++;
             }
+            String recordHash = sha256(write(canonical(r.payload())));
+            jdbc.update("""
+                    insert into search_run_document(search_run_id, document_version_id)
+                    select ?, id from document_version where content_hash=? and origin=?
+                    on conflict do nothing
+                    """, runId, recordHash, r.source());
         }
         ObjectNode entry = om.createObjectNode();
         entry.set("checkpoint_in", checkpointIn);
@@ -242,9 +254,9 @@ public class ImportService {
         String license = canonical.hasNonNull("license") ? canonical.get("license").asText() : null;
         String storageUri = "s3://denguepharma-corpus/" + r.source().toLowerCase() + "/" + hash + ".json";
         return jdbc.queryForObject("""
-                insert into document_version (document_id, version_no, content_hash, origin, license, storage_uri, access_status, retrieved_at, metadata)
-                values (?, ?, ?, ?, ?, ?, ?, now(), ?::jsonb) returning id
-                """, UUID.class, documentId, versionNo, hash, r.source(), license, storageUri, r.accessStatus(), write(canonical));
+                insert into document_version (document_id, version_no, content_hash, origin, license, storage_uri, access_status, retrieved_at, metadata, canonical_content)
+                values (?, ?, ?, ?, ?, ?, ?, now(), ?::jsonb, ?) returning id
+                """, UUID.class, documentId, versionNo, hash, r.source(), license, storageUri, r.accessStatus(), write(canonical), write(canonical));
     }
 
     /** Evento na mesma transação da mutação; só referências, nunca o texto integral. */
@@ -268,7 +280,7 @@ public class ImportService {
 
     // ---- util ----
 
-    static JsonNode canonical(JsonNode n) {
+    public static JsonNode canonical(JsonNode n) {
         if (n.isObject()) {
             ObjectNode out = JsonNodeFactoryHolder.FACTORY.objectNode();
             new TreeMap<String, JsonNode>(toMap(n)).forEach((k, v) -> out.set(k, canonical(v)));

@@ -28,7 +28,7 @@ interface CompareResponse {
     limitations: string;
   }>;
   compatibleForDirectSynthesis: boolean;
-  incompatibilities: Array<{ rule: string; detail: string }>;
+  incompatibilities: Array<{ rule: string; code: string; message: string }>;
   rankingPolicy: string;
 }
 
@@ -116,7 +116,7 @@ export function ComparatorPage() {
               <ul>
                 {result.incompatibilities.map((inc, i) => (
                   <li key={i}>
-                    <code>{inc.rule}</code>: {inc.detail}
+                    <code>{inc.rule}</code>: {inc.message}
                   </li>
                 ))}
               </ul>

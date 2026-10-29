@@ -18,12 +18,35 @@ export async function api<T>(session: Session, path: string, init: RequestInit =
   if (!res.ok) {
     let detail = "";
     try {
-      detail = ((await res.json()) as { message?: string; detail?: string }).message ?? "";
+      const error = (await res.json()) as { message?: string; detail?: string };
+      detail = error.detail ?? error.message ?? "";
     } catch {
       /* corpo vazio */
     }
     throw new ApiError(res.status, detail || `Erro ${res.status}`);
   }
-  return (res.status === 204 ? undefined : await res.json()) as T;
+  const body = await res.text();
+  return (body ? JSON.parse(body) : undefined) as T;
+}
+
+export async function downloadFile(session: Session, path: string, filename: string): Promise<void> {
+  const blob = await readFile(session, path);
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = filename;
+  document.body.appendChild(link);
+  try {
+    link.click();
+  } finally {
+    link.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+  }
+}
+
+export async function readFile(session: Session, path: string): Promise<Blob> {
+  const res = await fetch(path, { headers: { Authorization: `Bearer ${session.token}` } });
+  if (!res.ok) throw new ApiError(res.status, `Não foi possível baixar o arquivo (erro ${res.status}).`);
+  return res.blob();
 }
 

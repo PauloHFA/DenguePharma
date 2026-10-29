@@ -1,0 +1,12 @@
+field,category,unit,count,denominator,proportion
+overall_status,ACTIVE_NOT_RECRUITING,registro_consolidado_por_NCT_ou_documento,1,10,0.1
+results_precision,AUSENTE,registro_consolidado_por_NCT_ou_documento,4,10,0.4
+interval_status,CALCULAVEL,registro_consolidado_por_NCT_ou_documento,5,10,0.5
+overall_status,COMPLETED,registro_consolidado_por_NCT_ou_documento,8,10,0.8
+interval_status,CONFERENCIA_NECESSARIA,registro_consolidado_por_NCT_ou_documento,5,10,0.5
+last_update_precision,DIA,registro_consolidado_por_NCT_ou_documento,10,10,1.0
+primary_precision,DIA,registro_consolidado_por_NCT_ou_documento,10,10,1.0
+results_precision,DIA,registro_consolidado_por_NCT_ou_documento,6,10,0.6
+result_category,DISPONIVEL,registro_consolidado_por_NCT_ou_documento,6,10,0.6
+result_category,NAO_DECLARADO_DISPONIVEL,registro_consolidado_por_NCT_ou_documento,4,10,0.4
+overall_status,TERMINATED,registro_consolidado_por_NCT_ou_documento,1,10,0.1

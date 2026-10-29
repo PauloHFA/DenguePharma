@@ -1,0 +1,15 @@
+{
+  "artifacts": {
+    "corpus_sponsor_completeness.csv": "5a0073bb7c4c1d40d2d7c480308041f0c9ee312e4dc46adb40ef810b250b9582",
+    "corpus_sponsor_distributions.csv": "55d86c1aaf2b76b2a793ff894877c61aace25fe4cb24caac0106f51eafe10ffc",
+    "corpus_sponsor_trials.csv": "a1febe7301c093724e47c1f8a59d3266915fd22748a968afa0dc01bed4b1fcc8",
+    "sponsors-types.png": "223af3aae3af9d79a73825ab87cbb3d2fdf112810e47d8ab416a42d555af1625",
+    "summary.json": "0d68ff988af2e6e12771db1d3ad2ea016c541af92dee3fbaedba4abf093c6ff2"
+  },
+  "code_hash": "d5e026b9ac29c4477b586e6ac415baeb6272305ba6dab474b499fac04e788022",
+  "input_hash": "a18955c9ef46958c2aed3cd6f908e069ff9032f601fbb9a957e80d2047abe57b",
+  "run_id": "9c5e342e4627b94a793b04ad2838d77a8e5a400a8b36d909fe136b79f079b741",
+  "run_manifest_hash": "89400aefaeca3f9c1cd1585698241a27cad80e06f61d254920b3db3b7947bebb",
+  "schema_version": "sponsor-public-artifacts-1",
+  "software_version": "0.12.0"
+}

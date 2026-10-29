@@ -39,6 +39,15 @@ interface ScreeningStudy {
   final_exclusion_reason: string | null;
   access_status: string | null;
   abstract_text: string | null;
+  full_text: string | null;
+}
+
+interface ScreeningEdit {
+  context: string;
+  purpose: string;
+  exclusionCategory: string;
+  exclusionReason: string;
+  withoutPostedResults: boolean;
 }
 
 interface Substance {
@@ -58,6 +67,14 @@ export function ScreeningPage() {
   const [substances, setSubstances] = useState<Substance[]>([]);
   const [subName, setSubName] = useState("");
   const [error, setError] = useState<string | null>(null);
+  const [edits, setEdits] = useState<Record<string, ScreeningEdit>>({});
+
+  function studyEdit(study: ScreeningStudy): ScreeningEdit {
+    return edits[study.id] ?? {
+      context: study.context, purpose: study.purpose ?? "", exclusionCategory: "",
+      exclusionReason: "", withoutPostedResults: false,
+    };
+  }
 
   const canAdjudicate = Boolean(
     session?.roles.includes("ADJUDICADOR") || session?.roles.includes("ADMINISTRADOR"),
@@ -93,6 +110,13 @@ export function ScreeningPage() {
     adjudication: boolean,
   ) {
     if (!session) return;
+    const study = studies?.find((item) => item.id === studyId);
+    if (!study) return;
+    const edit = studyEdit(study);
+    if (decision === "EXCLUIR" && (!edit.exclusionCategory || !edit.exclusionReason.trim())) {
+      setError("Selecione a categoria e informe a justificativa da exclusão.");
+      return;
+    }
     try {
       await api(session, "/api/screening/decisions", {
         method: "POST",
@@ -100,10 +124,11 @@ export function ScreeningPage() {
           studyId,
           stage,
           decision,
-          exclusionCategory: decision === "EXCLUIR" ? "OUTRO" : null,
-          exclusionReason: decision === "EXCLUIR" ? "Excluído na triagem" : null,
-          context: "HUMANO",
-          purpose: "TRATAMENTO",
+          exclusionCategory: decision === "EXCLUIR" ? edit.exclusionCategory : null,
+          exclusionReason: decision === "EXCLUIR" ? edit.exclusionReason : null,
+          context: edit.context,
+          purpose: edit.purpose || null,
+          withoutPostedResults: edit.withoutPostedResults,
           adjudication,
         }),
       });
@@ -220,22 +245,54 @@ export function ScreeningPage() {
             </thead>
             <tbody>
               {studies.map((s) => {
+                const edit = studyEdit(s);
+                const update = (change: Partial<ScreeningEdit>) => setEdits((previous) => ({ ...previous, [s.id]: { ...studyEdit(s), ...change } }));
                 const stage: "TITULO_RESUMO" | "TEXTO_COMPLETO" =
                   s.screening_status.includes("TEXTO_COMPLETO") ? "TEXTO_COMPLETO" : "TITULO_RESUMO";
                 const needsAdjudication = s.screening_status.startsWith("DIVERGENCIA_");
                 return (
                   <tr key={s.id}>
-                    <td>{s.title ?? s.id}</td>
+                    <td>
+                      {s.title ?? s.id}
+                      <details><summary>Resumo e texto disponível</summary>
+                        <p style={{ whiteSpace: "pre-wrap" }}>{s.abstract_text || "Resumo não disponível."}</p>
+                        {s.full_text ? <p style={{ whiteSpace: "pre-wrap" }}>{s.full_text}</p> : <p>Texto integral não recuperado. Não trate o resumo como texto completo.</p>}
+                      </details>
+                    </td>
                     <td>{s.context}</td>
                     <td>{s.access_status ?? "SOMENTE_RESUMO"}</td>
                     <td>{s.screening_status}</td>
                     <td className="actions">
+                      <fieldset>
+                        <legend>Classificação e decisão — {s.title ?? s.id}</legend>
+                        <label>Contexto
+                          <select value={edit.context} onChange={(e) => update({ context: e.target.value })}>
+                            {["NAO_CLASSIFICADO", "HUMANO", "DESAFIO_CONTROLADO", "IN_SILICO", "IN_VITRO", "ANIMAL"].map((value) => <option key={value}>{value}</option>)}
+                          </select>
+                        </label>
+                        <label>Finalidade
+                          <select value={edit.purpose} onChange={(e) => update({ purpose: e.target.value })}>
+                            <option value="">Não classificada</option>
+                            {["TRATAMENTO", "PROFILAXIA", "MANEJO_SINTOMATICO", "OUTRO"].map((value) => <option key={value}>{value}</option>)}
+                          </select>
+                        </label>
+                        <label><input type="checkbox" checked={edit.withoutPostedResults} onChange={(e) => update({ withoutPostedResults: e.target.checked })} />Ensaio sem resultados publicados</label>
+                        <label>Categoria de exclusão
+                          <select value={edit.exclusionCategory} onChange={(e) => update({ exclusionCategory: e.target.value })}>
+                            <option value="">Selecione</option>
+                            {["REVISAO_EDITORIAL_NOTICIA", "VACINA", "CONTROLE_VETOR", "DIAGNOSTICO_ISOLADO", "DOENCA_DISTINTA", "PRE_CLINICO", "DUPLICADO", "OUTRO"].map((value) => <option key={value}>{value}</option>)}
+                          </select>
+                        </label>
+                        <label>Justificativa de exclusão
+                          <textarea value={edit.exclusionReason} onChange={(e) => update({ exclusionReason: e.target.value })} />
+                        </label>
                       <button type="button" onClick={() => decide(s.id, stage, "INCLUIR", false)}>
                         Incluir ({stage})
                       </button>
                       <button type="button" onClick={() => decide(s.id, stage, "EXCLUIR", false)}>
                         Excluir ({stage})
                       </button>
+                      <button type="button" onClick={() => decide(s.id, stage, "INCERTO", false)}>Marcar como incerto</button>
                       {canAdjudicate && needsAdjudication && (
                         <>
                           <button type="button" onClick={() => decide(s.id, stage, "INCLUIR", true)}>
@@ -246,6 +303,7 @@ export function ScreeningPage() {
                           </button>
                         </>
                       )}
+                      </fieldset>
                     </td>
                   </tr>
                 );

@@ -84,7 +84,7 @@ public class EuropePmcConnector implements SourceConnector {
                 payload.put("doi", r.path("doi").asText(null));
                 payload.put("title", title);
                 payload.put("abstract", r.path("abstractText").asText(""));
-                payload.put("license", license.isBlank() ? ("Y".equalsIgnoreCase(isOa) ? "CC-BY" : "RESTRITA") : license.toUpperCase());
+                payload.put("license", license.isBlank() ? "NAO_VERIFICADA" : license.toUpperCase());
                 payload.put("journal", r.path("journalTitle").asText(""));
                 payload.put("pubYear", r.path("pubYear").asText(""));
 
@@ -94,7 +94,7 @@ public class EuropePmcConnector implements SourceConnector {
                 }
                 String doi = r.path("doi").asText(null);
                 if (doi != null && !doi.isBlank()) {
-                    secondary.add(new Identifier("CROSSREF", "DOI", doi.toLowerCase()));
+                    secondary.add(new Identifier("DOI", "DOI", doi.toLowerCase(java.util.Locale.ROOT)));
                 }
 
                 out.add(new RawRecord(sourceName, pmcid != null ? "PMCID" : "OUTRO", extId,

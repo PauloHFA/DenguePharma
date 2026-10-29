@@ -383,12 +383,12 @@ public class ExperimentAndPilotService {
             String title = "Avaliação de " + subName + " em Dengue (" + extId + ")";
 
             jdbc.update("""
-                    insert into study (id, title, design, phase, context, purpose, status, screening_status,
+                    insert into study (id, title, design, phase, context, purpose, status, screening_status, is_demo,
                                        serotype, countries, sample_size, comparator_label,
                                        outcome_summary, outcome_category, outcome_time_frame, effect_summary,
                                        adverse_events_status, limitations, risk_of_bias_tool, risk_of_bias_level,
                                        regulatory_status, primary_substance_id)
-                    values (?, ?, ?, ?, ?, ?, 'ATIVO', ?,
+                    values (?, ?, ?, ?, ?, ?, 'ATIVO', ?, true,
                             ?, 'Brasil; Vietnã; Singapura', 120, 'Placebo / Suporte Padrão',
                             ?, ?, ?, ?,
                             'AUSENCIA_DE_RELATO',

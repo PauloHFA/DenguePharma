@@ -1,0 +1,10 @@
+field,category,status,unit,count,denominator,proportion
+sponsor_type,INDUSTRY,PRESENTE,registro_consolidado_por_NCT_ou_documento,4,10,0.4
+sponsor_type,NIH,PRESENTE,registro_consolidado_por_NCT_ou_documento,2,10,0.2
+sponsor_type,OTHER,PRESENTE,registro_consolidado_por_NCT_ou_documento,4,10,0.4
+sponsor_name,gadjah mada university,PRESENTE,registro_consolidado_por_NCT_ou_documento,1,10,0.1
+sponsor_name,national institute of allergy and infectious diseases (niaid),PRESENTE,registro_consolidado_por_NCT_ou_documento,2,10,0.2
+sponsor_name,research and publication office,PRESENTE,registro_consolidado_por_NCT_ou_documento,1,10,0.1
+sponsor_name,takeda,PRESENTE,registro_consolidado_por_NCT_ou_documento,4,10,0.4
+sponsor_name,"university hospital, strasbourg, france",PRESENTE,registro_consolidado_por_NCT_ou_documento,1,10,0.1
+sponsor_name,"university of maryland, baltimore",PRESENTE,registro_consolidado_por_NCT_ou_documento,1,10,0.1

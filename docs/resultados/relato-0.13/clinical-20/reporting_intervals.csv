@@ -1,0 +1,2 @@
+origin,endpoint,unit,observed,completed,total_trials,min,max,median,q1,q3,censoring
+primaryCompletionDateStruct.date,resultsFirstPostDateStruct.date,dias_de_calendario,5,8,10,469,1288,709.0,709.0,725.0,False

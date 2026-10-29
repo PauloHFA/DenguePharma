@@ -1,0 +1,85 @@
+---
+title: "DenguePharma Analytics"
+subtitle: "Diagnóstico do corpus e panorama de evidências revisadas"
+lang: pt-BR
+format:
+  html:
+    embed-resources: true
+    toc: true
+    theme: cosmo
+date: "{{CUTOFF}}"
+execute:
+  enabled: false
+---
+
+## Proveniência e delimitação
+
+{{PROVENANCE}}
+
+Este relatório descreve o corpus disponibilizado. Registro coletado, estudo incluído e campo científico revisado são estados distintos. Frequência não mede eficácia; completude não mede risco de viés. Não há recomendação terapêutica.
+
+## Panorama dos registros coletados
+
+{{OVERVIEW}}
+
+{{TEMPORAL}}
+
+Ano de publicação e ano de início de ensaio representam eventos distintos. Valores bibliográficos posteriores ao corte são preservados para conferência.
+
+{{TEMPORAL_FLAGS}}
+
+## Ensaios e disponibilidade de metadados
+
+{{DISTRIBUTIONS}}
+
+Países e intervenções podem se sobrepor; as proporções podem somar mais de 100%. Participantes previstos e efetivos não são somados.
+
+{{COMPLETENESS}}
+
+{{ENROLLMENT}}
+
+## Patrocinadores declarados nos registros
+
+{{SPONSORS}}
+
+Esses metadados descrevem os registros coletados, com elegibilidade pendente. Incluem registros que podem ser inelegíveis para a síntese clínica, inclusive de prevenção ou vacinação. Não avaliam financiamento efetivo, eficácia ou risco de viés.
+
+## Relato de resultados — auditoria de datas declaradas
+
+{{REPORTING}}
+
+O intervalo usa somente datas diárias declaradas como ACTUAL, sem completar mês/ano. São exigidos status COMPLETED, indicador de resultados positivo e datas de conclusão primária, primeiro depósito e última atualização até o corte. Datas ou versões discordantes permanecem para conferência. Não há análise de sobrevivência, censura ou estimativa do atraso dos registros ainda sem resultados.
+
+## Publicações indicadas — cobertura por PMID
+
+{{PUBLICATION_REFS}}
+
+PMID coincidente identifica uma publicação candidata no corpus. Não comprova que ela reporte os resultados daquele estudo, população ou desfecho. Referências RESULT, DERIVED e BACKGROUND permanecem separadas; seus conjuntos de PMIDs podem se sobrepor.
+
+## Estudos e campos revisados
+
+{{REVIEWED_NOTICE}}
+
+{{PANORAMA}}
+
+{{REVIEWED_COMPLETENESS}}
+
+Contextos clínicos e pré-clínicos são apresentados separadamente. Uma célula vazia significa ausência no corpus filtrado, sem afirmar inexistência na literatura.
+
+## Resultados gerais e calibração do corpus
+
+{{CALIBRATION}}
+
+## Benefício clínico, alívio de sintomas e segurança
+
+{{CLINICAL}}
+
+Adultos, crianças e populações mistas são estratos distintos, assim como gravidade, fase, momento da intervenção, comparador e período de avaliação. Estudos observacionais ficam separados dos ensaios randomizados. Participantes são descritos por comparação, sem somatório global entre desfechos ou braços compartilhados. Os gráficos não contêm efeito combinado. Categorias de benefício, incerteza e dano exigem julgamento humano; preenchimento e significância estatística isolada não definem a conclusão.
+
+## Próximos eixos e limitações
+
+O eixo A está parcialmente implementado. Intervalos de confiança, patrocinador e modelos de tendência ainda não estão disponíveis nesta fundação. Os eixos B (relato), C (carga de doença) e D (avaliação da extração) permanecem planejados; o eixo E é opcional. Este relatório não apresenta resultados simulados desses métodos.
+
+O piloto operacional de 50 registros não substitui o piloto metodológico de 20 registros nem a referência adjudicada. A revisão humana, a calibração e o plano estatístico precedem as análises científicas e o teste experimental final.
+
+{{WARNINGS}}

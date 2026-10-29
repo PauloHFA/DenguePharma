@@ -1,0 +1,4 @@
+reference_type,total_registry_units,registry_units_with_references,registry_units_with_valid_pmid,registry_units_with_candidate,distinct_valid_pmids,valid_pmids_in_corpus,not_retrieved_pmids,missing_or_invalid_entries,registry_reference_proportion,pmid_coverage_proportion
+RESULT,10,0,0,0,0,0,0,0,0.0,
+DERIVED,10,5,5,0,14,0,14,0,0.5,0.0
+BACKGROUND,10,1,1,0,57,0,57,6,0.1,0.0

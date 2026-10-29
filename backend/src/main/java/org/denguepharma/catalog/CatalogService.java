@@ -35,7 +35,7 @@ public class CatalogService {
 
     /**
      * RF-07: Consulta o catálogo vigente (apenas estudos ATIVO, não absorvidos em fusão e com evidência publicada
-     * ou incluídos na síntese). Os filtros nunca ocultam limitações, alertas de segurança (RC-03) nem status regulatório (RC-02).
+     * e incluídos na síntese). Dados demonstrativos ficam fora das consultas científicas.
      */
     public List<Map<String, Object>> search(CatalogFilter f) {
         StringBuilder sql = new StringBuilder("""
@@ -53,8 +53,10 @@ public class CatalogService {
                 left join substance sub on sub.id = s.primary_substance_id
                 where s.status = 'ATIVO'
                   and s.merged_into_id is null
-                  and (s.screening_status in ('INCLUIDO_NUCLEO','INCLUIDO_SEM_RESULTADO','CAMADA_COMPLEMENTAR')
-                       or exists (select 1 from extracted_field ef where ef.study_id = s.id and ef.published = true))
+                  and not s.is_demo
+                  and s.screening_status in ('INCLUIDO_NUCLEO','INCLUIDO_SEM_RESULTADO','CAMADA_COMPLEMENTAR')
+                  and exists (select 1 from extracted_field ef where ef.study_id = s.id and ef.published = true
+                              and ef.review_status = 'APROVADO')
                 """);
         List<Object> params = new ArrayList<>();
 
@@ -117,7 +119,7 @@ public class CatalogService {
      * apontando incompatibilidades metodológicas e proibindo ranking clínico automático.
      */
     public Map<String, Object> compare(List<UUID> studyIds) {
-        if (studyIds == null || studyIds.size() < 2) {
+        if (studyIds == null || new java.util.HashSet<>(studyIds).size() < 2) {
             throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY,
                     "selecione ao menos 2 estudos para comparar");
         }
@@ -125,6 +127,9 @@ public class CatalogService {
         for (UUID id : studyIds) {
             List<Map<String, Object>> found = jdbc.queryForList("""
                     select s.id, s.title, s.status, s.context, s.purpose, s.design, s.phase,
+                           s.screening_status, s.merged_into_id, s.is_demo,
+                           exists (select 1 from extracted_field ef where ef.study_id = s.id
+                                   and ef.published = true and ef.review_status = 'APROVADO') as has_published_fields,
                            s.serotype, s.sample_size, s.comparator_label,
                            s.outcome_summary, s.outcome_category, s.outcome_time_frame,
                            s.effect_summary, s.adverse_events_status, s.limitations,
@@ -141,6 +146,11 @@ public class CatalogService {
             if ("RETRATADO".equals(st.get("status"))) {
                 throw new ResponseStatusException(HttpStatus.CONFLICT,
                         "estudo " + id + " foi retratado e saiu da sintese vigente (RC-06 / T6)");
+            }
+            if (!"ATIVO".equals(st.get("status")) || st.get("merged_into_id") != null
+                    || Boolean.TRUE.equals(st.get("is_demo")) || !Boolean.TRUE.equals(st.get("has_published_fields"))
+                    || !Set.of("INCLUIDO_NUCLEO", "INCLUIDO_SEM_RESULTADO", "CAMADA_COMPLEMENTAR").contains(st.get("screening_status"))) {
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "estudo indisponivel no catalogo vigente");
             }
             items.add(st);
         }

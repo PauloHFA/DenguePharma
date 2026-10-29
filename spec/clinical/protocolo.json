@@ -1,0 +1,30 @@
+{
+  "schema_version": "clinical-protocol-1",
+  "code": "DENGUE-CLINICAL-001",
+  "version": 1,
+  "question": "Em adultos e criancas com dengue ja estabelecida, quais intervencoes farmacologicas apresentam evidencia de beneficio clinico ou alivio sintomatico, sinais de dano ou resultados inconclusivos?",
+  "population": {"adult_min_age": 18, "groups": ["ADULTOS", "PEDIATRICO", "MISTA_SEM_SEPARACAO"], "established_dengue_required": true},
+  "contexts_excluded": ["PROFILAXIA", "VACINA", "VOLUNTARIOS_SAUDAVEIS", "DESAFIO_CONTROLADO", "ANIMAL", "IN_VITRO", "IN_SILICO", "VETORES", "DIAGNOSTICO_ISOLADO"],
+  "purposes": ["TRATAMENTO", "MANEJO_SINTOMATICO"],
+  "severity": ["NAO_GRAVE", "GRAVE", "MISTA", "NAO_INFORMADA"],
+  "disease_phase": ["FEBRIL", "CRITICA", "RECUPERACAO", "MISTA", "NAO_INFORMADA"],
+  "designs": ["RCT_PARALELO", "RCT_OUTRO", "OBSERVACIONAL"],
+  "outcomes": {
+    "DENGUE_GRAVE": "EVOLUCAO", "COMPLICACOES": "EVOLUCAO", "INTERNACAO_NECESSIDADE": "EVOLUCAO", "INTERNACAO_DURACAO": "EVOLUCAO", "MORTALIDADE": "EVOLUCAO",
+    "DOR_INTENSIDADE": "SINTOMAS", "DOR_DURACAO": "SINTOMAS", "FEBRE_INTENSIDADE": "SINTOMAS", "FEBRE_DURACAO": "SINTOMAS", "RECUPERACAO_FUNCIONAL": "SINTOMAS", "OUTRO_SINTOMA": "SINTOMAS",
+    "EVENTOS_ADVERSOS": "SEGURANCA", "EVENTOS_GRAVES": "SEGURANCA", "INTERRUPCAO_TRATAMENTO": "SEGURANCA"
+  },
+  "selection": {"independent_reviewers": 2, "conflicts": "third_independent_adjudicator", "unknown": "PENDENTE", "exclude_reviews_editorials": true},
+  "analysis": {"pooling": false, "ranking": false, "automatic_conclusions": false, "automatic_grade": false, "confidence_level": 0.95,
+    "binary": "RR_LOG_WALD; zero-event cells not corrected automatically", "continuous": "MEAN_DIFFERENCE_WELCH; no median-to-mean conversion", "reported": "preserve original measure and confidence level",
+    "rct_primary": true, "observational_separate": true, "mixed_population_separate": true, "participants": "per study and comparison; no global summation"},
+  "search": {
+    "pubmed": "(dengue[MeSH Terms] OR dengue[Title/Abstract] OR DENV[Title/Abstract]) AND (drug therapy[Subheading] OR antiviral agents[MeSH Terms] OR drug*[Title/Abstract] OR pharmacolog*[Title/Abstract] OR therapeut*[Title/Abstract] OR treatment*[Title/Abstract] OR analges*[Title/Abstract] OR antipyretic*[Title/Abstract] OR symptomatic[Title/Abstract])",
+    "clinicaltrials": {"condition": "Dengue", "status_filter": null},
+    "initial_limit_per_source": 10, "stage": "CALIBRACAO", "languages": "sem filtro; acesso/traducao declarados", "exclude_vaccines_by_query": false,
+    "sentinels": "referencias conhecidas definidas antes do ajuste; nao confundir com o piloto operacional", "full_collection_requires_reviewed_calibration": true
+  },
+  "conclusions": ["BENEFICIO_SUSTENTADO", "EVIDENCIA_INCONCLUSIVA", "SINAL_DANO", "AUSENCIA_ESTUDO_ELEGIVEL_NO_CORPUS"],
+  "deferred": ["carga de doenca", "avaliacao de IA", "meta-analise", "grafo"],
+  "notice": "Pesquisa e consulta de evidencias. As conclusoes sao humanas, por comparacao e desfecho. Ausencia no corpus nao demonstra ausencia na literatura nem substitui orientacao clinica."
+}

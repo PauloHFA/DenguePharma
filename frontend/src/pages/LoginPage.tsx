@@ -9,7 +9,7 @@ export function LoginPage() {
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
 
-  if (session) return <Navigate to="/" replace />;
+  if (session) return <Navigate to="/curadoria" replace />;
 
   async function onSubmit(e: FormEvent) {
     e.preventDefault();

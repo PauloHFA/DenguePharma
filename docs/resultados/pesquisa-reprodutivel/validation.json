@@ -1,0 +1,17 @@
+{
+  "date": "2026-10-28",
+  "status": "PASS",
+  "executed_pilots": [
+    "clinical-20",
+    "operational-50"
+  ],
+  "code_cells_per_execution": 7,
+  "repeated_clinical_cell_outputs_identical": true,
+  "repeated_public_table_hashes_identical": 34,
+  "browser": "Chrome / Playwright",
+  "embedded_images_per_report": 3,
+  "external_requests_per_report": 0,
+  "existing_output_refused_without_modification": true,
+  "unpublished_run_refused_without_output": true,
+  "source_notebook_outputs_empty": true
+}

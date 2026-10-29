@@ -1,0 +1,25 @@
+field,category,status,unit,count,denominator,proportion
+sponsor_type,FED,PRESENTE,registro_consolidado_por_NCT_ou_documento,2,25,0.08
+sponsor_type,INDUSTRY,PRESENTE,registro_consolidado_por_NCT_ou_documento,8,25,0.32
+sponsor_type,NIH,PRESENTE,registro_consolidado_por_NCT_ou_documento,3,25,0.12
+sponsor_type,OTHER,PRESENTE,registro_consolidado_por_NCT_ou_documento,11,25,0.44
+sponsor_type,OTHER_GOV,PRESENTE,registro_consolidado_por_NCT_ou_documento,1,25,0.04
+sponsor_name,abviro llc,PRESENTE,registro_consolidado_por_NCT_ou_documento,1,25,0.04
+sponsor_name,centre hospitalier universitaire de la réunion,PRESENTE,registro_consolidado_por_NCT_ou_documento,1,25,0.04
+sponsor_name,"clinical research centre, malaysia",PRESENTE,registro_consolidado_por_NCT_ou_documento,1,25,0.04
+sponsor_name,federal university of minas gerais,PRESENTE,registro_consolidado_por_NCT_ou_documento,1,25,0.04
+sponsor_name,fundacion gesica,PRESENTE,registro_consolidado_por_NCT_ou_documento,1,25,0.04
+sponsor_name,"gen-probe, incorporated",PRESENTE,registro_consolidado_por_NCT_ou_documento,1,25,0.04
+sponsor_name,inviragen inc.,PRESENTE,registro_consolidado_por_NCT_ou_documento,1,25,0.04
+sponsor_name,johns hopkins university,PRESENTE,registro_consolidado_por_NCT_ou_documento,1,25,0.04
+sponsor_name,"national environment agency, singapore",PRESENTE,registro_consolidado_por_NCT_ou_documento,1,25,0.04
+sponsor_name,national institute of allergy and infectious diseases (niaid),PRESENTE,registro_consolidado_por_NCT_ou_documento,3,25,0.12
+sponsor_name,"oxford university clinical research unit, vietnam",PRESENTE,registro_consolidado_por_NCT_ou_documento,1,25,0.04
+sponsor_name,patricia schlagenhauf,PRESENTE,registro_consolidado_por_NCT_ou_documento,1,25,0.04
+sponsor_name,peking university,PRESENTE,registro_consolidado_por_NCT_ou_documento,1,25,0.04
+sponsor_name,"post graduate institute of medical education and research, chandigarh",PRESENTE,registro_consolidado_por_NCT_ou_documento,1,25,0.04
+sponsor_name,"sanofi pasteur, a sanofi company",PRESENTE,registro_consolidado_por_NCT_ou_documento,2,25,0.08
+sponsor_name,takeda,PRESENTE,registro_consolidado_por_NCT_ou_documento,3,25,0.12
+sponsor_name,u.s. army medical research and development command,PRESENTE,registro_consolidado_por_NCT_ou_documento,2,25,0.08
+sponsor_name,universidad de antioquia,PRESENTE,registro_consolidado_por_NCT_ou_documento,1,25,0.04
+sponsor_name,university of sao paulo,PRESENTE,registro_consolidado_por_NCT_ou_documento,1,25,0.04

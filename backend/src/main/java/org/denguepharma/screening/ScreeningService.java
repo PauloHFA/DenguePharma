@@ -57,7 +57,10 @@ public class ScreeningService {
                         where sd.study_id = s.id order by dv.version_no desc limit 1) as access_status,
                        (select dv.metadata->>'abstract' from document_version dv
                         join study_document sd on sd.document_id = dv.document_id
-                        where sd.study_id = s.id order by dv.version_no desc limit 1) as abstract_text
+                        where sd.study_id = s.id order by dv.created_at desc limit 1) as abstract_text,
+                       (select dv.metadata->>'text' from document_version dv
+                        join study_document sd on sd.document_id = dv.document_id
+                        where sd.study_id = s.id order by dv.created_at desc limit 1) as full_text
                 from study s
                 where s.merged_into_id is null
                 order by s.created_at desc

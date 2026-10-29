@@ -1,0 +1,3 @@
+# Preserve exact bytes of scientific exports and notebook manifests across checkouts.
+docs/resultados/** -text
+*.ipynb -text

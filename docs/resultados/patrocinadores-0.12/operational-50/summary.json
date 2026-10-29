@@ -1,0 +1,245 @@
+{
+  "completeness": [
+    {
+      "conflicts": 0,
+      "denominator": 25,
+      "field": "sponsor_name",
+      "missing": 0,
+      "present": 25,
+      "proportion": 1.0,
+      "unit": "registro_consolidado_por_NCT_ou_documento"
+    },
+    {
+      "conflicts": 0,
+      "denominator": 25,
+      "field": "sponsor_type",
+      "missing": 0,
+      "present": 25,
+      "proportion": 1.0,
+      "unit": "registro_consolidado_por_NCT_ou_documento"
+    }
+  ],
+  "distributions": [
+    {
+      "category": "abviro llc",
+      "count": 1,
+      "denominator": 25,
+      "field": "sponsor_name",
+      "proportion": 0.04,
+      "status": "PRESENTE",
+      "unit": "registro_consolidado_por_NCT_ou_documento"
+    },
+    {
+      "category": "centre hospitalier universitaire de la réunion",
+      "count": 1,
+      "denominator": 25,
+      "field": "sponsor_name",
+      "proportion": 0.04,
+      "status": "PRESENTE",
+      "unit": "registro_consolidado_por_NCT_ou_documento"
+    },
+    {
+      "category": "clinical research centre, malaysia",
+      "count": 1,
+      "denominator": 25,
+      "field": "sponsor_name",
+      "proportion": 0.04,
+      "status": "PRESENTE",
+      "unit": "registro_consolidado_por_NCT_ou_documento"
+    },
+    {
+      "category": "federal university of minas gerais",
+      "count": 1,
+      "denominator": 25,
+      "field": "sponsor_name",
+      "proportion": 0.04,
+      "status": "PRESENTE",
+      "unit": "registro_consolidado_por_NCT_ou_documento"
+    },
+    {
+      "category": "fundacion gesica",
+      "count": 1,
+      "denominator": 25,
+      "field": "sponsor_name",
+      "proportion": 0.04,
+      "status": "PRESENTE",
+      "unit": "registro_consolidado_por_NCT_ou_documento"
+    },
+    {
+      "category": "gen-probe, incorporated",
+      "count": 1,
+      "denominator": 25,
+      "field": "sponsor_name",
+      "proportion": 0.04,
+      "status": "PRESENTE",
+      "unit": "registro_consolidado_por_NCT_ou_documento"
+    },
+    {
+      "category": "inviragen inc.",
+      "count": 1,
+      "denominator": 25,
+      "field": "sponsor_name",
+      "proportion": 0.04,
+      "status": "PRESENTE",
+      "unit": "registro_consolidado_por_NCT_ou_documento"
+    },
+    {
+      "category": "johns hopkins university",
+      "count": 1,
+      "denominator": 25,
+      "field": "sponsor_name",
+      "proportion": 0.04,
+      "status": "PRESENTE",
+      "unit": "registro_consolidado_por_NCT_ou_documento"
+    },
+    {
+      "category": "national environment agency, singapore",
+      "count": 1,
+      "denominator": 25,
+      "field": "sponsor_name",
+      "proportion": 0.04,
+      "status": "PRESENTE",
+      "unit": "registro_consolidado_por_NCT_ou_documento"
+    },
+    {
+      "category": "national institute of allergy and infectious diseases (niaid)",
+      "count": 3,
+      "denominator": 25,
+      "field": "sponsor_name",
+      "proportion": 0.12,
+      "status": "PRESENTE",
+      "unit": "registro_consolidado_por_NCT_ou_documento"
+    },
+    {
+      "category": "oxford university clinical research unit, vietnam",
+      "count": 1,
+      "denominator": 25,
+      "field": "sponsor_name",
+      "proportion": 0.04,
+      "status": "PRESENTE",
+      "unit": "registro_consolidado_por_NCT_ou_documento"
+    },
+    {
+      "category": "patricia schlagenhauf",
+      "count": 1,
+      "denominator": 25,
+      "field": "sponsor_name",
+      "proportion": 0.04,
+      "status": "PRESENTE",
+      "unit": "registro_consolidado_por_NCT_ou_documento"
+    },
+    {
+      "category": "peking university",
+      "count": 1,
+      "denominator": 25,
+      "field": "sponsor_name",
+      "proportion": 0.04,
+      "status": "PRESENTE",
+      "unit": "registro_consolidado_por_NCT_ou_documento"
+    },
+    {
+      "category": "post graduate institute of medical education and research, chandigarh",
+      "count": 1,
+      "denominator": 25,
+      "field": "sponsor_name",
+      "proportion": 0.04,
+      "status": "PRESENTE",
+      "unit": "registro_consolidado_por_NCT_ou_documento"
+    },
+    {
+      "category": "sanofi pasteur, a sanofi company",
+      "count": 2,
+      "denominator": 25,
+      "field": "sponsor_name",
+      "proportion": 0.08,
+      "status": "PRESENTE",
+      "unit": "registro_consolidado_por_NCT_ou_documento"
+    },
+    {
+      "category": "takeda",
+      "count": 3,
+      "denominator": 25,
+      "field": "sponsor_name",
+      "proportion": 0.12,
+      "status": "PRESENTE",
+      "unit": "registro_consolidado_por_NCT_ou_documento"
+    },
+    {
+      "category": "u.s. army medical research and development command",
+      "count": 2,
+      "denominator": 25,
+      "field": "sponsor_name",
+      "proportion": 0.08,
+      "status": "PRESENTE",
+      "unit": "registro_consolidado_por_NCT_ou_documento"
+    },
+    {
+      "category": "universidad de antioquia",
+      "count": 1,
+      "denominator": 25,
+      "field": "sponsor_name",
+      "proportion": 0.04,
+      "status": "PRESENTE",
+      "unit": "registro_consolidado_por_NCT_ou_documento"
+    },
+    {
+      "category": "university of sao paulo",
+      "count": 1,
+      "denominator": 25,
+      "field": "sponsor_name",
+      "proportion": 0.04,
+      "status": "PRESENTE",
+      "unit": "registro_consolidado_por_NCT_ou_documento"
+    },
+    {
+      "category": "FED",
+      "count": 2,
+      "denominator": 25,
+      "field": "sponsor_type",
+      "proportion": 0.08,
+      "status": "PRESENTE",
+      "unit": "registro_consolidado_por_NCT_ou_documento"
+    },
+    {
+      "category": "INDUSTRY",
+      "count": 8,
+      "denominator": 25,
+      "field": "sponsor_type",
+      "proportion": 0.32,
+      "status": "PRESENTE",
+      "unit": "registro_consolidado_por_NCT_ou_documento"
+    },
+    {
+      "category": "NIH",
+      "count": 3,
+      "denominator": 25,
+      "field": "sponsor_type",
+      "proportion": 0.12,
+      "status": "PRESENTE",
+      "unit": "registro_consolidado_por_NCT_ou_documento"
+    },
+    {
+      "category": "OTHER",
+      "count": 11,
+      "denominator": 25,
+      "field": "sponsor_type",
+      "proportion": 0.44,
+      "status": "PRESENTE",
+      "unit": "registro_consolidado_por_NCT_ou_documento"
+    },
+    {
+      "category": "OTHER_GOV",
+      "count": 1,
+      "denominator": 25,
+      "field": "sponsor_type",
+      "proportion": 0.04,
+      "status": "PRESENTE",
+      "unit": "registro_consolidado_por_NCT_ou_documento"
+    }
+  ],
+  "invalid_nct": 0,
+  "missing_nct": 0,
+  "notice": "Metadados dos registros coletados, com elegibilidade pendente. Patrocinador responsavel nao comprova financiamento, risco de vies ou eficacia. Nomes agrupados apenas por espacos e caixa, sem resolucao institucional.",
+  "source_documents": 25,
+  "trials": 25
+}

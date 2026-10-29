@@ -52,7 +52,7 @@ public class ExtractionService {
                            String schemaVersion, List<ProposedField> fields) {}
 
     public record ReviewInput(UUID extractedFieldId, String decision, String correctedValue,
-                              String correctedAbsenceStatus, String reason, boolean adjudication,
+                              String correctedAbsenceStatus, String correctedQuotedText, String reason, boolean adjudication,
                               boolean publishAfterApproval) {}
 
     private final JdbcTemplate jdbc;
@@ -95,7 +95,7 @@ public class ExtractionService {
         if (dvRows.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "versao de documento nao encontrada");
         }
-        String documentCorpus = String.valueOf(dvRows.get(0).get("metadata"));
+        String documentCorpus = sourceText((String) dvRows.get(0).get("metadata"));
         UUID studyId = (UUID) dvRows.get(0).get("study_id");
 
         UUID runId = UUID.randomUUID();
@@ -196,13 +196,14 @@ public class ExtractionService {
 
     /** Lista campos extraídos lado a lado com o trecho de suporte e metadados do documento (RF-06). */
     public List<Map<String, Object>> listFieldsForReview() {
-        return jdbc.queryForList("""
+        List<Map<String, Object>> rows = jdbc.queryForList("""
                 select ef.id, ef.extraction_run_id, ef.study_id, s.title as study_title,
                        ef.field_name, ef.original_value, ef.normalized_value, ef.absence_status,
                        ef.review_status, ef.published, ef.created_at,
                        es.section, es.page, es.locator, es.text as evidence_text,
                        er.model_provider, er.model_version, er.pipeline_version,
-                       dv.origin as document_origin, dv.version_no as document_version_no, dv.content_hash
+                       dv.origin as document_origin, dv.version_no as document_version_no, dv.content_hash,
+                       dv.metadata::text as document_metadata
                 from extracted_field ef
                 join extraction_run er on er.id = ef.extraction_run_id
                 join document_version dv on dv.id = er.document_version_id
@@ -210,6 +211,10 @@ public class ExtractionService {
                 left join evidence_span es on es.id = ef.evidence_span_id
                 order by ef.created_at desc
                 """);
+        for (Map<String, Object> row : rows) {
+            row.put("document_text", sourceText((String) row.remove("document_metadata")));
+        }
+        return rows;
     }
 
     /**
@@ -219,10 +224,14 @@ public class ExtractionService {
     @Transactional
     public Map<String, Object> reviewField(ReviewInput in, UUID reviewerId, boolean hasAdjudicatorRole) {
         List<Map<String, Object>> rows = jdbc.queryForList("""
-                select ef.*, er.document_version_id
+                select ef.*, er.document_version_id, dv.metadata::text as document_metadata,
+                       es.text as evidence_text
                 from extracted_field ef
                 join extraction_run er on er.id = ef.extraction_run_id
+                join document_version dv on dv.id = er.document_version_id
+                left join evidence_span es on es.id = ef.evidence_span_id
                 where ef.id = ?
+                for update of ef
                 """, in.extractedFieldId());
         if (rows.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "campo extraido nao encontrado");
@@ -231,6 +240,13 @@ public class ExtractionService {
         String fieldName = (String) ef.get("field_name");
         if (in.adjudication() && !hasAdjudicatorRole) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "apenas ADJUDICADOR pode adjudicar campos");
+        }
+        boolean critical = CRITICAL_FIELDS.contains(fieldName) || "effect_summary".equals(fieldName);
+        if (critical && "APROVADO".equals(ef.get("review_status")) && !hasAdjudicatorRole) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "alteracao de campo critico aprovado exige ADJUDICADOR");
+        }
+        if (critical && in.publishAfterApproval() && !hasAdjudicatorRole && !"REJEITAR".equals(in.decision())) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "publicacao de campo critico exige ADJUDICADOR");
         }
 
         String beforeVal = (String) ef.get("normalized_value");
@@ -267,19 +283,31 @@ public class ExtractionService {
                 nextAbsence = (in.correctedAbsenceStatus() == null || in.correctedAbsenceStatus().isBlank())
                         ? (afterVal != null && !afterVal.isBlank() ? "PRESENTE" : "NAO_INFORMADO")
                         : in.correctedAbsenceStatus();
+                if (!ABSENCE_STATUSES.contains(nextAbsence)) {
+                    throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, "estado de ausencia invalido");
+                }
                 if ("PRESENTE".equals(nextAbsence)) {
                     String problem = validateNumericsAndUnits(fieldName, afterVal, afterVal, null);
                     if (problem != null) {
                         throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY,
                                 "valor corrigido invalido: " + problem);
                     }
-                    if (nextSpanId == null) {
-                        nextSpanId = UUID.randomUUID();
-                        jdbc.update("""
-                                insert into evidence_span (id, document_version_id, section, locator, text)
-                                values (?, ?, 'REVISAO_HUMANA', 'curadoria', ?)
-                                """, nextSpanId, docVersionId, "Corrigido pelo revisor: " + in.reason());
+                    // Uma correcao precisa apontar novamente para o documento, nunca para a justificativa.
+                    String quote = in.correctedQuotedText();
+                    String corpus = sourceText((String) ef.get("document_metadata"));
+                    if (!hasLiteralSupport(corpus, quote)) {
+                        throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY,
+                                "correcao exige trecho literal existente na versao documental");
                     }
+                    nextSpanId = UUID.randomUUID();
+                    jdbc.update("""
+                            insert into evidence_span (id, document_version_id, section, locator, text)
+                            values (?, ?, 'REVISAO_HUMANA', ?, ?)
+                            """, nextSpanId, docVersionId,
+                            "char:" + corpus.indexOf(quote.trim()) + "-" + (corpus.indexOf(quote.trim()) + quote.trim().length()), quote.trim());
+                } else {
+                    afterVal = null;
+                    nextSpanId = null;
                 }
                 nextReviewStatus = "APROVADO";
                 publish = in.publishAfterApproval();
@@ -290,6 +318,19 @@ public class ExtractionService {
             }
             default -> throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY,
                     "decisao invalida: " + in.decision());
+        }
+
+        if (!"REJEITAR".equals(in.decision())) {
+            if ("PRESENTE".equals(nextAbsence) && "ACEITAR".equals(in.decision())
+                    && !hasLiteralSupport(sourceText((String) ef.get("document_metadata")), (String) ef.get("evidence_text"))) {
+                throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, "campo sem trecho documental valido");
+            }
+            if (publish && Set.of("INCERTO", "NAO_EXTRAIDO").contains(nextAbsence)) {
+                throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, "campo pendente ou incerto nao pode ser publicado");
+            }
+            if (critical && !hasAdjudicatorRole) {
+                nextReviewStatus = "EM_REVISAO";
+            }
         }
 
         // Se o campo já estava APROVADO, o trigger trg_protect_approved_field impede sobrescrita direta dos valores;
@@ -327,8 +368,8 @@ public class ExtractionService {
         }
 
         audit.record(reviewerId, "FIELD_REVIEWED", "extracted_field", in.extractedFieldId().toString(),
-                "{\"value\":" + quoteJson(beforeVal) + ",\"status\":\"" + ef.get("review_status") + "\"}",
-                "{\"value\":" + quoteJson(afterVal) + ",\"status\":\"" + nextReviewStatus + "\",\"published\":" + publish + "}",
+                write(om.createObjectNode().put("value", beforeVal).put("status", (String) ef.get("review_status"))),
+                write(om.createObjectNode().put("value", afterVal).put("status", nextReviewStatus).put("published", publish)),
                 in.reason());
 
         return Map.of("reviewDecisionId", decisionId, "reviewStatus", nextReviewStatus, "published", publish);
@@ -360,9 +401,31 @@ public class ExtractionService {
         if (corpus == null || quote == null) return false;
         String cleanQuote = quote.trim();
         if (cleanQuote.length() < 5) return false;
-        String normCorpus = corpus.replaceAll("\\s+", " ").toLowerCase();
-        String normQuote = cleanQuote.replaceAll("\\s+", " ").toLowerCase();
-        return normCorpus.contains(normQuote);
+        return corpus.contains(cleanQuote);
+    }
+
+    /** Usa o texto decodificado, sem aceitar nomes de chaves/escapes JSON como evidencia. */
+    private String sourceText(String metadata) {
+        if (metadata == null) return "";
+        try {
+            JsonNode source = om.readTree(metadata);
+            if (source.path("text").isTextual() && !source.path("text").asText().isBlank()) return source.path("text").asText();
+            if (source.path("abstract").isTextual() && !source.path("abstract").asText().isBlank()) return source.path("abstract").asText();
+            List<String> values = new ArrayList<>();
+            collectSourceValues(source, values);
+            return String.join("\n", values);
+        } catch (JsonProcessingException e) {
+            throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, "metadados documentais invalidos");
+        }
+    }
+
+    private static void collectSourceValues(JsonNode node, List<String> values) {
+        if (node.isTextual()) values.add(node.asText());
+        else if (node.isObject()) {
+            var sorted = new java.util.TreeMap<String, JsonNode>();
+            node.fields().forEachRemaining(entry -> sorted.put(entry.getKey(), entry.getValue()));
+            sorted.values().forEach(child -> collectSourceValues(child, values));
+        } else if (node.isArray()) node.forEach(child -> collectSourceValues(child, values));
     }
 
     /**
@@ -430,10 +493,6 @@ public class ExtractionService {
             }
         }
         return null;
-    }
-
-    private static String quoteJson(String s) {
-        return s == null ? "null" : "\"" + s.replace("\\", "\\\\").replace("\"", "\\\"") + "\"";
     }
 
     private String write(Object o) {

@@ -1,0 +1,162 @@
+{
+  "schema_version": 1,
+  "run_id": "7a1897915598231a92e7b969185fc13d33e23d88e245d5c015bab26b13984424",
+  "input_hash": "fb8d1a58ed83ac29dd5391cb4184402e5d46523d7d0bef8db74d0751d8ee4f00",
+  "analysis_code_hash": "cc710540ae6ee2b59caf670a013c577fe40f9ccf365483d88d1c64342f37d6f4",
+  "source_notebook_sha256": "ce38857d13eeababc7f3231b3ffc2457ba264de205cb33fc29733188c151fca1",
+  "runner_sha256": "7b1d2198f6f6f749e2b36e4339f5b7c3289e0a4261df5154fa3cb7e4c3b23901",
+  "published_manifest_sha256": "cff4114596eb273cd60cba83ff05a746f3e73fccf95aaad60d81a453196a2bd3",
+  "python_version": "3.12.10",
+  "dependencies": {
+    "denguepharma-analytics": "0.14.0",
+    "nbclient": "0.11.0",
+    "nbformat": "5.11.1",
+    "ipykernel": "7.4.0",
+    "pandas": "3.1.0",
+    "duckdb": "1.5.6"
+  },
+  "quarto_version": "1.10.19",
+  "tables": {
+    "calibration_documents": {
+      "rows": 20,
+      "logical_hash": "594c5e04ec9151c5bfab84340eeee0895fcd420d1f9470c52b6f4f7d709c3090"
+    },
+    "calibration_intervention_types": {
+      "rows": 3,
+      "logical_hash": "ff832f9cc6f5df9960a587d2e76ef0780a7cf711ea46612ba1a4cb3bab3fa088"
+    },
+    "calibration_searches": {
+      "rows": 2,
+      "logical_hash": "21371637be0649dc4eb6f0bf867c284968194dc74d7267a2d8ca0aa6b34bbded"
+    },
+    "calibration_signals": {
+      "rows": 18,
+      "logical_hash": "905d31c35cea572e853261943738be454ab28b0e978e95757013ee56afede92c"
+    },
+    "clinical_absences": {
+      "rows": 0,
+      "logical_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    "clinical_conflicts": {
+      "rows": 0,
+      "logical_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    "clinical_references": {
+      "rows": 0,
+      "logical_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    "clinical_results": {
+      "rows": 0,
+      "logical_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    "clinical_screening": {
+      "rows": 0,
+      "logical_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    "clinical_synthesis": {
+      "rows": 0,
+      "logical_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    "corpus_completeness": {
+      "rows": 12,
+      "logical_hash": "d972b2da59fc5c338d9b3d40ef46fb6330c620849d8d7d50b69238a493cc735b"
+    },
+    "corpus_distributions": {
+      "rows": 42,
+      "logical_hash": "cf60be9b466cc4f98309126f341c3b9b125d1d3d02535426aad19bb307cfdeb0"
+    },
+    "corpus_documents": {
+      "rows": 20,
+      "logical_hash": "c93aa41d4ecb488bec4d127d275cd65fe0f653e5df4aa95097e63b6fce56f4a8"
+    },
+    "corpus_enrollment": {
+      "rows": 3,
+      "logical_hash": "7d624b554ad2a189dbd56e0e0779f275f7af53a6b1da5b00a13524816bfeaa20"
+    },
+    "corpus_link_candidates": {
+      "rows": 0,
+      "logical_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    "corpus_links": {
+      "rows": 0,
+      "logical_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    "corpus_sponsor_completeness": {
+      "rows": 2,
+      "logical_hash": "907f73a2b207a2a8534209d0386bc346f5701ca1cd5426a7afd19eb9bc3fc2b2"
+    },
+    "corpus_sponsor_distributions": {
+      "rows": 9,
+      "logical_hash": "26f39eb9ec5f0b1072712a9b564b5ed7361d38fd9b7697fd9463b2cff4f604ac"
+    },
+    "corpus_sponsor_trials": {
+      "rows": 10,
+      "logical_hash": "182814d9fae7c66cec2438a6f40a6a62d82e5f06fd325b317240d711e0e78ef8"
+    },
+    "corpus_temporal": {
+      "rows": 9,
+      "logical_hash": "ed2443fcbe2ea446d2935c96ccb0b370eaee215350f4dbdb3d5e15226160ffa3"
+    },
+    "corpus_temporal_flags": {
+      "rows": 2,
+      "logical_hash": "151e78e88d4650e823e99066eabb2891c131919dce969b55b6cfa8a510af1be7"
+    },
+    "mart_panorama": {
+      "rows": 0,
+      "logical_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    "publication_reference_coverage": {
+      "rows": 3,
+      "logical_hash": "57382b7ec05497658fa62a82d68f663ff8692b4808c1f6fb2e99d4259a66d47e"
+    },
+    "publication_reference_links": {
+      "rows": 79,
+      "logical_hash": "843395ae26eb37965ac98257e1de8101845596d4bf83910bbce5b692f4cdd73c"
+    },
+    "publication_reference_missing": {
+      "rows": 71,
+      "logical_hash": "bafc10ac78868f1b66b73a97d1b726aed3e879a716343b99ff5e905bc8c2eebd"
+    },
+    "reporting_availability": {
+      "rows": 11,
+      "logical_hash": "8155e95416546e8240d1d5be83b99bb69a3f3a73de5e1f653037e6579bd69b5b"
+    },
+    "reporting_intervals": {
+      "rows": 1,
+      "logical_hash": "39b6c9ec9766e3553f3f1134bc6006ab1e02e4f1797280ea948ee20f81e06edd"
+    },
+    "reporting_registry": {
+      "rows": 10,
+      "logical_hash": "f1a7b53d3c6b6b1b5e4af5812bd0992667b604ddc615967ecaeb70ff1230d87b"
+    },
+    "reporting_results_by_status": {
+      "rows": 12,
+      "logical_hash": "999c27cafaa4b532f6783333ba1c0eff3ab24f3f79edc5b2ac7d9b1577030dc0"
+    },
+    "reviewed_completeness": {
+      "rows": 0,
+      "logical_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    "reviewed_distributions": {
+      "rows": 0,
+      "logical_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    "reviewed_gaps": {
+      "rows": 0,
+      "logical_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    "reviewed_traceability": {
+      "rows": 4,
+      "logical_hash": "f223d6d957e6e0e55846a46500982a494a16a442f5b2cf5168b23dff9bd18b5e"
+    },
+    "scientific_field_availability": {
+      "rows": 0,
+      "logical_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    }
+  },
+  "artifacts": {
+    "pesquisa.ipynb": "cd6c6507b5843f0ff26bf38bed8ae457b168f7facf2e4fd0ab0a78c6e81de1bd",
+    "pesquisa.html": "b8351b988891d73fc5b8ec6014d8d48287a99777efe9d23ad5c892be57dbc433"
+  },
+  "notice": "Public metadata only. No collection, curation or clinical inference."
+}

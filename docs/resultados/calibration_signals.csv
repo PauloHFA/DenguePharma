@@ -1,0 +1,19 @@
+source,code,label,count,denominator,proportion,overlapping
+CLINICALTRIALS,DESAFIO_CONTROLADO,Menção a desafio/infecção humana controlada,2,10,0.2,True
+CLINICALTRIALS,DIAGNOSTICO,Menção a rastreio/diagnóstico,1,10,0.1,True
+CLINICALTRIALS,PREVENCAO,Menção ou finalidade declarada de prevenção,8,10,0.8,True
+CLINICALTRIALS,REVISAO,Tipo ou título de revisão,0,10,0.0,True
+CLINICALTRIALS,VACINA,Menção a vacina,4,10,0.4,True
+CLINICALTRIALS,VETORES,Menção a vetores,1,10,0.1,True
+PUBMED,DESAFIO_CONTROLADO,Menção a desafio/infecção humana controlada,0,10,0.0,True
+PUBMED,DIAGNOSTICO,Menção a rastreio/diagnóstico,0,10,0.0,True
+PUBMED,PREVENCAO,Menção ou finalidade declarada de prevenção,2,10,0.2,True
+PUBMED,REVISAO,Tipo ou título de revisão,3,10,0.3,True
+PUBMED,VACINA,Menção a vacina,2,10,0.2,True
+PUBMED,VETORES,Menção a vetores,2,10,0.2,True
+TODAS,DESAFIO_CONTROLADO,Menção a desafio/infecção humana controlada,2,20,0.1,True
+TODAS,DIAGNOSTICO,Menção a rastreio/diagnóstico,1,20,0.05,True
+TODAS,PREVENCAO,Menção ou finalidade declarada de prevenção,10,20,0.5,True
+TODAS,REVISAO,Tipo ou título de revisão,3,20,0.15,True
+TODAS,VACINA,Menção a vacina,6,20,0.3,True
+TODAS,VETORES,Menção a vetores,3,20,0.15,True

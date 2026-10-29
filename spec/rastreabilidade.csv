@@ -1,0 +1,97 @@
+requirement,research,task,scenario,verification,priority,state,tests
+REQ-ANA-001,RQ1,M02,ACC-ANA-001,T,M,planejado,
+REQ-ANA-002,P2,M02,ACC-ANA-002,T,M,planejado,
+REQ-ANA-003,"RQ2, H4",M03,ACC-ANA-003,T,M,planejado,
+REQ-ANA-004,"RQ3, H5",M04,ACC-ANA-004,T,M,planejado,
+REQ-ANA-005,RQ4,M03,ACC-ANA-005,T,S,planejado,
+REQ-ANA-006,RQ5,M05,ACC-ANA-006,T,M,planejado,
+REQ-ANA-007,RQ5,M05,ACC-ANA-007,T,M,planejado,
+REQ-ANA-008,RQ6,M06,ACC-ANA-008,T,S,planejado,
+REQ-ANA-009,P4,M07,ACC-ANA-009,I,M,planejado,
+REQ-ANA-010,RQ4,M03,ACC-ANA-010,T,M,planejado,
+REQ-EXT-001,"RQ5, P1",M05,ACC-EXT-001,T,M,planejado,
+REQ-EXT-002,OE3,M05,ACC-EXT-002,T,M,planejado,
+REQ-EXT-003,H3,M05,ACC-EXT-003,T,M,planejado,
+REQ-EXT-004,"RQ5, H3, P3",M05,ACC-EXT-004,T,M,planejado,
+REQ-EXT-005,P5,M05,ACC-EXT-005,T,M,planejado,
+REQ-EXT-006,RQ5,M05,ACC-EXT-006,T,M,planejado,
+REQ-EXT-007,RQ5,M05,ACC-EXT-007,T,M,planejado,
+REQ-EXT-008,P6,M05,ACC-EXT-008,T,M,planejado,
+REQ-EXT-009,P10,M05,ACC-EXT-009,T,M,planejado,
+REQ-EXT-010,OE5,M05,ACC-EXT-010,A,S,planejado,
+REQ-EXT-011,P7,M05,ACC-EXT-011,T,M,planejado,
+REQ-EXT-012,H3,M05,ACC-EXT-012,T,C,planejado,
+REQ-GOV-001,RNF-01,M02,ACC-GOV-001,T,M,planejado,
+REQ-GOV-002,Ética,M05,ACC-GOV-002,I,M,planejado,
+REQ-GOV-003,P1,M02,ACC-GOV-003,T,M,planejado,
+REQ-GOV-004,P7,M02,ACC-GOV-004,T,M,planejado,
+REQ-GOV-005,P4,M02,ACC-GOV-005,I,M,planejado,
+REQ-GOV-006,P9,M02,ACC-GOV-006,I,M,planejado,
+REQ-IDN-001,P1,M02,ACC-IDN-001,T,M,planejado,
+REQ-IDN-002,OE2,M02,ACC-IDN-002,T,M,planejado,
+REQ-IDN-003,"RQ1, P2",M02,ACC-IDN-003,T,M,planejado,
+REQ-IDN-004,"RQ1, RQ3",M02,ACC-IDN-004,T,M,planejado,
+REQ-ING-001,"RQ1-RQ6, P6",M02,ACC-ING-001,T,M,planejado,
+REQ-ING-002,P10,M02,ACC-ING-002,T,M,planejado,
+REQ-ING-003,"P1, P6",M02,ACC-ING-003,T,M,planejado,
+REQ-ING-004,"RNF, P10",M02,ACC-ING-004,T,M,planejado,
+REQ-ING-005,P10,M02,ACC-ING-005,T,M,planejado,
+REQ-ING-006,"RQ4, RF original",M03,ACC-ING-006,T,S,planejado,
+REQ-ING-007,P7,M02,ACC-ING-007,T,M,planejado,
+REQ-ING-008,RQ3,M04,ACC-ING-008,T,M,planejado,
+REQ-ING-009,"P1, P6",M02,ACC-ING-009,T,M,planejado,
+REQ-MIG-001,"P1, P5, P6; fundacao da migracao",M01,ACC-MIG-001,T,M,verificado,test_postgres_read_only
+REQ-MIG-002,"P1, P5, P6; fundacao da migracao",M01,ACC-MIG-002,T,M,verificado,test_provenance_and_atomicity
+REQ-MIG-003,"P1, P5, P6; fundacao da migracao",M01,ACC-MIG-003,T,M,verificado,test_legacy_equivalence
+REQ-MIG-004,"P1, P5, P6; fundacao da migracao",M01,ACC-MIG-004,T,M,verificado,test_reproducible_marts
+REQ-MIG-005,"P1, P5, P6; fundacao da migracao",M01,ACC-MIG-005,T,M,verificado,test_public_api
+REQ-MIG-006,"P1, P5, P6; fundacao da migracao",M01,ACC-MIG-006,T,M,verificado,test_streamlit_dashboard;test_curation_refresh_uses_legal_runtime_scope;test_curation_fragment_login_logout_uses_current_session_without_cache;test_curation_fragment_refresh_never_duplicates_confirmed_action
+REQ-MIG-007,"P1, P5, P6; fundacao da migracao",M01,ACC-MIG-007,T,M,verificado,test_quarto_report
+REQ-MIG-008,"P1, P5, P6; fundacao da migracao",M01,ACC-MIG-008,T,M,verificado,test_independent_runtime
+REQ-MIG-009,"P1, P5, P6; fundacao da migracao",M00,ACC-MIG-009,T,M,verificado,test_spec_traceability
+REQ-MIG-010,"P1, P5, P6; fundacao da migracao",M01,ACC-MIG-010,T,M,verificado,test_capabilities
+REQ-MIG-011,"P1, P5, P6; fundacao da migracao",M01,ACC-MIG-011,T,M,verificado,test_public_privacy
+REQ-MIG-012,"P1, P5, P6; fundacao da migracao",M01,ACC-MIG-012,T,M,verificado,test_provenance_and_atomicity
+REQ-OPS-001,P10,M07,ACC-OPS-001,T,M,planejado,
+REQ-OPS-002,P10,M07,ACC-OPS-002,T,M,planejado,
+REQ-OPS-003,RNF,M07,ACC-OPS-003,T,M,planejado,
+REQ-OPS-004,P10,M07,ACC-OPS-004,T,M,planejado,
+REQ-OPS-005,RF-11,M07,ACC-OPS-005,T,S,planejado,
+REQ-OPS-006,RNF,M05,ACC-OPS-006,T,M,planejado,
+REQ-OPS-007,RNF-02,M07,ACC-OPS-007,T,M,planejado,
+REQ-OPS-008,RNF-06,M07,ACC-OPS-008,T,S,planejado,
+REQ-OPS-009,P6,M07,ACC-OPS-009,T,M,planejado,
+REQ-OPS-010,RNF,M07,ACC-OPS-010,T,M,planejado,
+REQ-REL-001,P1,M07,ACC-REL-001,T,M,planejado,
+REQ-REL-002,P6,M07,ACC-REL-002,T,M,planejado,
+REQ-REL-003,OE4,M07,ACC-REL-003,D,S,planejado,
+REQ-REL-004,P8,M07,ACC-REL-004,I,M,planejado,
+REQ-REL-005,RNF acessibilidade,M07,ACC-REL-005,I,S,planejado,
+REQ-REV-001,OE4,M02,ACC-REV-001,T,M,planejado,
+REQ-REV-002,P5,M02,ACC-REV-002,T,M,planejado,
+REQ-REV-003,P5,M02,ACC-REV-003,T,M,planejado,
+REQ-REV-004,P5,M02,ACC-REV-004,T,S,planejado,
+REQ-REV-005,"RQ5, H1",M05,ACC-REV-005,T,M,planejado,
+REQ-SEL-001,OE1,M02,ACC-SEL-001,T,M,planejado,
+REQ-SEL-002,OE1,M02,ACC-SEL-002,T,M,planejado,
+REQ-SEL-003,P5,M02,ACC-SEL-003,T,M,planejado,
+REQ-SEL-004,OE1,M02,ACC-SEL-004,T,M,planejado,
+REQ-SEL-005,P1,M02,ACC-SEL-005,T,S,planejado,
+REQ-CLN-001,RQ-CLINICA,M08,ACC-CLN-001,T,M,verificado,test_independent_screening_and_stale_sources;test_observational_and_mixed_populations;test_screening_form_never_reuses_other_vote_or_infers_inclusion;test_structured_screening_form_submits_current_basis;test_selection_flow_preserves_units_pending_values_and_blinding;test_selection_flow_annotation_is_human_and_never_changes_screening;test_selection_flow_rejects_ineligible_annotation_actions;test_selection_flow_vote_and_source_changes_do_not_reactivate_annotations;test_selection_flow_adjudication_changes_invalidate_reason;test_selection_flow_identity_and_empty_corpus_do_not_invent_totals;test_selection_flow_export_permissions_totals_and_no_private_rationales;test_selection_flow_form_requires_explicit_category_and_confirmation
+REQ-CLN-002,RQ-CLINICA,M08,ACC-CLN-002,T,M,verificado,test_effects_known_values
+REQ-CLN-003,RQ-CLINICA,M08,ACC-CLN-003,T,M,verificado,test_result_review_provenance_deduplication_and_corrections;test_literal_evidence_is_required;test_literal_locator_preserves_unicode_whitespace_and_does_not_approve;test_integrity_preview_is_readonly_and_quantifies_current_impact;test_integrity_withdrawal_removes_current_results_but_preserves_history;test_integrity_regularization_never_reactivates_old_approvals;test_integrity_receipt_is_bound_to_actor_payload_sources_and_audit;test_integrity_alert_follows_document_when_identity_is_changed;test_integrity_permissions_api_errors_and_confirmation_cannot_be_bypassed;test_integrity_new_publication_omits_withdrawn_evidence_and_preserves_old_run;test_integrity_backup_restore_preserves_alert_and_immutable_input;test_integrity_ui_starts_blank_and_requires_explicit_confirmation;test_integrity_import_rejects_conflicting_or_private_frozen_notices
+REQ-CLN-004,RQ-CLINICA,M08,ACC-CLN-004,T,M,verificado,test_human_conclusion_and_invalidation;test_no_automatic_absence
+REQ-CLN-005,RQ-CLINICA,M08,ACC-CLN-005,T,M,verificado,test_clinical_export_api_and_permissions;test_clinical_cli_equivalence_and_report;test_collection_checkpoint_uses_clinical_query
+REQ-CLN-006,RQ-CLINICA,M08,ACC-CLN-006,I,M,planejado,
+REQ-CLN-007,RQ-CLINICA,M08,ACC-CLN-007,T,M,verificado,test_calibration_flags_are_document_counts_not_decisions;test_interventions_keep_the_declared_type_and_no_automatic_eligibility;test_empty_calibration_does_not_create_perfect_metrics;test_calibration_export_public_report_and_older_run_compatibility
+REQ-CLN-008,RQ-CLINICA,M08,ACC-CLN-008,T,M,verificado,test_blind_package_is_reproducible_and_has_no_private_text;test_csv_import_is_atomic_idempotent_and_preserves_independence;test_csv_rejects_incomplete_foreign_and_duplicate_decisions;test_uncertain_votes_do_not_mark_calibration_ready_and_sources_invalidate;test_review_routes_require_role_and_create_only_screening_events;test_review_package_cli_matches_api_and_never_overwrites_changed_package;test_dossier_is_blind_readonly_and_scoped_to_current_study;test_dossier_stale_basis_enrichment_and_identity_change;test_dossier_unknown_missing_text_ambiguity_and_permissions;test_dossier_refuses_corrupted_source_representations;test_dossier_api_requires_auth_and_never_caches_private_context;test_personal_workload_separates_account_tasks_from_global_votes;test_personal_registered_uncertain_vote_does_not_resolve_selection;test_personal_slots_and_adjudication_do_not_create_assignments;test_personal_source_changes_require_reassessment_without_copying_decisions;test_personal_identity_changes_never_restore_registered_reviews;test_personal_api_is_account_bound_and_private_without_mutation;test_personal_ui_filters_only_own_work_without_writing;test_personal_ui_refreshes_to_next_pending_study_only_after_human_submit;test_curation_refresh_uses_legal_runtime_scope;test_curation_fragment_login_logout_uses_current_session_without_cache;test_curation_fragment_refresh_never_duplicates_confirmed_action
+REQ-CLN-009,RQ-CLINICA,M08,ACC-CLN-009,T,M,verificado,test_extraction_parsing_preserves_missing_zero_and_decimal_values;test_preview_uses_same_validation_without_events_or_publication;test_extraction_workflow_independence_and_approval_states;test_updated_selection_classification_invalidates_old_results;test_extraction_endpoints_are_private_and_pending_studies_are_blocked;test_extraction_form_shows_pending_block_without_save_controls;test_field_form_previews_and_saves_only_a_draft;test_review_and_adjudication_forms_require_explicit_decisions
+REQ-CLN-010,RQ-CLINICA,M08,ACC-CLN-010,T,M,verificado,test_synthesis_requires_complete_selection_and_calibration_in_api;test_changed_selection_invalidates_calibration_and_judgment;test_synthesis_blocks_roles_conflicts_and_unsupported_benefit;test_mixed_population_prevents_false_absence;test_calibration_rejects_duplicate_sentinels_and_missing_hash;test_synthesis_state_is_private_and_empty_groups_are_not_inconclusive;test_calibration_and_conclusion_forms_submit_explicit_human_decisions;test_pending_pilot_forms_cannot_approve_or_conclude
+REQ-CLN-011,RQ-CLINICA,M08,ACC-CLN-011,T,M,verificado,test_full_collection_blocked_before_files_or_network;test_full_collection_frozen_protocol_snapshot_and_idempotent_completion;test_lost_responses_reconcile_without_duplicate_post;test_failed_import_resumes_existing_id_and_changed_calibration_blocks;test_collection_ambiguous_pending_is_not_reposted_and_roles_are_checked;test_metadata_snapshot_rejects_transferred_reviews_and_sanitizes;test_plan_api_and_ui_are_readonly_and_pending_cli_is_blocked;test_live_collection_snapshot_readonly_preserves_pilot_versions
+REQ-CLN-012,RQ-CLINICA,M08,ACC-CLN-012,T,M,verificado,test_csv_preview_rolls_back_events_and_is_reproducible;test_csv_preview_distinguishes_changes_and_confirmed_import;test_csv_preview_rejects_invalid_late_rows_and_third_reviewer;test_csv_preview_receipt_binds_actor_file_roles_and_audit;test_csv_preview_source_change_invalidates_receipt_without_event;test_csv_preview_api_permissions_stale_confirmation_and_no_foreign_votes;test_csv_preview_form_requires_preview_and_explicit_confirmation;test_csv_preview_form_discards_changed_upload
+REQ-MIG-013,RQ-CLINICA,M07,ACC-MIG-013,T,M,verificado,test_private_backup_restores_votes_sources_results_and_wal;test_private_backup_requires_trusted_hash_and_verifies_members;test_private_restore_rejects_paths_duplicates_and_symlink_entries;test_private_restore_checks_schema_audit_chain_and_source_hashes;test_private_backup_and_restore_never_overwrite_existing_files;test_private_restore_enforces_size_and_manifest_state;test_private_restore_detects_archive_change_before_install;test_private_backup_cli_roundtrip_and_required_hash
+REQ-CLN-013,RQ-CLINICA,M08,ACC-CLN-013,T,M,verificado,test_identity_does_not_pick_first_ambiguous_legacy_study;test_identity_preview_is_readonly_and_has_no_screening_votes;test_identity_correction_never_reactivates_old_reviews_or_calibration;test_identity_confirmation_rejects_stale_actor_payload_audit_and_sources;test_identity_history_and_new_bases_survive_backup_restore;test_identity_endpoints_are_private_confirmed_and_do_not_publish;test_identity_form_requires_explicit_preview_and_confirmation;test_identity_form_clears_changed_preview_and_hides_edit_for_reviewer
+REQ-MIG-014,P1,M01,ACC-MIG-014,T,M,verificado,test_comparison_known_counts_denominators_and_no_private_text;test_comparison_distinguishes_representations_references_and_retrieval;test_comparison_rejects_different_scope_without_interpreting_counts;test_comparison_empty_is_not_perfect_and_requires_published_integrity;test_comparison_cli_api_artifacts_equivalence_and_immutable_export;test_comparison_same_input_separates_schema_changes_from_new_evidence;test_comparison_form_requires_baseline_and_exports_public_results;test_comparison_form_handles_incompatibility_and_missing_reference
+REQ-MIG-015,P1,M01,ACC-MIG-015,T,M,verificado,test_sponsors_known_counts_deduplicate_nct_and_keep_original_labels;test_sponsors_conflicts_do_not_choose_latest_or_convert_to_absence;test_sponsors_absent_invalid_ids_empty_and_malformed_values;test_sponsors_source_whitelist_excludes_contacts_investigators_and_text;test_sponsors_cli_api_parquet_png_and_quarto_use_same_frozen_input;test_sponsors_metadata_addition_preserves_other_twenty_nine_tables;test_sponsors_form_supports_old_and_empty_runs_and_public_tables;test_sponsors_live_metadata_snapshot_cli_preserves_exact_source_versions
+REQ-MIG-016,P2,M03,ACC-MIG-016,T,M,verificado,test_reporting_known_calendar_intervals_zero_and_fixed_cross_categories;test_reporting_partial_estimated_invalid_future_negative_and_inconsistent_dates;test_reporting_duplicate_nct_conflicts_and_missing_observations_are_preserved;test_reporting_date_precision_empty_data_and_native_boolean_contract;test_reporting_cli_api_parquet_png_and_quarto_are_equivalent;test_reporting_metadata_addition_preserves_previous_thirty_two_tables;test_reporting_form_supports_current_old_and_empty_runs;test_reporting_real_frozen_pilot_dates_match_manual_calendar_audit
+REQ-MIG-017,P2,M03,ACC-MIG-017,T,M,verificado,test_publication_refs_known_coverage_deduplication_and_privacy;test_publication_refs_do_not_infer_result_links_from_indicators_or_legacy_identity;test_publication_refs_repeated_trials_and_overlapping_types_preserve_provenance;test_publication_refs_missing_invalid_identifiers_and_unknown_types;test_publication_refs_cli_api_png_parquet_and_quarto_are_equivalent;test_publication_refs_derived_metadata_preserves_previous_thirty_six_tables;test_publication_refs_form_preserves_warning_and_supports_old_empty_runs;test_publication_refs_real_frozen_pilots_match_metadata_audit

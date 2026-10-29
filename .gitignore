@@ -10,3 +10,12 @@ __pycache__/
 *.log
 
 *.tsbuildinfo
+.firecrawl/
+*.egg-info/
+
+# Migracao Analytics: dados, ferramentas portateis e caches locais; fontes e spec versionados.
+analytics/data/
+analytics/.tools/
+analytics/build/
+.pytest_cache/
+.ruff_cache/

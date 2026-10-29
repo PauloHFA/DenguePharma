@@ -1,0 +1,126 @@
+{
+  "availability": [
+    {
+      "category": "DISPONIVEL",
+      "count": 6,
+      "denominator": 25,
+      "field": "result_category",
+      "proportion": 0.24,
+      "unit": "registro_consolidado_por_NCT_ou_documento"
+    },
+    {
+      "category": "NAO_DECLARADO_DISPONIVEL",
+      "count": 19,
+      "denominator": 25,
+      "field": "result_category",
+      "proportion": 0.76,
+      "unit": "registro_consolidado_por_NCT_ou_documento"
+    },
+    {
+      "category": "COMPLETED",
+      "count": 17,
+      "denominator": 25,
+      "field": "overall_status",
+      "proportion": 0.68,
+      "unit": "registro_consolidado_por_NCT_ou_documento"
+    },
+    {
+      "category": "ENROLLING_BY_INVITATION",
+      "count": 1,
+      "denominator": 25,
+      "field": "overall_status",
+      "proportion": 0.04,
+      "unit": "registro_consolidado_por_NCT_ou_documento"
+    },
+    {
+      "category": "RECRUITING",
+      "count": 3,
+      "denominator": 25,
+      "field": "overall_status",
+      "proportion": 0.12,
+      "unit": "registro_consolidado_por_NCT_ou_documento"
+    },
+    {
+      "category": "UNKNOWN",
+      "count": 4,
+      "denominator": 25,
+      "field": "overall_status",
+      "proportion": 0.16,
+      "unit": "registro_consolidado_por_NCT_ou_documento"
+    },
+    {
+      "category": "DIA",
+      "count": 13,
+      "denominator": 25,
+      "field": "primary_precision",
+      "proportion": 0.52,
+      "unit": "registro_consolidado_por_NCT_ou_documento"
+    },
+    {
+      "category": "MES",
+      "count": 12,
+      "denominator": 25,
+      "field": "primary_precision",
+      "proportion": 0.48,
+      "unit": "registro_consolidado_por_NCT_ou_documento"
+    },
+    {
+      "category": "AUSENTE",
+      "count": 19,
+      "denominator": 25,
+      "field": "results_precision",
+      "proportion": 0.76,
+      "unit": "registro_consolidado_por_NCT_ou_documento"
+    },
+    {
+      "category": "DIA",
+      "count": 6,
+      "denominator": 25,
+      "field": "results_precision",
+      "proportion": 0.24,
+      "unit": "registro_consolidado_por_NCT_ou_documento"
+    },
+    {
+      "category": "DIA",
+      "count": 25,
+      "denominator": 25,
+      "field": "last_update_precision",
+      "proportion": 1.0,
+      "unit": "registro_consolidado_por_NCT_ou_documento"
+    },
+    {
+      "category": "CALCULAVEL",
+      "count": 3,
+      "denominator": 25,
+      "field": "interval_status",
+      "proportion": 0.12,
+      "unit": "registro_consolidado_por_NCT_ou_documento"
+    },
+    {
+      "category": "CONFERENCIA_NECESSARIA",
+      "count": 22,
+      "denominator": 25,
+      "field": "interval_status",
+      "proportion": 0.88,
+      "unit": "registro_consolidado_por_NCT_ou_documento"
+    }
+  ],
+  "cutoff": "2026-10-27",
+  "interval_summary": {
+    "censoring": false,
+    "completed": 17,
+    "endpoint": "resultsFirstPostDateStruct.date",
+    "max": 2090,
+    "median": 1288.0,
+    "min": 368,
+    "observed": 3,
+    "origin": "primaryCompletionDateStruct.date",
+    "q1": 828.0,
+    "q3": 1689.0,
+    "total_trials": 25,
+    "unit": "dias_de_calendario"
+  },
+  "method": "registry-reporting-audit-1",
+  "notice": "Disponibilidade e datas declaradas nos registros coletados, com elegibilidade pendente. Indicadores refletem a versao armazenada, sem reconstituir o estado historico no corte. Intervalos sao dias de calendario entre campos do registro, nao sobrevida de pacientes. Sem censura, Kaplan-Meier, meta-analise ou inferencia de eficacia. Deposito no registro e publicacao vinculada sao eventos distintos.",
+  "trials": 25
+}

@@ -1,0 +1,50 @@
+{
+  "coverage": [
+    {
+      "distinct_valid_pmids": 23,
+      "missing_or_invalid_entries": 0,
+      "not_retrieved_pmids": 23,
+      "pmid_coverage_proportion": 0.0,
+      "reference_type": "BACKGROUND",
+      "registry_reference_proportion": 0.2,
+      "registry_units_with_candidate": 0,
+      "registry_units_with_references": 5,
+      "registry_units_with_valid_pmid": 5,
+      "total_registry_units": 25,
+      "valid_pmids_in_corpus": 0
+    },
+    {
+      "distinct_valid_pmids": 19,
+      "missing_or_invalid_entries": 0,
+      "not_retrieved_pmids": 19,
+      "pmid_coverage_proportion": 0.0,
+      "reference_type": "DERIVED",
+      "registry_reference_proportion": 0.32,
+      "registry_units_with_candidate": 0,
+      "registry_units_with_references": 8,
+      "registry_units_with_valid_pmid": 8,
+      "total_registry_units": 25,
+      "valid_pmids_in_corpus": 0
+    },
+    {
+      "distinct_valid_pmids": 28,
+      "missing_or_invalid_entries": 0,
+      "not_retrieved_pmids": 28,
+      "pmid_coverage_proportion": 0.0,
+      "reference_type": "RESULT",
+      "registry_reference_proportion": 0.08,
+      "registry_units_with_candidate": 0,
+      "registry_units_with_references": 2,
+      "registry_units_with_valid_pmid": 2,
+      "total_registry_units": 25,
+      "valid_pmids_in_corpus": 0
+    }
+  ],
+  "method": "registry-publication-reference-audit-1",
+  "missing_distinct_pmids": 69,
+  "notice": "Referencias declaradas no snapshot, separadas pelo codigo da fonte. PMID coincidente gera candidato bibliografico, nao vinculo clinico confirmado. A cobertura mede identificadores: uma publicacao pode estar representada sem PMID. Referencia nao recuperada e ausencia de RESULT nao demonstram ausencia de publicacao, de resultado ou de evidencia. Nenhum artigo e buscado ou aprovado automaticamente.",
+  "publication_documents": 25,
+  "publication_documents_without_valid_pmid": 0,
+  "publications_with_distinct_pmid": 25,
+  "registry_units": 25
+}

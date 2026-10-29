@@ -28,9 +28,120 @@ class ExtractionCatalogReportOpsIntegrationTest extends AbstractIntegrationTest 
     @Autowired ReportAndOpsService opsService;
 
     @Test
+    void fonteDecodificadaPreservaQuebrasDeLinhaSemUsarChavesJsonComoEvidencia() throws Exception {
+        String text = "Results:\nThe authors reported \"no events\".";
+        UUID dv = seedStudyWithCorpus("Texto com escapes", json.writeValueAsString(Map.of("abstract", text)), "CC-BY");
+        UUID field = submitDraft(dv, "limitations", text, text);
+        mvc.perform(get("/api/extractions/fields").header("Authorization", tokenFor(Role.REVISOR)))
+                .andExpect(status().isOk()).andExpect(jsonPath("$[0].document_text").value(text))
+                .andExpect(jsonPath("$[0].evidence_text").value(text));
+        mvc.perform(post("/api/extractions/fields/" + field + "/review").header("Authorization", tokenFor(Role.REVISOR))
+                        .contentType(MediaType.APPLICATION_JSON).content("{\"decision\":\"ACEITAR\",\"publishAfterApproval\":true}"))
+                .andExpect(status().isOk());
+        assertThat(jdbc.queryForObject("select after_data->>'value' from audit_log where action = 'FIELD_REVIEWED'", String.class)).isEqualTo(text);
+        UUID other = seedStudyWithCorpus("Sem suporte", "{\"abstract\":\"Nenhum suporte para o campo.\"}", null);
+        UUID keyField = submitDraft(other, "countries", "abstract", "abstract");
+        assertThat(jdbc.queryForObject("select absence_status from extracted_field where id = ?", String.class, keyField)).isEqualTo("INCERTO");
+    }
+
+    @Test
+    void camposCriticosExigemAdjudicadorMesmoSemFlagDeAdjudicacao() throws Exception {
+        UUID dv = seedStudyWithCorpus("Permissoes", "{\"abstract\":\"We randomized 50 patients.\"}", "CC-BY");
+        UUID field = submitDraft(dv, "sample_size", "50", "We randomized 50 patients.");
+        String endpoint = "/api/extractions/fields/" + field + "/review";
+        mvc.perform(post(endpoint).header("Authorization", tokenFor(Role.REVISOR))
+                        .contentType(MediaType.APPLICATION_JSON).content("{\"decision\":\"ACEITAR\",\"publishAfterApproval\":true}"))
+                .andExpect(status().isForbidden());
+        assertThat(jdbc.queryForObject("select count(*) from review_decision", Integer.class)).isZero();
+        mvc.perform(post(endpoint).header("Authorization", tokenFor(Role.REVISOR))
+                        .contentType(MediaType.APPLICATION_JSON).content("{\"decision\":\"ACEITAR\",\"publishAfterApproval\":false}"))
+                .andExpect(status().isOk()).andExpect(jsonPath("$.reviewStatus").value("EM_REVISAO"))
+                .andExpect(jsonPath("$.published").value(false));
+        mvc.perform(post(endpoint).header("Authorization", tokenFor(Role.ADJUDICADOR))
+                        .contentType(MediaType.APPLICATION_JSON).content("{\"decision\":\"ACEITAR\",\"publishAfterApproval\":true}"))
+                .andExpect(status().isOk()).andExpect(jsonPath("$.published").value(true));
+        mvc.perform(post(endpoint).header("Authorization", tokenFor(Role.REVISOR))
+                        .contentType(MediaType.APPLICATION_JSON).content("{\"decision\":\"REJEITAR\"}"))
+                .andExpect(status().isForbidden());
+        assertThat(jdbc.queryForObject("select published from extracted_field where id = ?", Boolean.class, field)).isTrue();
+    }
+
+    @Test
+    void correcaoExigeTrechoRealEEstadoValidoSemCriarEvidenciaArtificial() throws Exception {
+        UUID dv = seedStudyWithCorpus("Proveniencia", "{\"abstract\":\"Results were not assessed.\"}", "CC-BY");
+        UUID field = submitDraft(dv, "result", "inventado", "Trecho que nao existe");
+        String endpoint = "/api/extractions/fields/" + field + "/review";
+        String adj = tokenFor(Role.ADJUDICADOR);
+        Map<String, Object> correction = new java.util.HashMap<>(Map.of(
+                "decision", "CORRIGIR", "correctedValue", "not assessed", "correctedAbsenceStatus", "PRESENTE",
+                "reason", "Conferido no resumo", "publishAfterApproval", true));
+        mvc.perform(post(endpoint).header("Authorization", adj).contentType(MediaType.APPLICATION_JSON)
+                        .content(json.writeValueAsString(correction)))
+                .andExpect(status().isUnprocessableEntity()).andExpect(jsonPath("$.detail").isNotEmpty());
+        correction.put("correctedQuotedText", "Texto inventado pelo revisor");
+        mvc.perform(post(endpoint).header("Authorization", adj).contentType(MediaType.APPLICATION_JSON)
+                        .content(json.writeValueAsString(correction))).andExpect(status().isUnprocessableEntity());
+        correction.put("correctedQuotedText", "Results were not assessed.");
+        correction.put("correctedAbsenceStatus", "PRESENT");
+        mvc.perform(post(endpoint).header("Authorization", adj).contentType(MediaType.APPLICATION_JSON)
+                        .content(json.writeValueAsString(correction))).andExpect(status().isUnprocessableEntity());
+        assertThat(jdbc.queryForObject("select count(*) from evidence_span", Integer.class)).isZero();
+        assertThat(jdbc.queryForObject("select count(*) from review_decision", Integer.class)).isZero();
+        correction.put("correctedAbsenceStatus", "PRESENTE");
+        mvc.perform(post(endpoint).header("Authorization", adj).contentType(MediaType.APPLICATION_JSON)
+                        .content(json.writeValueAsString(correction))).andExpect(status().isOk());
+        assertThat(jdbc.queryForObject("select text from evidence_span", String.class)).isEqualTo("Results were not assessed.");
+    }
+
+    @Test
+    void catalogoEComparadorExcluemRascunhosExcluidosEDemonstracoes() throws Exception {
+        UUID valid = seedFullCatalogStudy("Publicado", "HUMANO", "TRATAMENTO", "ENSAIO_RANDOMIZADO", "2", "DENV-1", "CLINICO", "7 dias", "CC-BY");
+        UUID excluded = seedFullCatalogStudy("Excluido", "HUMANO", "TRATAMENTO", "ENSAIO_RANDOMIZADO", "2", "DENV-1", "CLINICO", "7 dias", "CC-BY");
+        jdbc.update("update study set screening_status = 'EXCLUIDO' where id = ?", excluded);
+        UUID demo = seedFullCatalogStudy("Demonstracao", "HUMANO", "TRATAMENTO", "ENSAIO_RANDOMIZADO", "2", "DENV-1", "CLINICO", "7 dias", "CC-BY");
+        jdbc.update("update study set is_demo = true where id = ?", demo);
+        UUID unreviewedDoc = seedStudyWithCorpus("Sem revisao", "{\"abstract\":\"Somente metadados\"}", null);
+        UUID unreviewed = jdbc.queryForObject("select sd.study_id from study_document sd join document_version dv on dv.document_id = sd.document_id where dv.id = ?", UUID.class, unreviewedDoc);
+        String reader = tokenFor(Role.LEITOR);
+        mvc.perform(get("/api/catalog").header("Authorization", reader))
+                .andExpect(status().isOk()).andExpect(jsonPath("$.length()").value(1))
+                .andExpect(jsonPath("$[0].id").value(valid.toString()));
+        for (UUID hidden : List.of(excluded, demo, unreviewed)) {
+            mvc.perform(post("/api/catalog/compare").header("Authorization", reader).contentType(MediaType.APPLICATION_JSON)
+                            .content(json.writeValueAsString(Map.of("studyIds", List.of(valid, hidden)))))
+                    .andExpect(status().isNotFound());
+        }
+    }
+
+    @Test
+    void pdfPaginaTodosOsEstudosSemCortarTextoECsvPreservaFiltros() throws Exception {
+        for (int i = 0; i < 12; i++) {
+            seedFullCatalogStudy("Estudo " + i + " " + "descricao longa ".repeat(15) + " MARCADOR_FINAL_" + i,
+                    "HUMANO", "TRATAMENTO", "ENSAIO_RANDOMIZADO", "2", "DENV-1", "CLINICO", "7 dias", "CC-BY");
+        }
+        UUID snapshot = (UUID) opsService.createSnapshot(new org.denguepharma.catalog.CatalogService.CatalogFilter(null, null, "HUMANO", null, null, null), null).get("id");
+        String pdf = new String(opsService.exportPdf(snapshot), java.nio.charset.Charset.forName("windows-1252"));
+        assertThat(pdf).doesNotContain("/Count 1 >>").contains("Pagina 2 de");
+        String joined = pdf.replaceAll("\\) Tj T\\*\\R\\(", "");
+        for (int i = 0; i < 12; i++) assertThat(joined).contains("MARCADOR_FINAL_" + i);
+        assertThat(new String(opsService.exportCsv(snapshot), StandardCharsets.UTF_8)).contains(",filters\n", "HUMANO");
+    }
+
+    private UUID submitDraft(UUID document, String name, String value, String quote) throws Exception {
+        mvc.perform(post("/api/extractions/runs").header("Authorization", tokenFor(Role.REVISOR))
+                        .contentType(MediaType.APPLICATION_JSON).content(json.writeValueAsString(Map.of(
+                                "documentVersionId", document, "pipelineVersion", "1", "modelProvider", "test",
+                                "modelVersion", "1", "promptHash", "regression", "schemaVersion", "1",
+                                "fields", List.of(Map.of("fieldName", name, "originalValue", value, "normalizedValue", value,
+                                        "absenceStatus", "PRESENTE", "locator", "abstract", "quotedText", quote))))))
+                .andExpect(status().isCreated());
+        return jdbc.queryForObject("select id from extracted_field where field_name = ?", UUID.class, name);
+    }
+
+    @Test
     void T4_T5_T10_extracaoValidaSuporteLiteralNumerosEProtegeContraPromptInjection() throws Exception {
         String corpusJson = """
-                {"title":"Trial of Celgosivir in Dengue","abstract":"We randomized 50 adult patients (25 per arm) with DENV-1/2 to receive celgosivir or placebo for 5 days. Primary outcome was viral load reduction at day 5."}
+                {"title":"Trial of Celgosivir in Dengue","abstract":"We randomized 50 adult patients (25 per arm) with DENV-1/2 to receive celgosivir or placebo for 5 days. Primary outcome was viral load reduction at day 5. Virus cleared in 20/25 (80%) in the celgosivir arm."}
                 """;
         UUID dvId = seedStudyWithCorpus("Trial of Celgosivir in Dengue", corpusJson, null);
 
@@ -111,6 +222,7 @@ class ExtractionCatalogReportOpsIntegrationTest extends AbstractIntegrationTest 
                                 "decision", "CORRIGIR",
                                 "correctedValue", "20/25 (80%) no braco celgosivir",
                                 "correctedAbsenceStatus", "PRESENTE",
+                                "correctedQuotedText", "Virus cleared in 20/25 (80%) in the celgosivir arm.",
                                 "reason", "Corrigido denominador conforme braco de 25 pacientes",
                                 "adjudication", true,
                                 "publishAfterApproval", true))))
@@ -295,82 +407,20 @@ class ExtractionCatalogReportOpsIntegrationTest extends AbstractIntegrationTest 
     }
 
     @Test
-    void E2_E5_piloto20RegistrosParticaoFamiliaCrossoverSessoesKappaERelayOutbox() throws Exception {
-        String adminToken = tokenFor(Role.ADMINISTRADOR);
-        String rev1Token = tokenFor(Role.REVISOR);
-        UUID rev1Id = users.findByEmailIgnoreCase("revisor@test.org").orElseThrow().getId();
-        UUID rev2Id = users.findByEmailIgnoreCase("revisor2@test.org").orElseThrow().getId();
-
-        // 1) Seção 20 (E2): Semente idempotente do piloto com 20 registros recuperados
-        mvc.perform(post("/api/admin/seed-pilot").header("Authorization", adminToken))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.status").value("SEEDED"))
-                .andExpect(jsonPath("$.recordsCreated").value(20));
-
-        // Chamada repetida não duplica o piloto
-        mvc.perform(post("/api/admin/seed-pilot").header("Authorization", adminToken))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.status").value("ALREADY_SEEDED"))
-                .andExpect(jsonPath("$.totalStudies").value(20));
-
-        // 2) Seção 15 (E5): Partição estratificada 25% DEV / 25% VAL / 50% TEST_FROZEN por família de estudo
-        mvc.perform(post("/api/experiment/split").header("Authorization", adminToken))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.totalFamilies").value(20))
-                .andExpect(jsonPath("$.devFamilies").value(5))
-                .andExpect(jsonPath("$.valFamilies").value(5))
-                .andExpect(jsonPath("$.testFrozenFamilies").value(10));
-
-        // 3) Seção 15 (E5): Alocação crossover A_MANUAL vs C_AI_ASSISTED em blocos balanceados
-        mvc.perform(post("/api/experiment/allocate").header("Authorization", adminToken)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(json.writeValueAsString(Map.of("reviewer1", rev1Id, "reviewer2", rev1Id))))
-                .andExpect(status().isUnprocessableEntity());
-
-        mvc.perform(post("/api/experiment/allocate").header("Authorization", adminToken)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(json.writeValueAsString(Map.of("reviewer1", rev1Id, "reviewer2", rev2Id))))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.allocatedDocuments").value(20));
-
-        // 4) Seção 15 e 16 (E5): Registra sessões cronometradas com pausas para A_MANUAL e C_AI_ASSISTED
-        UUID sampleDocVer = jdbc.queryForObject("select id from document_version limit 1", UUID.class);
-        mvc.perform(post("/api/experiment/sessions").header("Authorization", rev1Token)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(json.writeValueAsString(Map.of(
-                                "documentVersionId", sampleDocVer,
-                                "conditionCode", "A_MANUAL",
-                                "activeSeconds", 300,
-                                "pauseSeconds", 30,
-                                "correctionsCount", 0,
-                                "criticalErrorsCount", 0,
-                                "documentDifficulty", "MEDIA"))))
-                .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.totalSeconds").value(330));
-
-        mvc.perform(post("/api/experiment/sessions").header("Authorization", rev1Token)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(json.writeValueAsString(Map.of(
-                                "documentVersionId", sampleDocVer,
-                                "conditionCode", "C_AI_ASSISTED",
-                                "activeSeconds", 210,
-                                "pauseSeconds", 15,
-                                "correctionsCount", 1,
-                                "criticalErrorsCount", 0,
-                                "documentDifficulty", "MEDIA"))))
-                .andExpect(status().isCreated());
-
-        // 5) Seção 16 (E5): Consulta métricas experimentais (F1, fidelidade, rastreabilidade, redução de 30% >= meta de 20%)
-        mvc.perform(get("/api/experiment/metrics").header("Authorization", adminToken))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.extractionPrecision").value(1.0))
-                .andExpect(jsonPath("$.extractionRecall").value(1.0))
-                .andExpect(jsonPath("$.extractionF1").value(1.0))
-                .andExpect(jsonPath("$.trueNegativesExcludedFromF1").value(true))
-                .andExpect(jsonPath("$.fidelityRate").value(1.0))
-                .andExpect(jsonPath("$.traceabilityRate").value(1.0))
-                .andExpect(jsonPath("$.timingComparison.relativeTimeReductionPercent").value(30.0))
-                .andExpect(jsonPath("$.timingComparison.meets20PercentTarget").value(true));
+    void demonstracoesPreservadasEExperimentoV1Retirado() throws Exception {
+        String admin = tokenFor(Role.ADMINISTRADOR);
+        mvc.perform(post("/api/admin/seed-pilot").header("Authorization", admin))
+                .andExpect(status().isOk()).andExpect(jsonPath("$.recordsCreated").value(20));
+        mvc.perform(post("/api/admin/seed-pilot").header("Authorization", admin))
+                .andExpect(status().isOk()).andExpect(jsonPath("$.status").value("ALREADY_SEEDED"));
+        for (String endpoint : List.of("split", "allocate", "sessions")) {
+            mvc.perform(post("/api/experiment/" + endpoint).header("Authorization", admin)
+                            .contentType(MediaType.APPLICATION_JSON).content("{}"))
+                    .andExpect(status().isGone()).andExpect(jsonPath("$.detail").isNotEmpty());
+        }
+        mvc.perform(get("/api/experiment/metrics").header("Authorization", admin)).andExpect(status().isGone());
+        assertThat(jdbc.queryForObject("select count(*) from study where is_demo", Integer.class)).isEqualTo(20);
+        assertThat(jdbc.queryForObject("select count(*) from experiment_allocation", Integer.class)).isZero();
     }
 
     private UUID seedStudyWithCorpus(String title, String metadataJson, String license) {
@@ -399,12 +449,23 @@ class ExtractionCatalogReportOpsIntegrationTest extends AbstractIntegrationTest 
                 """, UUID.class, title, context, purpose, design, phase, serotype, outcomeCat, timeFrame);
         UUID docId = jdbc.queryForObject("insert into document (doc_type, title) values ('PUBLICACAO', ?) returning id",
                 UUID.class, title);
-        jdbc.update("""
+        UUID versionId = jdbc.queryForObject("""
                 insert into document_version (document_id, version_no, content_hash, origin, license, access_status, retrieved_at, metadata)
-                values (?, 1, ?, 'PUBMED', ?, 'TEXTO_COMPLETO', now(), '{"abstract":"Texto de teste"}'::jsonb)
-                """, docId, "hash-" + UUID.randomUUID(), license);
+                values (?, 1, ?, 'PUBMED', ?, 'TEXTO_COMPLETO', now(), '{"abstract":"Texto de teste"}'::jsonb) returning id
+                """, UUID.class, docId, "hash-" + UUID.randomUUID(), license);
         jdbc.update("insert into study_document (study_id, document_id, report_role, link_certainty) values (?, ?, 'PUBLICACAO_PRINCIPAL', 'CONFIRMADO')",
                 studyId, docId);
+        UUID runId = jdbc.queryForObject("""
+                insert into extraction_run (document_version_id, pipeline_version, model_provider, model_version, prompt_hash, schema_version)
+                values (?, 'test', 'manual', 'test', 'test', '1') returning id
+                """, UUID.class, versionId);
+        UUID spanId = jdbc.queryForObject("""
+                insert into evidence_span (document_version_id, locator, text) values (?, 'abstract', 'Texto de teste') returning id
+                """, UUID.class, versionId);
+        jdbc.update("""
+                insert into extracted_field (extraction_run_id, study_id, field_name, original_value, normalized_value, absence_status, evidence_span_id, review_status, published)
+                values (?, ?, 'limitations', 'Texto de teste', 'Texto de teste', 'PRESENTE', ?, 'APROVADO', true)
+                """, runId, studyId, spanId);
         return studyId;
     }
 }

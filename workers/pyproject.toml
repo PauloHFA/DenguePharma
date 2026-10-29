@@ -1,12 +1,23 @@
 [project]
 name = "denguepharma-workers"
 version = "0.1.0"
-description = "Workers de processamento documental e extração assistida por IA do DenguePharma"
+description = "Processamento documental e analise descritiva de evidencias revisadas"
 requires-python = ">=3.11"
 dependencies = [
     "pika>=1.3,<2",
     "psycopg[binary]>=3.2,<4",
+    "minio>=7.2,<8",
+    "pandas>=3.0,<4",
+    "matplotlib>=3.10,<4",
 ]
+
+[project.scripts]
+denguepharma-worker = "denguepharma_workers.runtime:main"
+denguepharma-analyze = "denguepharma_workers.analysis:main"
+denguepharma-research = "denguepharma_workers.research:main"
+
+[tool.setuptools.package-data]
+denguepharma_workers = ["data/*.geojson", "data/*.md"]
 
 [project.optional-dependencies]
 dev = ["pytest>=8"]

@@ -144,7 +144,7 @@ public class ReportAndOpsService {
         String createdAt = (String) snap.get("createdAt");
 
         StringBuilder sb = new StringBuilder();
-        sb.append("report_id,generated_at,study_id,title,substance,context,purpose,design,phase,serotype,outcome,effect,status_evidencia,limitations,sources_and_hashes\n");
+        sb.append("report_id,generated_at,study_id,title,substance,context,purpose,design,phase,serotype,outcome,effect,status_evidencia,limitations,sources_and_hashes,filters\n");
         for (JsonNode st : data.path("studies")) {
             String sid = st.path("id").asText("");
             List<String> srcInfo = new ArrayList<>();
@@ -168,7 +168,8 @@ public class ReportAndOpsService {
               .append(csv(st.path("effect_summary").asText(""))).append(',')
               .append(csv("APROVADO_REVISAO_HUMANA")).append(',')
               .append(csv(st.path("limitations").asText(""))).append(',')
-              .append(csv(String.join("; ", srcInfo))).append('\n');
+              .append(csv(String.join("; ", srcInfo))).append(',')
+              .append(csv(String.valueOf(snap.get("filters")))).append('\n');
         }
         return sb.toString().getBytes(StandardCharsets.UTF_8);
     }
@@ -303,12 +304,7 @@ public class ReportAndOpsService {
     /** Registra consumo idempotente na Inbox (T7). Retorna true apenas na primeira entrega para o consumidor. */
     @Transactional
     public boolean registerInboxDelivery(UUID eventId, String consumer) {
-        try {
-            jdbc.update("insert into inbox (event_id, consumer, processed_at) values (?, ?, now())", eventId, consumer);
-            return true;
-        } catch (DuplicateKeyException e) {
-            return false;
-        }
+        return jdbc.update("insert into inbox (event_id, consumer, processed_at) values (?, ?, now()) on conflict do nothing", eventId, consumer) == 1;
     }
 
     @Transactional
@@ -331,7 +327,8 @@ public class ReportAndOpsService {
                 update job
                 set status = 'LEASED', lease_token = ?, lease_until = now() + (? || ' seconds')::interval,
                     attempts = attempts + 1, updated_at = now()
-                where id = ? and (status = 'PENDING' or (status = 'LEASED' and lease_until < now()))
+                where id = ? and source_event_id is null
+                  and (status = 'PENDING' or (status = 'LEASED' and lease_until < now()))
                 """, token, Math.max(5, leaseSeconds), jobId);
         if (n == 0) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "job indisponivel para lease");
@@ -345,7 +342,7 @@ public class ReportAndOpsService {
         int n = jdbc.update("""
                 update job
                 set status = 'COMPLETED', lease_token = null, lease_until = null, updated_at = now()
-                where id = ? and status = 'LEASED' and lease_token = ? and lease_until >= now()
+                where id = ? and source_event_id is null and status = 'LEASED' and lease_token = ? and lease_until >= now()
                 """, jobId, leaseToken);
         if (n == 0) {
             throw new ResponseStatusException(HttpStatus.CONFLICT,
@@ -357,7 +354,7 @@ public class ReportAndOpsService {
     @Transactional
     public Map<String, Object> failJob(UUID jobId, String errorMessage) {
         List<Map<String, Object>> rows = jdbc.queryForList(
-                "select attempts, max_attempts from job where id = ?", jobId);
+                "select attempts, max_attempts from job where id = ? and source_event_id is null", jobId);
         if (rows.isEmpty()) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "job nao encontrado");
         int attempts = ((Number) rows.get(0).get("attempts")).intValue();
         int maxAttempts = ((Number) rows.get(0).get("max_attempts")).intValue();
@@ -377,7 +374,7 @@ public class ReportAndOpsService {
         int n = jdbc.update("""
                 update job
                 set status = 'PENDING', attempts = 0, lease_token = null, lease_until = null,
-                    last_error = null, updated_at = now()
+                    last_error = null, next_attempt_at = now(), updated_at = now()
                 where id = ? and status in ('FAILED','QUARANTINED')
                 """, jobId);
         if (n == 0) {
@@ -388,52 +385,25 @@ public class ReportAndOpsService {
     }
 
     /**
-     * Publicador Outbox transacional (Seção 13): publica eventos pendentes preservando event_id,
-     * registra consumo idempotente no dispatcher interno e enfileira job correspondente sem duplicar.
+     * Antecipar o envio nao equivale a publica-lo. O worker marca published_at somente apos confirmacao do broker.
      */
     @Transactional
     public Map<String, Object> relayOutboxBatch(int limit) {
-        List<Map<String, Object>> pending = jdbc.queryForList("""
-                select id, event_id, aggregate_type, aggregate_id, event_type
-                from outbox
-                where published_at is null
-                order by id asc
-                limit ?
-                """, Math.max(1, limit));
-        int publishedCount = 0;
-        int jobsCreated = 0;
-        for (Map<String, Object> row : pending) {
-            long id = ((Number) row.get("id")).longValue();
-            UUID eventId = (UUID) row.get("event_id");
-            String eventType = (String) row.get("event_type");
-            String aggregateId = (String) row.get("aggregate_id");
-
-            boolean firstTime = registerInboxDelivery(eventId, "outbox-job-dispatcher");
-            if (firstTime) {
-                String jobType = switch (eventType) {
-                    case "DocumentoImportado", "FonteAlterada" -> "EXTRACT_DOCUMENT";
-                    case "RelatorioSolicitado" -> "GENERATE_REPORT";
-                    default -> null;
-                };
-                if (jobType != null) {
-                    jdbc.update("""
-                            insert into job (id, job_type, ref_id, status, max_attempts)
-                            values (?, ?, ?, 'PENDING', 5)
-                            """, UUID.randomUUID(), jobType, aggregateId);
-                    jobsCreated++;
-                }
-            }
-            jdbc.update("update outbox set published_at = now(), attempts = attempts + 1 where id = ?", id);
-            publishedCount++;
-        }
-        return Map.of("relayedEvents", publishedCount, "jobsCreated", jobsCreated);
+        int scheduled = jdbc.update("""
+                update outbox set next_attempt_at = now() where id in (
+                  select id from outbox where published_at is null
+                    and event_type in ('DocumentoImportado','FonteAlterada','RelatorioSolicitado','AnaliseSolicitada')
+                    and (relay_until is null or relay_until < now()) order by priority desc, created_at limit ?)
+                """, Math.max(1, Math.min(limit, 100)));
+        return Map.of("scheduledEvents", scheduled, "publishedEvents", 0,
+                "notice", "O worker publicara os eventos com confirmacao do RabbitMQ.");
     }
 
     public Map<String, Object> operationalSummary() {
         List<Map<String, Object>> jobs = jdbc.queryForList(
-                "select id, job_type, ref_id, status, attempts, max_attempts, last_error, updated_at from job order by created_at desc limit 100");
+                "select id, job_type, ref_id, source_event_id, status, attempts, max_attempts, last_error, next_attempt_at, updated_at from job order by created_at desc limit 100");
         List<Map<String, Object>> outbox = jdbc.queryForList(
-                "select id, event_id, aggregate_type, event_type, attempts, created_at, published_at from outbox order by created_at desc limit 100");
+                "select id, event_id, aggregate_type, event_type, attempts, last_error, next_attempt_at, created_at, published_at from outbox order by created_at desc limit 100");
         List<Map<String, Object>> reassessments = listReassessments();
         return Map.of("jobs", jobs, "outbox", outbox, "reassessments", reassessments);
     }
@@ -450,38 +420,54 @@ public class ReportAndOpsService {
     }
 
     private static byte[] buildMinimalPdf(List<String> lines) {
-        StringBuilder stream = new StringBuilder();
-        stream.append("BT\n/F1 10 Tf\n40 790 Td\n14 TL\n");
+        // Fonte monoespacada: 95 caracteres a 9pt cabem na largura util da pagina A4.
+        List<String> wrapped = new ArrayList<>();
         for (String line : lines) {
-            String safe = line.replace("\\", "\\\\").replace("(", "\\(").replace(")", "\\)");
-            if (safe.length() > 105) safe = safe.substring(0, 105) + "...";
-            stream.append("(").append(safe).append(") Tj T*\n");
+            for (String paragraph : line.split("\\R", -1)) {
+                if (paragraph.isEmpty()) wrapped.add("");
+                for (int start = 0; start < paragraph.length(); start += 95) {
+                    wrapped.add(paragraph.substring(start, Math.min(start + 95, paragraph.length())));
+                }
+            }
         }
-        stream.append("ET\n");
-        byte[] contentBytes = stream.toString().getBytes(StandardCharsets.ISO_8859_1);
-
+        int pageCount = Math.max(1, (wrapped.size() + 49) / 50);
+        List<byte[]> objects = new ArrayList<>();
+        objects.add("<< /Type /Catalog /Pages 2 0 R >>".getBytes(StandardCharsets.US_ASCII));
+        StringBuilder kids = new StringBuilder();
+        for (int page = 0; page < pageCount; page++) kids.append(4 + page * 2).append(" 0 R ");
+        objects.add(("<< /Type /Pages /Kids [" + kids + "] /Count " + pageCount + " >>").getBytes(StandardCharsets.US_ASCII));
+        objects.add("<< /Type /Font /Subtype /Type1 /BaseFont /Courier /Encoding /WinAnsiEncoding >>".getBytes(StandardCharsets.US_ASCII));
+        for (int page = 0; page < pageCount; page++) {
+            int contentId = 5 + page * 2;
+            objects.add(("<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 842] /Resources << /Font << /F1 3 0 R >> >> /Contents "
+                    + contentId + " 0 R >>").getBytes(StandardCharsets.US_ASCII));
+            StringBuilder stream = new StringBuilder("BT\n/F1 9 Tf\n40 790 Td\n14 TL\n");
+            for (int i = page * 50; i < Math.min((page + 1) * 50, wrapped.size()); i++) {
+                String safe = wrapped.get(i).replace("\\", "\\\\").replace("(", "\\(").replace(")", "\\)");
+                stream.append('(').append(safe).append(") Tj T*\n");
+            }
+            stream.append("ET\nBT /F1 9 Tf 40 35 Td (Pagina ").append(page + 1).append(" de ").append(pageCount).append(") Tj ET\n");
+            byte[] content = stream.toString().getBytes(java.nio.charset.Charset.forName("windows-1252"));
+            ByteArrayOutputStream object = new ByteArrayOutputStream();
+            writeAscii(object, "<< /Length " + content.length + " >>\nstream\n");
+            object.writeBytes(content);
+            writeAscii(object, "endstream");
+            objects.add(object.toByteArray());
+        }
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         writeAscii(out, "%PDF-1.4\n");
-        int obj1 = out.size();
-        writeAscii(out, "1 0 obj << /Type /Catalog /Pages 2 0 R >> endobj\n");
-        int obj2 = out.size();
-        writeAscii(out, "2 0 obj << /Type /Pages /Kids [3 0 R] /Count 1 >> endobj\n");
-        int obj3 = out.size();
-        writeAscii(out, "3 0 obj << /Type /Page /Parent 2 0 R /MediaBox [0 0 612 842] /Resources << /Font << /F1 4 0 R >> >> /Contents 5 0 R >> endobj\n");
-        int obj4 = out.size();
-        writeAscii(out, "4 0 obj << /Type /Font /Subtype /Type1 /BaseFont /Helvetica >> endobj\n");
-        int obj5 = out.size();
-        writeAscii(out, "5 0 obj << /Length " + contentBytes.length + " >> stream\n");
-        out.writeBytes(contentBytes);
-        writeAscii(out, "\nendstream endobj\n");
+        List<Integer> offsets = new ArrayList<>();
+        for (int i = 0; i < objects.size(); i++) {
+            offsets.add(out.size());
+            writeAscii(out, (i + 1) + " 0 obj\n");
+            out.writeBytes(objects.get(i));
+            writeAscii(out, "\nendobj\n");
+        }
         int xref = out.size();
-        writeAscii(out, "xref\n0 6\n0000000000 65535 f \n");
-        writeAscii(out, String.format("%010d 00000 n \n", obj1));
-        writeAscii(out, String.format("%010d 00000 n \n", obj2));
-        writeAscii(out, String.format("%010d 00000 n \n", obj3));
-        writeAscii(out, String.format("%010d 00000 n \n", obj4));
-        writeAscii(out, String.format("%010d 00000 n \n", obj5));
-        writeAscii(out, "trailer << /Size 6 /Root 1 0 R >>\nstartxref\n" + xref + "\n%%EOF\n");
+        int size = objects.size() + 1;
+        writeAscii(out, "xref\n0 " + size + "\n0000000000 65535 f \n");
+        for (int offset : offsets) writeAscii(out, String.format(java.util.Locale.ROOT, "%010d 00000 n \n", offset));
+        writeAscii(out, "trailer << /Size " + size + " /Root 1 0 R >>\nstartxref\n" + xref + "\n%%EOF\n");
         return out.toByteArray();
     }
 

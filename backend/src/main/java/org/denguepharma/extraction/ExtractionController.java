@@ -39,6 +39,7 @@ public class ExtractionController {
             @NotBlank String decision,
             String correctedValue,
             String correctedAbsenceStatus,
+            String correctedQuotedText,
             String reason,
             boolean adjudication,
             boolean publishAfterApproval) {}
@@ -73,7 +74,7 @@ public class ExtractionController {
         List<String> roles = jwt.getClaimAsStringList("roles");
         boolean isAdjudicator = roles != null && (roles.contains("ADJUDICADOR") || roles.contains("ADMINISTRADOR"));
         return service.reviewField(new ReviewInput(id, req.decision(), req.correctedValue(),
-                req.correctedAbsenceStatus(), req.reason(), req.adjudication(), req.publishAfterApproval()),
+                req.correctedAbsenceStatus(), req.correctedQuotedText(), req.reason(), req.adjudication(), req.publishAfterApproval()),
                 UUID.fromString(jwt.getSubject()), isAdjudicator);
     }
 }

@@ -1,6 +1,8 @@
+import { CorpusPanel } from "./CorpusPanel";
 import { useEffect, useState } from "react";
-import { api } from "../api";
+import { api, downloadFile } from "../api";
 import { useAuth } from "../auth/AuthContext";
+import { AnalysisPanel } from "./AnalysisPanel";
 
 interface ReportSummary {
   id: string;
@@ -14,6 +16,7 @@ export function ReportsPage() {
   const [reports, setReports] = useState<ReportSummary[]>([]);
   const [contextFilter, setContextFilter] = useState("");
   const [substanceFilter, setSubstanceFilter] = useState("");
+  const [extraFilters, setExtraFilters] = useState({ purpose:"", design:"", serotype:"", phase:"" });
   const [previewJson, setPreviewJson] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
@@ -36,10 +39,10 @@ export function ReportsPage() {
         body: JSON.stringify({
           substance: substanceFilter || null,
           context: contextFilter || null,
-          purpose: null,
-          design: null,
-          serotype: null,
-          phase: null,
+          purpose: extraFilters.purpose || null,
+          design: extraFilters.design || null,
+          serotype: extraFilters.serotype || null,
+          phase: extraFilters.phase || null,
         }),
       });
       setPreviewJson(JSON.stringify(created, null, 2));
@@ -51,8 +54,22 @@ export function ReportsPage() {
 
   async function viewSnapshotJson(id: string) {
     if (!session) return;
-    const snap = await api<Record<string, unknown>>(session, `/api/reports/${id}/export?format=json`);
-    setPreviewJson(JSON.stringify(snap, null, 2));
+    try {
+      const snap = await api<Record<string, unknown>>(session, `/api/reports/${id}/export?format=json`);
+      setPreviewJson(JSON.stringify(snap, null, 2));
+    } catch (e) {
+      setError((e as Error).message);
+    }
+  }
+
+  async function downloadReport(id: string, format: "csv" | "pdf") {
+    if (!session) return;
+    setError(null);
+    try {
+      await downloadFile(session, `/api/reports/${id}/export?format=${format}`, `relatorio-${id}.${format}`);
+    } catch (e) {
+      setError((e as Error).message);
+    }
   }
 
   return (
@@ -67,6 +84,7 @@ export function ReportsPage() {
 
       <div className="filter-bar">
         <input
+          aria-label="Substância do relatório"
           placeholder="Filtrar substância (opcional)"
           value={substanceFilter}
           onChange={(e) => setSubstanceFilter(e.target.value)}
@@ -74,12 +92,20 @@ export function ReportsPage() {
         <select value={contextFilter} onChange={(e) => setContextFilter(e.target.value)} aria-label="Contexto">
           <option value="">Todos os contextos</option>
           <option value="HUMANO">HUMANO</option>
+          <option value="DESAFIO_CONTROLADO">DESAFIO_CONTROLADO</option>
           <option value="ANIMAL">ANIMAL</option>
           <option value="IN_VITRO">IN_VITRO</option>
           <option value="IN_SILICO">IN_SILICO</option>
         </select>
+        {(["purpose", "design", "serotype", "phase"] as const).map(key => <label key={key}>
+          {{purpose:"Finalidade", design:"Desenho", serotype:"Sorotipo", phase:"Fase"}[key]}
+          <input value={extraFilters[key]} onChange={e => setExtraFilters({...extraFilters,[key]:e.target.value})} />
+        </label>)}
         <button type="button" onClick={generateReport}>Gerar Snapshot de Relatório</button>
       </div>
+      <CorpusPanel />
+      <AnalysisPanel filters={{ substance:substanceFilter || null,context:contextFilter || null,
+        purpose:extraFilters.purpose || null,design:extraFilters.design || null,serotype:extraFilters.serotype || null,phase:extraFilters.phase || null }} />
 
       <table>
         <thead>
@@ -100,8 +126,8 @@ export function ReportsPage() {
               <td><code>{r.filters}</code></td>
               <td>
                 <button type="button" onClick={() => viewSnapshotJson(r.id)}>Ver JSON</button>{" "}
-                <a href={`/api/reports/${r.id}/export?format=csv`} target="_blank" rel="noreferrer">CSV</a>{" "}
-                <a href={`/api/reports/${r.id}/export?format=pdf`} target="_blank" rel="noreferrer">PDF</a>
+                <button type="button" onClick={() => downloadReport(r.id, "csv")}>CSV</button>{" "}
+                <button type="button" onClick={() => downloadReport(r.id, "pdf")}>PDF</button>
               </td>
             </tr>
           ))}

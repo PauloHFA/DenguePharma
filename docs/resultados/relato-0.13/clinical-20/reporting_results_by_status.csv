@@ -1,0 +1,13 @@
+overall_status,result_category,unit,count,denominator,proportion
+ACTIVE_NOT_RECRUITING,CONFLITO,registro_consolidado_por_NCT_ou_documento,0,1,0.0
+ACTIVE_NOT_RECRUITING,DISPONIVEL,registro_consolidado_por_NCT_ou_documento,0,1,0.0
+ACTIVE_NOT_RECRUITING,NAO_INFORMADO,registro_consolidado_por_NCT_ou_documento,0,1,0.0
+TERMINATED,CONFLITO,registro_consolidado_por_NCT_ou_documento,0,1,0.0
+TERMINATED,DISPONIVEL,registro_consolidado_por_NCT_ou_documento,0,1,0.0
+TERMINATED,NAO_INFORMADO,registro_consolidado_por_NCT_ou_documento,0,1,0.0
+COMPLETED,CONFLITO,registro_consolidado_por_NCT_ou_documento,0,8,0.0
+COMPLETED,NAO_INFORMADO,registro_consolidado_por_NCT_ou_documento,0,8,0.0
+ACTIVE_NOT_RECRUITING,NAO_DECLARADO_DISPONIVEL,registro_consolidado_por_NCT_ou_documento,1,1,1.0
+TERMINATED,NAO_DECLARADO_DISPONIVEL,registro_consolidado_por_NCT_ou_documento,1,1,1.0
+COMPLETED,NAO_DECLARADO_DISPONIVEL,registro_consolidado_por_NCT_ou_documento,2,8,0.25
+COMPLETED,DISPONIVEL,registro_consolidado_por_NCT_ou_documento,6,8,0.75

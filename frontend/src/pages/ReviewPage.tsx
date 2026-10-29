@@ -1,20 +1,25 @@
 import { useEffect, useState } from "react";
 import { api } from "../api";
 import { useAuth } from "../auth/AuthContext";
+import { absenceStatuses, criticalFields, type ReviewDecision } from "../review-contract";
 
 interface ExtractedFieldRow {
   id: string;
   study_id: string;
   study_title: string;
   field_name: string;
-  raw_value: string | null;
+  original_value: string | null;
   normalized_value: string | null;
   absence_status: string;
   review_status: string;
   published: boolean;
-  quote: string | null;
-  char_start: number | null;
-  char_end: number | null;
+  evidence_text: string | null;
+  section: string | null;
+  page: number | null;
+  locator: string | null;
+  document_text: string;
+  document_origin: string;
+  document_version_no: number;
   model_provider: string;
   model_version: string;
 }
@@ -23,7 +28,9 @@ export function ReviewPage() {
   const { session } = useAuth();
   const [fields, setFields] = useState<ExtractedFieldRow[]>([]);
   const [statusFilter, setStatusFilter] = useState("");
-  const [editing, setEditing] = useState<Record<string, { correctedValue: string; correctedAbsenceStatus: string; reason: string }>>({});
+  const [editing, setEditing] = useState<Record<string, { correctedValue: string; correctedAbsenceStatus: string; correctedQuotedText: string; reason: string }>>({});
+  const canAdjudicate = Boolean(session?.roles.some((role) => ["ADJUDICADOR", "ADMINISTRADOR"].includes(role)));
+  const canReview = Boolean(canAdjudicate || session?.roles.includes("REVISOR"));
   const [error, setError] = useState<string | null>(null);
   const [message, setMessage] = useState<string | null>(null);
 
@@ -37,11 +44,16 @@ export function ReviewPage() {
     load().catch((e) => setError((e as Error).message));
   }, [session]);
 
-  async function submitReview(fieldId: string, decision: "APPROVED" | "CORRECTED" | "REJECTED") {
+  async function submitReview(fieldId: string, decision: ReviewDecision) {
     if (!session) return;
     setError(null);
     setMessage(null);
     const edit = editing[fieldId];
+    const field = fields.find((f) => f.id === fieldId)!;
+    if (decision === "CORRIGIR" && !edit?.reason.trim()) {
+      setError("Informe o motivo da correção.");
+      return;
+    }
     try {
       await api(session, `/api/extractions/fields/${fieldId}/review`, {
         method: "POST",
@@ -49,9 +61,11 @@ export function ReviewPage() {
           decision,
           correctedValue: edit?.correctedValue !== undefined && edit.correctedValue !== "" ? edit.correctedValue : null,
           correctedAbsenceStatus: edit?.correctedAbsenceStatus || null,
-          reason: edit?.reason || "Revisão humana concluída com conferência do trecho fonte",
-          adjudication: session.roles.includes("ADJUDICADOR") || session.roles.includes("ADMINISTRADOR"),
-          publishAfterApproval: true,
+          correctedQuotedText: edit?.correctedQuotedText ?? field.evidence_text,
+          reason: edit?.reason || null,
+          adjudication: canAdjudicate,
+          publishAfterApproval: decision !== "REJEITAR" && (!criticalFields.has(field.field_name) || canAdjudicate)
+            && !["INCERTO", "NAO_EXTRAIDO"].includes(decision === "CORRIGIR" ? edit?.correctedAbsenceStatus ?? field.absence_status : field.absence_status),
         }),
       });
       setMessage(`Revisão registrada (${decision}) para o campo ${fieldId}.`);
@@ -67,8 +81,8 @@ export function ReviewPage() {
     <section aria-labelledby="rev-heading">
       <h1 id="rev-heading">Revisão Lado a Lado de Extração (RF-05, RF-06)</h1>
       <p>
-        Todo campo extraído apresenta o trecho literal de evidência com posição de caracteres (<code>char_start..char_end</code>)
-        e diferencia <em>não relatado</em>, <em>não aplicável</em>, <em>incerto</em> e <em>conflitante entre fontes</em>.
+        Confira o valor com o trecho e a versão documental. Correções de valores presentes exigem um trecho literal
+        da fonte e justificativa. Campos críticos seguem para aprovação do adjudicador.
       </p>
 
       {error && <p role="alert">{error}</p>}
@@ -79,10 +93,10 @@ export function ReviewPage() {
           Filtrar status:{" "}
           <select value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)}>
             <option value="">Todos</option>
-            <option value="PENDING">PENDING</option>
-            <option value="APPROVED">APPROVED</option>
-            <option value="CORRECTED">CORRECTED</option>
-            <option value="REJECTED">REJECTED</option>
+            <option value="RASCUNHO_IA">Rascunho de extração</option>
+            <option value="EM_REVISAO">Em revisão</option>
+            <option value="APROVADO">Aprovado</option>
+            <option value="REJEITADO">Rejeitado</option>
           </select>
         </label>
       </div>
@@ -103,6 +117,7 @@ export function ReviewPage() {
             const edit = editing[f.id] ?? {
               correctedValue: f.normalized_value ?? "",
               correctedAbsenceStatus: f.absence_status,
+              correctedQuotedText: f.evidence_text ?? "",
               reason: "",
             };
             return (
@@ -111,44 +126,51 @@ export function ReviewPage() {
                   <strong>{f.field_name}</strong>
                   <div className="muted">{f.study_title} ({f.model_provider}/{f.model_version})</div>
                 </td>
-                <td>{f.normalized_value ?? <em>(vazio)</em>}</td>
+                <td>{f.normalized_value ?? f.original_value ?? <em>(vazio)</em>}</td>
                 <td><code>{f.absence_status}</code></td>
                 <td>
-                  {f.quote ? (
+                  <p>{f.document_origin} — versão {f.document_version_no}</p>
+                  {f.evidence_text ? (
                     <>
-                      <blockquote>"{f.quote}"</blockquote>
-                      <small className="muted">Span: [{f.char_start}..{f.char_end}]</small>
+                      <blockquote>{f.evidence_text}</blockquote>
+                      <small className="muted">{f.section} {f.page != null ? `— página ${f.page}` : ""} — {f.locator}</small>
                     </>
                   ) : (
-                    <em>Sem trecho (ausência explícita)</em>
+                    <em>Sem trecho de suporte verificado</em>
                   )}
+                  {f.document_text && <details><summary>Texto disponível da fonte</summary><p style={{ whiteSpace: "pre-wrap" }}>{f.document_text}</p></details>}
                 </td>
                 <td>{f.review_status} {f.published ? "(Publicado)" : ""}</td>
                 <td>
                   <input
+                    aria-label={`Valor corrigido de ${f.field_name}`}
                     placeholder="Valor corrigido (opcional)"
                     value={edit.correctedValue}
                     onChange={(e) => setEditing({ ...editing, [f.id]: { ...edit, correctedValue: e.target.value } })}
                   />
                   <select
+                    aria-label={`Estado de ausência de ${f.field_name}`}
                     value={edit.correctedAbsenceStatus}
                     onChange={(e) => setEditing({ ...editing, [f.id]: { ...edit, correctedAbsenceStatus: e.target.value } })}
                   >
-                    <option value="PRESENT">PRESENT</option>
-                    <option value="NOT_REPORTED">NOT_REPORTED</option>
-                    <option value="NOT_APPLICABLE">NOT_APPLICABLE</option>
-                    <option value="UNCERTAIN">UNCERTAIN</option>
-                    <option value="CONFLICTING">CONFLICTING</option>
+                    {absenceStatuses.map((status) => <option key={status} value={status}>{status}</option>)}
                   </select>
+                  <textarea
+                    aria-label={`Trecho de suporte corrigido de ${f.field_name}`}
+                    placeholder="Copie o trecho literal da fonte que sustenta o valor corrigido"
+                    value={edit.correctedQuotedText}
+                    onChange={(e) => setEditing({ ...editing, [f.id]: { ...edit, correctedQuotedText: e.target.value } })}
+                  />
                   <input
+                    aria-label={`Motivo da correção de ${f.field_name}`}
                     placeholder="Motivo da aprovação/correção"
                     value={edit.reason}
                     onChange={(e) => setEditing({ ...editing, [f.id]: { ...edit, reason: e.target.value } })}
                   />
                   <div>
-                    <button type="button" onClick={() => submitReview(f.id, "APPROVED")}>Aprovar</button>
-                    <button type="button" onClick={() => submitReview(f.id, "CORRECTED")}>Corrigir</button>
-                    <button type="button" onClick={() => submitReview(f.id, "REJECTED")}>Rejeitar</button>
+                    <button type="button" disabled={!canReview} onClick={() => submitReview(f.id, "ACEITAR")}>{criticalFields.has(f.field_name) && !canAdjudicate ? "Enviar para adjudicação" : "Aprovar"}</button>
+                    <button type="button" disabled={!canReview || f.review_status === "APROVADO"} onClick={() => submitReview(f.id, "CORRIGIR")}>Corrigir</button>
+                    <button type="button" disabled={!canReview} onClick={() => submitReview(f.id, "REJEITAR")}>Rejeitar</button>
                   </div>
                 </td>
               </tr>

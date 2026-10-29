@@ -1,0 +1,16 @@
+{
+  "artifacts": {
+    "publication-refs-coverage.png": "d14fdbe1ea9c9bacc509342dda4c2fff1a71941a0b55e147c99e7a8f4dd86a55",
+    "publication_reference_coverage.csv": "97dab95b7a75b1f1644640816b39361e4f21e59ae447be40b88c83dac8453810",
+    "publication_reference_links.csv": "138eec838d4b0b6f8b1bf5c1b5ef64d0b35982f5b9d100b3f900d6efa4577f97",
+    "publication_reference_missing.csv": "8cef209ad5aa868a3a3231b10d5aa523cd2353d3af54b867e63ebf61140f9dee",
+    "summary.json": "c06eec2d748878e45d1fe11421c2b96891cb93ef01b0e2fd1c2843553ecddaa7"
+  },
+  "code_hash": "cc710540ae6ee2b59caf670a013c577fe40f9ccf365483d88d1c64342f37d6f4",
+  "input_hash": "a18955c9ef46958c2aed3cd6f908e069ff9032f601fbb9a957e80d2047abe57b",
+  "method": "registry-publication-reference-audit-1",
+  "run_id": "7f3b1e541a1c8a2c1a5cc5ab245ae84de7995870b13dabb50aa64f541a83ac90",
+  "run_manifest_hash": "c2faa5f6f6bfbabbf4aed18e61e3f3f7caf95f0f858b4be4a30713925cc150f5",
+  "schema_version": "publication-reference-public-artifacts-1",
+  "software_version": "0.14.0"
+}

@@ -54,7 +54,7 @@ public class PubMedConnector implements SourceConnector {
 
     @Override
     public String connectorVersion() {
-        return "pubmed-eutils/1";
+        return "pubmed-eutils/2-date-partitions";
     }
 
     @Override
@@ -66,6 +66,11 @@ public class PubMedConnector implements SourceConnector {
     public Page fetch(JsonNode strategy, LocalDate cutoff, JsonNode checkpoint) throws IOException, InterruptedException {
         String term = strategy.path("pubmed").path("query").asText();
         int retstart = checkpoint == null ? 0 : checkpoint.path("retstart").asInt(0);
+        LocalDate lower = checkpoint != null && checkpoint.hasNonNull("lower") ? LocalDate.parse(checkpoint.path("lower").asText()) : LocalDate.of(1800,1,1);
+        LocalDate upper = checkpoint != null && checkpoint.hasNonNull("upper") ? LocalDate.parse(checkpoint.path("upper").asText()) : cutoff;
+        var pending = om.createArrayNode();
+        if(checkpoint != null && checkpoint.path("pending").isArray()) pending.addAll((com.fasterxml.jackson.databind.node.ArrayNode)checkpoint.path("pending"));
+        int rootTotal = checkpoint == null ? -1 : checkpoint.path("rootTotal").asInt(-1);
 
         Map<String, Object> params = new LinkedHashMap<>();
         params.put("db", "pubmed");
@@ -75,17 +80,28 @@ public class PubMedConnector implements SourceConnector {
         params.put("retstart", retstart);
         params.put("sort", "pub_date");
         params.put("datetype", "pdat");
-        params.put("mindate", "1900/01/01");
-        params.put("maxdate", cutoff.format(DateTimeFormatter.ofPattern("yyyy/MM/dd")));
+        params.put("mindate", lower.format(DateTimeFormatter.ofPattern("yyyy/MM/dd")));
+        params.put("maxdate", upper.format(DateTimeFormatter.ofPattern("yyyy/MM/dd")));
 
-        JsonNode search = om.readTree(http.get(uri("esearch.fcgi", withIdentity(params)))).path("esearchresult");
-        int count = search.path("count").asInt(0);
-        if (count > ESEARCH_MAX_WINDOW) {
-            throw new IOException("PubMed retornou " + count + " registros; acima de " + ESEARCH_MAX_WINDOW
-                    + " a busca precisa ser particionada por periodo no protocolo");
+        JsonNode search;
+        int count;
+        while(true) {
+            params.put("mindate",lower.format(DateTimeFormatter.ofPattern("yyyy/MM/dd")));
+            params.put("maxdate",upper.format(DateTimeFormatter.ofPattern("yyyy/MM/dd")));
+            params.put("retstart",retstart);
+            search=om.readTree(http.get(uri("esearch.fcgi",withIdentity(params)))).path("esearchresult");
+            if(!search.has("count") || !search.path("idlist").isArray()) throw new IOException("Resposta PubMed incompleta");
+            count=search.path("count").asInt();
+            if(rootTotal<0) rootTotal=count;
+            if(count<=ESEARCH_MAX_WINDOW) break;
+            if(!lower.isBefore(upper)) throw new IOException("Mais de 9999 registros em um dia; refinamento manual necessario");
+            LocalDate middle=lower.plusDays(java.time.temporal.ChronoUnit.DAYS.between(lower,upper)/2);
+            pending.insert(0,om.createObjectNode().put("lower",middle.plusDays(1).toString()).put("upper",upper.toString()));
+            upper=middle; retstart=0;
         }
         List<String> ids = new ArrayList<>();
         search.path("idlist").forEach(n -> ids.add(n.asText()));
+        if(ids.isEmpty() && retstart<count) throw new IOException("PubMed interrompeu paginacao antes do total informado");
 
         List<RawRecord> records = new ArrayList<>();
         if (!ids.isEmpty()) {
@@ -98,9 +114,15 @@ public class PubMedConnector implements SourceConnector {
         }
 
         int next = retstart + ids.size();
-        JsonNode nextCheckpoint = (ids.isEmpty() || next >= count) ? null
-                : om.createObjectNode().put("retstart", next);
-        return new Page(records, nextCheckpoint, count, "eutils", params);
+        ObjectNode nextCheckpoint=null;
+        if(next<count) {
+            nextCheckpoint=om.createObjectNode().put("retstart",next).put("lower",lower.toString()).put("upper",upper.toString());
+        } else if(!pending.isEmpty()) {
+            JsonNode range=pending.remove(0);
+            nextCheckpoint=om.createObjectNode().put("retstart",0).put("lower",range.path("lower").asText()).put("upper",range.path("upper").asText());
+        }
+        if(nextCheckpoint!=null) { nextCheckpoint.put("rootTotal",rootTotal); nextCheckpoint.set("pending",pending); }
+        return new Page(records,nextCheckpoint,rootTotal,"eutils",params);
     }
 
     List<RawRecord> parse(String xml) throws IOException {
@@ -174,6 +196,22 @@ public class PubMedConnector implements SourceConnector {
             for (Element h : children(meshList, "MeshHeading")) {
                 Element d = path(h, "DescriptorName");
                 if (d != null) mesh.add(d.getTextContent().trim());
+            }
+        }
+
+        var chemicals=payload.putArray("chemicals");
+        Element chemicalList=path(citation,"ChemicalList");
+        if(chemicalList!=null) for(Element chemical:children(chemicalList,"Chemical")) {
+            String name=text(path(chemical,"NameOfSubstance"));
+            if(name!=null) chemicals.add(name);
+        }
+        var registries=payload.putArray("registry_ids");
+        Element databanks=path(art,"DataBankList");
+        if(databanks!=null) for(Element bank:children(databanks,"DataBank")) {
+            Element accessions=path(bank,"AccessionNumberList");
+            if(accessions!=null) for(Element accession:children(accessions,"AccessionNumber")) {
+                String value=text(accession);
+                if(value!=null && value.matches("(?i)NCT[0-9]{8}")) registries.add(value.toUpperCase(java.util.Locale.ROOT));
             }
         }
 

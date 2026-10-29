@@ -1,0 +1,17 @@
+{
+  "artifacts": {
+    "reporting-intervals.png": "e00e98da37450c3c5f0a7b1f79be39bf948f1bfefc51ec451117c248e6000b4d",
+    "reporting_availability.csv": "95375a853d9a5f0885c9c69be940eeb5be83c6fcc6a843b076a4f9a1a053cbe6",
+    "reporting_intervals.csv": "c2ed418ed37ad3d8f84de696e8f170f6b0d29f31463d342ffb89b61c388341c0",
+    "reporting_registry.csv": "d8917960e34c9252ddabd5f98cfa99c9134ccc28fc9e2d5376076ef9a2a46843",
+    "reporting_results_by_status.csv": "e1368828bc7226425c2dfd35d81c910cc3d237dd0b2b717e506cff8243d29b84",
+    "summary.json": "48bcef03be5472dabb06ace5ddc457230357adf74795295b6677ede8c03443f2"
+  },
+  "code_hash": "9500bea1bd8e2d89baa323a28e48ba35d86deb5360896aebd50a7c2c70564596",
+  "input_hash": "a18955c9ef46958c2aed3cd6f908e069ff9032f601fbb9a957e80d2047abe57b",
+  "method": "registry-reporting-audit-1",
+  "run_id": "61be88f39fb9750c8ac966cc8cca22569e7905571f94dbe321572ff4fdc95d26",
+  "run_manifest_hash": "059afa6905f4cd2207782ad6922579b465e700acf6f572b1064b5dcbb236094b",
+  "schema_version": "reporting-public-artifacts-1",
+  "software_version": "0.13.0"
+}

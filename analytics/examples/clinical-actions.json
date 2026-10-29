@@ -1,0 +1,115 @@
+{
+  "notice": "EXEMPLOS SINTETICOS. Substituir por extracoes humanas; nao publicar estes modelos como resultados.",
+  "SCREENED": {
+    "study_id": "COPIAR_DA_FILA",
+    "basis_hash": "COPIAR_HASH_ATUAL",
+    "decision": "INCERTO",
+    "classification": {
+      "established_dengue": "INCERTO",
+      "context": "INCERTO",
+      "population": "INCERTO",
+      "severity": "NAO_INFORMADA",
+      "disease_phase": "NAO_INFORMADA",
+      "purpose": "OUTRO",
+      "design": "INCERTO",
+      "interventions": [],
+      "pharmacological_intervention": "INCERTO"
+    },
+    "reason": "Descrever decisao humana e material consultado. Inclusao exige classificacao elegivel e duas revisoes independentes."
+  },
+  "RESULT_DRAFTED": {
+    "study_id": "COPIAR_DA_FILA",
+    "basis_hash": "COPIAR_HASH_ATUAL",
+    "comparison_id": "ID_ESTAVEL_DOS_BRACOS",
+    "intervention": "EXEMPLO-FARMACO",
+    "comparator": "EXEMPLO-COMPARADOR",
+    "population": "ADULTOS",
+    "severity": "NAO_GRAVE",
+    "disease_phase": "FEBRIL",
+    "intervention_timing": "SUBSTITUIR_INICIO",
+    "analysis_population": "SUBSTITUIR_POPULACAO_ANALISE",
+    "purpose": "TRATAMENTO",
+    "design": "RCT_PARALELO",
+    "outcome_code": "EVENTOS_ADVERSOS",
+    "outcome_definition": "SUBSTITUIR_DEFINICAO",
+    "timepoint": "SUBSTITUIR_TEMPO",
+    "unit": "participantes",
+    "direction": "MENOR_MELHOR",
+    "effect_type": "REPORTED",
+    "treatment": {
+      "arm_id": "SUBSTITUIR_BRACO_A",
+      "n": null
+    },
+    "control": {
+      "arm_id": "SUBSTITUIR_BRACO_B",
+      "n": null
+    },
+    "independent_arms": false,
+    "reported": {
+      "measure": "RR",
+      "estimate": null,
+      "ci_low": null,
+      "ci_high": null,
+      "confidence_level": null
+    },
+    "support_care": "SUBSTITUIR_CUIDADOS_SUPORTE",
+    "limitations": "SUBSTITUIR_LIMITACOES",
+    "risk_of_bias": "NAO_AVALIADO",
+    "risk_of_bias_reason": "Avaliacao metodologica ainda pendente",
+    "absence_states": {
+      "treatment.n": "NAO_EXTRAIDO",
+      "control.n": "NAO_EXTRAIDO",
+      "reported.estimate": "NAO_EXTRAIDO"
+    },
+    "evidence": []
+  },
+  "evidence_reference_template": {
+    "field": "treatment.n",
+    "version_id": "COPIAR_VERSAO_EXATA",
+    "text_hash": "COPIAR_HASH_TEXTO",
+    "start": 0,
+    "end": 1,
+    "quote": "SUBSTITUIR_SUBSTRING_EXATO"
+  },
+  "RESULT_REVIEWED": {
+    "result_id": "ID_DO_RASCUNHO",
+    "decision": "REJEITAR",
+    "reason": "Descrever conferencia independente; sem revisar resultado proprio"
+  },
+  "RESULT_ADJUDICATED": {
+    "result_id": "ID_DO_RASCUNHO",
+    "decision": "REJEITAR",
+    "reason": "Descrever adjudicacao por terceira identidade independente"
+  },
+  "SYNTHESIS_CONCLUDED": {
+    "scope": {
+      "SUBSTITUIR": "COPIAR_SCOPE_COMPLETO_DO_GRUPO"
+    },
+    "result_set_hash": "COPIAR_DO_GRUPO_ATUAL",
+    "category": "EVIDENCIA_INCONCLUSIVA",
+    "rationale": "SUBSTITUIR_JUSTIFICATIVA_HUMANA",
+    "clinical_importance": "SUBSTITUIR_IMPORTANCIA_CLINICA",
+    "uncertainty": "SUBSTITUIR_INCERTEZA",
+    "consistency": "SUBSTITUIR_CONSISTENCIA",
+    "limitations": "SUBSTITUIR_LIMITACOES",
+    "selection_hash": "COPIAR_HASH_DA_SELECAO_ATUAL_NO_ESTADO_DA_SINTESE"
+  },
+  "DOCUMENT_LINKED": {
+    "document_id": "SUBSTITUIR_DOCUMENTO",
+    "study_id": "SUBSTITUIR_ESTUDO_EXISTENTE",
+    "reason": "Confirmacao manual de identidade com identificadores e fonte"
+  },
+  "CALIBRATION_APPROVED": {
+    "sentinel_ids": [
+      "SUBSTITUIR_ESTUDO_SENTINELA"
+    ],
+    "reason": "Descrever calibracao real da busca, criterios e revisao do piloto",
+    "selection_hash": "COPIAR_HASH_DA_SELECAO_ATUAL_NO_ESTADO_DA_SINTESE"
+  },
+  "ABSENCE_CONCLUDED": {
+    "intervention": "SUBSTITUIR_SUBSTANCIA",
+    "population": "ADULTOS",
+    "reason": "Justificar ausencia no corpus completamente selecionado, sem generalizar para toda a literatura",
+    "selection_hash": "COPIAR_HASH_DA_SELECAO_ATUAL_NO_ESTADO_DA_SINTESE"
+  }
+}

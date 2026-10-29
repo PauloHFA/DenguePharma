@@ -101,6 +101,20 @@ class ImportIntegrationTest extends AbstractIntegrationTest {
         assertThat(count("select count(*) from study")).isEqualTo(3);
         assertThat(count("select count(*) from document_version")).isEqualTo(3);
         assertThat(count("select count(*) from study_identifier where id_type = 'PMID'")).isEqualTo(3);
+        assertThat(count("select count(*) from search_run_document")).isEqualTo(6);
+    }
+
+    @Test
+    void pilotoLimitaRegistrosSemPerderOTotalDaBusca() {
+        UUID pilot=jdbc.queryForObject("""
+                insert into protocol(code,version,title,question,sources,strategy,eligibility,cutoff_date,status)
+                values('PILOT',1,'Piloto','Q','["PUBMED"]','{"maxRecords":1,"pubmed":{"query":"dengue"}}','{"stage":"pilot"}','2026-10-27','REGISTERED') returning id
+                """,UUID.class);
+        UUID run=service.start(pilot,"PUBMED",null); service.execute(run);
+        assertThat(status(run)).isEqualTo("COMPLETED");
+        assertThat(jdbc.queryForObject("select records_seen from search_run where id=?",Integer.class,run)).isOne();
+        assertThat(jdbc.queryForObject("select total_returned from search_run where id=?",Integer.class,run)).isEqualTo(3);
+        assertThat(count("select count(*) from search_run_document")).isOne();
     }
 
     @Test

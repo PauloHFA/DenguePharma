@@ -23,6 +23,9 @@ import org.springframework.security.oauth2.jwt.NimbusJwtEncoder;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
 import org.springframework.security.oauth2.server.resource.authentication.JwtGrantedAuthoritiesConverter;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.AnonymousAuthenticationFilter;
+import org.springframework.beans.factory.annotation.Value;
+import org.denguepharma.pipeline.PipelineSecurity;
 
 @Configuration
 @EnableWebSecurity
@@ -60,19 +63,23 @@ public class SecurityConfig {
     }
 
     @Bean
-    SecurityFilterChain filterChain(HttpSecurity http, JwtAuthenticationConverter converter) throws Exception {
+    SecurityFilterChain filterChain(HttpSecurity http, JwtAuthenticationConverter converter,
+            @Value("${denguepharma.pipeline.token:}") String pipelineToken) throws Exception {
         http
             .csrf(AbstractHttpConfigurer::disable) // API stateless com bearer token
             .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(a -> a
                 .requestMatchers(HttpMethod.POST, "/api/auth/login").permitAll()
                 .requestMatchers("/actuator/health").permitAll()
+                .requestMatchers(HttpMethod.GET, "/api/public/analyses", "/api/public/analyses/**").permitAll()
                 .requestMatchers("/api/admin/**").hasRole("ADMINISTRADOR")
+                .requestMatchers("/api/internal/pipeline/**").hasRole("PIPELINE_WORKER")
                 .anyRequest().authenticated())
             .oauth2ResourceServer(o -> o.jwt(j -> j.jwtAuthenticationConverter(converter)))
             .httpBasic(AbstractHttpConfigurer::disable)
             .formLogin(AbstractHttpConfigurer::disable)
             .headers(Customizer.withDefaults());
+        http.addFilterBefore(new PipelineSecurity(pipelineToken), AnonymousAuthenticationFilter.class);
         return http.build();
     }
 }

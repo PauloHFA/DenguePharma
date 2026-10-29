@@ -1,271 +1,172 @@
-# DenguePharma — Plataforma Auditável de Evidências Farmacológicas para Dengue
+# DenguePharma
 
-> **Aviso Institucional e Científico (Seção 16 / RC-02 / RC-04):**  
-> O **DenguePharma** é uma plataforma acadêmica e tecnológica desenhada exclusivamente para **pesquisa científica, síntese de evidências em revisão de escopo (PRISMA-ScR) e curadoria metodológica**.  
-> **A plataforma NÃO realiza diagnóstico clínico, NÃO prescreve medicamentos, NÃO calcula dosagens e NÃO gera rankings automáticos de "melhor fármaco"**.
+**Versão 0.19.0:** [integridade documental](docs/ETAPA_INTEGRIDADE_DOCUMENTAL.md), com alerta humano, prévia de impacto e suspensão da evidência corrente. Regularizar um documento exige nova revisão; publicações históricas permanecem imutáveis.
 
----
+**Versão 0.18.0:** [curadoria com atualização independente](docs/ETAPA_ATUALIZACAO_CURADORIA.md). No teste local de troca de filtro, as requisições públicas caíram de 29 para zero, mantendo as consultas privadas atualizadas.
 
-## 📑 Sumário Executivo
+**Versão 0.17.0:** [fila pessoal de revisão](docs/ETAPA_FILA_PESSOAL.md), com tarefas da própria conta, revisões atuais e reavaliações. No piloto clínico, são 20 tarefas iniciais por revisor no estado atual e 40 avaliações independentes globais faltantes.
 
-A dengue é uma das arboviroses de maior impacto na saúde pública global, historicamente carente de terapias antivirais específicas aprovadas com eficácia robusta em desfechos clínicos graves. A literatura científica sobre reposicionamento e desenvolvimento de novos fármacos para dengue é heterogênea, dispersa e frequentemente suscetível a vieses metodológicos (como extrapolar resultados *in vitro* para eficácia clínica, ou confundir desfechos virológicos substitutos com redução de mortalidade).
+**Versão 0.16.0:** [resumo auditável da seleção](docs/ETAPA_FLUXO_SELECAO.md), motivos humanos de exclusão e exportação privada. Os totais não reconstruídos permanecem ausentes; o piloto não é apresentado como revisão concluída.
 
-O **DenguePharma** resolve essa lacuna implementando uma infraestrutura de dados auditável, versionada e imutável que combina:
-1. **Governança Científica Rigorosa:** Aplicação automática das 7 regras científicas essenciais (**RC-01 a RC-07**).
-2. **Pipelines de Coleta Confiável:** Conectores programáticos com controle de cota (*rate limiting*), *checkpoint* de retomada e proteção contra duplicação de estudos (**RF-01, RF-02**).
-3. **Química Computacional Integrada:** Normalização de substâncias pelo PubChem PUG-REST distinguindo monoterapias de combinações fixas (**RF-03**).
-4. **Triagem Independente e Rastreabilidade PRISMA-ScR:** Dupla triagem cega com adjudicação formal obrigatória (**RF-04**).
-5. **Extração Estruturada com Suporte Literal (Evidence Spans):** Nenhum dado é publicado sem apontar o trecho exato do texto com localização em caracteres, distinguindo estados de ausência e neutralizando tentativas de *prompt injection* (**RF-05, RF-06, T4, T5, T10**).
-6. **Catálogo e Comparador Metodológico:** Filtros que nunca escondem limitações e comparação que evidencia incompatibilidades metodológicas sem ranqueamento (**RF-07, RF-08**).
-7. **Reprodutibilidade e Licenciamento:** *Snapshots* imutáveis para relatórios em PDF/CSV/JSON e pacotes de reprodução científica que respeitam direitos autorais de artigos com acesso restrito (**RF-09 a RF-12, T6 a T9**).
-8. **Avaliação Experimental Crossover A/B/C:** Módulo completo de pesquisa experimental com partição 25/25/50 por família de estudo, ablação offline H3, cronometragem de sessões com pausas e cálculo de Kappa de Cohen (**Seções 14 a 20 / E1 a E6**).
+**Versão 0.15.0:** [dossiê documental na triagem](docs/ETAPA_DOSSIE_TRIAGEM.md), com documentos, versões e fontes do estudo selecionado na curadoria protegida. A revisão e as conclusões clínicas continuam humanas.
 
----
+**Pesquisa reproduzível:** [relatórios HTML e notebooks executados](docs/resultados/pesquisa-reprodutivel/README.md), separados por piloto, com [instruções de reprodução e limites](docs/ETAPA_NOTEBOOK_PESQUISA.md). As execuções ainda não contêm resultados clínicos revisados.
 
-## 🏛️ Arquitetura do Sistema
+**Etapa 0.14.0:** [cobertura bibliográfica por PMID](docs/ETAPA_REFERENCIAS_PUBLICACOES.md), com referências por código da fonte, candidatos e PMIDs a conferir. Não coleta artigos nem confirma vínculos clínicos automaticamente.
 
-O projeto é estruturado como um monorepo modular em 3 camadas complementares:
+**Etapa 0.13.0:** [auditoria de relato dos registros](docs/ETAPA_AUDITORIA_RELATO.md), com disponibilidade de resultados, precisão das datas, intervalos de calendário e rastreabilidade. É a introdução descritiva do eixo B, sem Kaplan–Meier ou análise da sobrevida dos pacientes.
 
-```
-DenguePharma/
-├── backend/          # API REST corporativa (Java 21, Spring Boot 3.4.5, PostgreSQL 16, Flyway)
-├── frontend/         # SPA reativa e acessível (React 18, Vite, TypeScript)
-├── workers/          # Workers determinísticos e IA (Python 3.12, Pytest)
-├── docker-compose.yml# Infraestrutura containerizada (PostgreSQL 16, RabbitMQ, MinIO)
-└── .env.example      # Dicionário de variáveis de ambiente
-```
+**Etapa 0.12.0:** [patrocinadores declarados nos registros](docs/ETAPA_PATROCINADORES.md), com dados reais, proveniência, ausências/conflitos, CSVs, PNG e relatório Quarto. O panorama descreve os registros coletados; não avalia eficácia ou risco de viés.
 
-```mermaid
-flowchart TD
-    subgraph Fontes Externas
-        NCBI["NCBI / PubMed (E-utilities)"]
-        CT["ClinicalTrials.gov API v2"]
-        EPMC["Europe PMC / PMC Open Access"]
-        PCHEM["PubChem (PUG-REST)"]
-        LILACS["LILACS / WHO ICTRP (Assisted)"]
-    end
+**Etapa 0.11.0:** [comparação de execuções publicadas](docs/ETAPA_COMPARACAO_EXECUCOES.md), com compatibilidade de escopo, mudanças documentais, denominadores e exportações reproduzíveis. As comparações reais confirmaram preservação dos pilotos entre as versões 0.6 e 0.8.
 
-    subgraph Backend [Backend Spring Boot 3.4.5]
-        Ingest["Módulo de Ingestão & Checkpoints"]
-        Norm["Normalização Química & Fusões"]
-        Screen["Triagem Dupla & PRISMA-ScR"]
-        Extract["Validação de Spans & Ausências"]
-        Catalog["Catálogo & Comparador Científico"]
-        Ops["Outbox / Inbox / Jobs / Relatórios"]
-    end
+**Etapa 0.10.0:** [identidade dos estudos](docs/ETAPA_IDENTIDADE_ESTUDOS.md), com conferência de vínculos, prévia do impacto e correção auditável. Ambiguidades não escolhem automaticamente um estudo, e desfazer um vínculo exige nova revisão das bases afetadas.
 
-    subgraph Persistência [PostgreSQL 16]
-        DB_Base[(Schema V1: Trilha Imutável)]
-        DB_Prot[(Schema V2: Protocolos & Ingestão)]
-        DB_Sub[(Schema V3: Substâncias & Triagem)]
-        DB_Ext[(Schema V4: Extração & Catálogo)]
-        DB_Exp[(Schema V5: Experimento Crossover)]
-    end
+**Etapa 0.9.0:** [backup e restauração da curadoria](docs/ETAPA_BACKUP_CURADORIA.md), com cópia consistente, hashes, validação de fontes/auditoria e recuperação isolada dos dois pilotos. A revisão científica permanece pendente.
 
-    subgraph Workers [Workers Python 3.12]
-        Idemp["Idempotency Guard"]
-        Parser["Deterministic Extractor & Parser"]
-        Budget["BudgetGuard (Teto USD)"]
-        Ablation["H3 Offline Ablation"]
-    end
+**Etapa 0.8.0:** [prévia da revisão independente](docs/ETAPA_PREVIA_REVISAO.md), com conferência do lote sem gravar votos, confirmação explícita e recusa de prévias desatualizadas. A revisão científica do piloto continua pendente.
 
-    subgraph Frontend [Frontend Vite + React + TS]
-        UI["8 Telas com RBAC (5 Perfis)"]
-    end
+**Etapa 0.7.0:** [coleta completa controlada](docs/ETAPA_COLETA_COMPLETA.md), com estratégia congelada, retomada conservadora e exportação pelo PostgreSQL somente de leitura. A execução real depende da seleção e calibração humanas do piloto.
 
-    NCBI --> Ingest
-    CT --> Ingest
-    EPMC --> Ingest
-    LILACS --> Ingest
-    PCHEM --> Norm
+Estudo de ciência de dados sobre evidências farmacológicas relacionadas à dengue, em migração gradual para Python.
 
-    Ingest --> DB_Prot
-    Norm --> DB_Sub
-    Screen --> DB_Sub
-    Extract --> DB_Ext
-    Catalog --> DB_Ext
-    Ops --> DB_Exp
+**Etapa 0.6.0:** [calibração e síntese clínica por campos](docs/ETAPA_CALIBRACAO_SINTESE.md), com decisões vinculadas à seleção vigente, justificativas humanas e bloqueios na API. O piloto real continua pendente de revisão; nenhuma conclusão foi gerada automaticamente.
 
-    Ops --> Workers
-    Workers --> Extract
+**Etapa 0.5.0:** [extração clínica e revisão por campos](docs/ETAPA_EXTRACAO_CLINICA.md), com prévia sem gravação, referências às fontes e decisões independentes. O piloto real ainda depende da triagem humana; não foram gerados resultados clínicos automaticamente.
 
-    Frontend <--> Backend
-```
+**Etapa 0.4.0:** [apoio à revisão independente](docs/ETAPA_REVISAO_INDEPENDENTE.md), com pacote privado do piloto, importação de triagem validada em lote, painel de pendências e localizadores literais. O material está preparado para dois revisores; não houve aprovação científica automática.
 
----
+**Continuidade 0.3.0:** o dashboard tem a aba **Resultados gerais**, diagnóstico de calibração e triagem por campos. Os [resultados descritivos obtidos](docs/RESULTADOS_GERAIS_PESQUISA.md) e os [arquivos exportados](docs/resultados/README.md) estão documentados. O piloto mantém zero resultados clínicos revisados; sinais de metadados não aprovam nem excluem estudos automaticamente.
 
-## 🛡️ Regras Científicas Invioláveis (RC-01 a RC-07)
+**Atualização de 28/10/2026:** a prioridade é a [síntese clínica de benefício, alívio de sintomas e segurança](docs/IMPLEMENTACAO_SINTESE_CLINICA.md), regida pela [emenda do protocolo](spec/clinical/EMENDA_CLINICA.md). Foram implementados seleção/revisão protegidas, resultados por estudo, ICs, tabelas, fichas e gráficos. O novo piloto de 20 registros ainda aguarda revisão humana; não há conclusão de eficácia publicada. Carga de doença e avaliação de IA ficam para depois.
 
-As regras científicas foram codificadas no nível mais profundo da aplicação (inclusive com *constraints* no PostgreSQL e interceptores lógicos):
+O escopo vigente é a **[especificação Analytics](spec/README.md)**, derivada do novo PDF e implementada por etapas. A primeira entrega Python usa FastAPI, Streamlit, Quarto e Parquet/DuckDB em paralelo a Java/React. Panorama coletado e evidências revisadas permanecem separados. O experimento de IA volta ao objetivo completo do projeto, mas ainda não foi implementado e não é necessário para executar esta fundação.
 
-| Regra | Nome | Descrição e Implementação |
-| :--- | :--- | :--- |
-| **RC-01** | **Separação Rígida de Contextos** | É proibido misturar dados *in vitro*, *in silico*, animais e ensaios clínicos humanos. O comparador e o catálogo exigem visualização segregada de finalidade (*Tratamento Antiviral*, *Terapia Dirigida ao Hospedeiro*, *Profilaxia*, *Desafio Humano Controlado* e *Manejo Sintomático*). |
-| **RC-02** | **Rigor em Alegações Regulatórias** | A alegação de que um fármaco é aprovado exige validação da *constraint* `chk_regulatory_claim`: autoridade (ex.: ANVISA, FDA), jurisdição territorial, indicação formalmente aprovada, fonte documental e data. Na ausência de qualquer um, o status é forçado para `CANDIDATO_EM_PESQUISA`. |
-| **RC-03** | **Desfecho Substituto != Desfecho Clínico** | Redução de viremia plasmática (AUC de RNA viral) não é equivalente nem garantia de redução de hospitalização ou choque por dengue. Além disso, a ausência de relato de eventos adversos (`AUSENCIA_DE_RELATO`) é estritamente impedida de ser exibida como atestado de "segurança". |
-| **RC-04** | **Vedação de Ranking Universal** | A plataforma rejeita explicitamente a criação de scores agregados ponderados ou ranqueamentos clínicos de eficácia de medicamentos, impedindo leituras simplistas sobre fármacos em fases iniciais. |
-| **RC-05** | **Aplicação Restrita de RoB 2** | A ferramenta RoB 2 só pode ser aplicada a ensaios clínicos randomizados (`chk_rob2_design`). Desenhos observacionais ou pré-clínicos devem utilizar ferramentas adequadas (ROBINS-I ou declaração de não aplicabilidade). |
-| **RC-06** | **Tratamento de Retratações Científicas** | Quando um estudo é retratado pelo periódico, ele é **imediatamente removido do catálogo público e do comparador**, enquanto sua versão e histórico documental permanecem integralmente preservados para fins de auditoria histórica, enfileirando uma reavaliação. |
-| **RC-07** | **Síntese Descritiva e Transparência** | O MVP entrega mapas descritivos e tabelas estruturadas de evidência. Meta-análises quantitativas automatizadas não são permitidas sem avaliação prévia de homogeneidade metodológica. |
+Para executar a nova aplicação, consulte **[analytics/README.md](analytics/README.md)**. Dashboard: `http://127.0.0.1:8501`; API: `http://127.0.0.1:18081`. Os coletores duráveis e a autenticação continuam no legado; a nova curadoria clínica usa área privada própria. Os requisitos v2/v3 abaixo são históricos.
 
----
+Uso exclusivo para pesquisa e consulta de evidências. A plataforma não realiza diagnóstico, prescrição, cálculo de dose, ranking de medicamentos ou avaliação automática de eficácia.
 
-## 🧪 Cenários de Teste de Aceite Automatizados (T1 a T10)
+## Funcionalidades
 
-Todos os cenários mínimos da **Seção 18** da proposta estão cobertos por testes automatizados contínuos:
+- Protocolos versionados, importação com checkpoint, identidade documental e normalização de substâncias.
+- Triagem independente, revisão humana com suporte documental e controle de publicação de campos críticos.
+- Catálogo, comparação contextualizada e relatórios PDF/CSV/JSON com snapshots.
+- Pipeline durável com PostgreSQL, RabbitMQ, MinIO e workers Python.
+- Análises descritivas de dados revisados: distribuições, mapas de lacunas, completude e rastreabilidade estrutural.
+- Tabelas e gráficos na aplicação, execução por comando e pacote ZIP com CSV/JSON/HTML/PNG, versões e hashes.
 
-- **T1. Reimportação sem Duplicação:** Reexecutar a mesma busca do PubMed ou ClinicalTrials.gov atualiza metadados sem duplicar entidades de estudo ou documentos (`ImportIntegrationTest`).
-- **T2. Não Sobrescrever Decisão:** Uma nova versão do documento-fonte reabre curadoria e cria nova versão imutável, mas não apaga a decisão humana anterior (`ImportIntegrationTest`).
-- **T3. Vínculo Reversível vs Fusão Automática:** Identificadores compartilhados (mesmo DOI ou NCT) geram propostas de fusão auditadas (`study_link_proposal`), exigindo aprovação manual e permitindo desfazimento completo (`SubstanceAndScreeningIntegrationTest`).
-- **T4. Abstenção quando Falta Trecho Literal:** Se um modelo extrai uma informação sem trecho literal comprovado no texto, o status é alterado obrigatoriamente para `INCERTO` e a publicação é bloqueada (`test_extractor.py`).
-- **T5. Validação Numérica e Denominadores:** Frações com numerador maior que denominador (ex.: 30/25) ou tamanhos de amostra inconsistentes são invalidados (`test_extractor.py`).
-- **T6. Retratação Invalida Síntese Vigente:** A retratação desativa o estudo no catálogo e comparador, mantendo relatórios gerados anteriormente reproduzíveis (`ExtractionCatalogReportOpsIntegrationTest`).
-- **T7. Idempotência na Reentrega:** Eventos reentregues na Inbox não geram extrações lógicas duplicadas (`test_idempotency.py`).
-- **T8. Exportação com Proveniência Completa:** O PDF exportado é um documento estruturado contendo obrigatoriamente fonte, data UTC, contexto experimental, filtros, status da evidência e limitações (`ExtractionCatalogReportOpsIntegrationTest`).
-- **T9. Respeito às Licenças de Redistribuição:** O pacote de reprodução científica exporta textos integrais apenas de artigos com licença aberta (ex.: CC-BY, CC0); artigos restritos têm apenas seus identificadores e hashes SHA-256 exportados (`ExtractionCatalogReportOpsIntegrationTest`).
-- **T10. Neutralização de Prompt Injection:** Instruções maliciosas embutidas em resumos ou tabelas de artigos são tratadas como dado textual passivo, sendo expurgadas antes de qualquer processamento (`test_extractor.py`).
+Os mapas revisados contam cada estudo uma vez, preservam conflitos e valores ausentes e separam os contextos experimentais. O panorama distingue documentos, registros de ensaios e estudos. Campos científicos ainda não revisados não são preenchidos a partir de resumos não aprovados. Um resultado vazio informa “sem dados”.
 
----
+## Estrutura
 
-## 💻 As 8 Telas do Frontend (Vite + React + TS)
+| Diretório | Conteúdo |
+| --- | --- |
+| `backend/` | Java 21, Spring Boot, API REST, autorização, curadoria, snapshots e Flyway |
+| `frontend/` | React/TypeScript, triagem, revisão, catálogo, relatórios e análises |
+| `workers/` | Python, regras documentais, pandas/Matplotlib, execução de jobs e CLI |
+| `infra/minio/` | Imagem MinIO compilada de fonte oficial fixada |
+| `docs/` | Requisitos vigentes, auditoria histórica e registros de implementação |
 
-A interface é responsiva, segue princípios de acessibilidade (navegação integral por teclado e rótulos sem dependência exclusiva de cor) e possui controle granular de acesso (RBAC) com 5 papéis: `LEITOR`, `REVISOR`, `ADJUDICADOR`, `PESQUISADOR` e `ADMINISTRADOR`.
+## Executar a aplicação legada localmente
 
-1. **Protocolos (`/protocolos`):** Cadastro de protocolos de revisão de escopo, estratégia de busca, critérios de inclusão/exclusão e ciclo de vida (`DRAFT` -> `REGISTERED` -> `FROZEN`).
-2. **Importações (`/importacoes`):** Execução de buscas em tempo real, monitoramento de progresso com *checkpoints*, contadores de registros novos/atualizados e logs de quota.
-3. **Triagem (`/triagem`):** Triagem cega independente de títulos e resumos por dois revisores, tela de adjudicação para resolução de divergências e fluxograma **PRISMA-ScR** gerado dinamicamente.
-4. **Revisão Lado a Lado (`/revisao`):** Exibição do valor extraído lado a lado com a citação literal da fonte (`char_start..char_end`), permitindo aprovação, correção com justificativa obrigatória ou rejeição.
-5. **Catálogo de Evidências (`/catalogo`):** Navegação e busca multifatorial por substância química, contexto experimental, desenho de estudo, serotipo da dengue e fase clínica, mantendo alertas de segurança e limitações metodológicas em evidência.
-6. **Comparador Metodológico (`/comparador`):** Seleção de múltiplos estudos avaliando o mesmo desfecho e janela temporal, destacando incompatibilidades metodológicas e exibindo o aviso legal de vedação a rankings clínicos.
-7. **Relatórios (`/relatorios`):** Geração de *snapshots* auditáveis congelados (`report_snapshot`) com download direto nos formatos **PDF**, **CSV** e **JSON**.
-8. **Painel Operacional (`/painel`):** Central de controle com fila de reavaliação de fontes, monitoramento de jobs assíncronos com *lease*, publicação da Outbox, partição por famílias de estudo, métricas de concordância (**Kappa**) e exportação do pacote de reprodução.
+Pré-requisitos: JDK 21, Maven, Node/npm, Python 3.12 e Docker Desktop com engine Linux.
 
----
+Crie `.env` a partir de `.env.example` e configure senhas de banco, RabbitMQ e MinIO, `JWT_SECRET` com pelo menos 32 caracteres e credenciais do primeiro administrador. Não versione esse arquivo.
 
-## 🚀 Como Executar o Projeto Localmente
-
-### Pré-requisitos
-- **Java Development Kit (JDK) 21**
-- **Node.js 18+** e **npm**
-- **Python 3.12**
-- **Docker Desktop** (com suporte a Docker Compose)
-- **Apache Maven 3.9+**
-
----
-
-### Passo 1: Configurar Variáveis de Ambiente
-Copie o arquivo de exemplo e crie o `.env` local:
 ```powershell
-cp .env.example .env
-```
-O `.env` já vem pré-configurado para desenvolvimento local seguro:
-```env
-DB_NAME=denguepharma
-DB_USER=denguepharma
-DB_PASSWORD=denguepharma_local_dev_secret_123
-DB_PORT=5434
-DB_URL=jdbc:postgresql://localhost:5434/denguepharma
-RABBITMQ_USER=denguepharma
-RABBITMQ_PASSWORD=denguepharma_local_dev_secret_123
-MINIO_USER=denguepharma
-MINIO_PASSWORD=denguepharma_local_dev_secret_123
-
-JWT_SECRET=super_secret_jwt_key_with_at_least_32_characters_12345
-BOOTSTRAP_ADMIN_EMAIL=admin@denguepharma.org
-BOOTSTRAP_ADMIN_PASSWORD=AdminPassword123!
+if (-not (Test-Path .env)) { Copy-Item .env.example .env }
+.\scripts\configure-pipeline.ps1
+docker compose up -d --build postgres rabbitmq minio
 ```
 
----
+O script preserva um `PIPELINE_TOKEN` já configurado e gera uma credencial interna quando ela estiver vazia. Não exibe o segredo. A primeira compilação do MinIO pode levar alguns minutos.
 
-### Passo 2: Subir a Infraestrutura (Banco de Dados)
-Suba o container do PostgreSQL 16:
-```powershell
-docker compose up -d postgres
-```
-*(O banco inicializa na porta `5434` do seu computador, evitando conflito caso você já possua outro PostgreSQL na porta padrão 5432).*
+Carregue o ambiente e inicie o backend; Flyway aplica as migrations, incluindo V9:
 
----
-
-### Passo 3: Inicializar a API Backend (Spring Boot)
-No diretório raiz do projeto:
 ```powershell
 Get-Content .env | ForEach-Object { if ($_ -match '^([^#=]+)=(.*)$') { [System.Environment]::SetEnvironmentVariable($matches[1].Trim(), $matches[2].Trim()) } }
 mvn -f backend/pom.xml spring-boot:run
 ```
-A API iniciará em `http://localhost:8080`.
 
----
+Em outros terminais:
 
-### Passo 4: Inicializar a Interface Frontend (React / Vite)
-Em um novo terminal:
 ```powershell
+docker compose --profile pipeline up -d --build worker
 npm install --prefix frontend
 npm run dev --prefix frontend
 ```
-Acesse a aplicação no seu navegador em: **`http://localhost:5173`**.
 
----
+Interface: `http://localhost:5173`. API: `http://localhost:8080`. O PostgreSQL local usa a porta 5434 no exemplo. O worker em Docker acessa o backend pelo host; `PIPELINE_BACKEND_URL` permite mudar esse endereço.
 
-### Passo 5: Explorar com o Piloto de 20 Estudos
-1. Entre na interface usando:
-   - **E-mail:** `admin@denguepharma.org`
-   - **Senha:** `AdminPassword123!`
-2. Clique na aba **Painel operacional** no menu superior.
-3. Clique no botão **"Carregar Piloto de 20 Registros (Seção 20)"**.
-4. Imediatamente a base será populada com estudos clássicos e contemporâneos de dengue:
-   - *Celgosivir* (Ensaio clínico de fase 2, DENV-1/2);
-   - *Balapiravir* (Ensaio clínico randomizado, sem benefício em viremia);
-   - *Cloroquina* (Ensaio clínico de fase 3, sem redução de internação);
-   - *Ivermectina* (Ensaio de depuração de NS1);
-   - *JNJ-1802 / Mosnodivir* (Estudo de desafio humano controlado com DENV-3);
-   - *Prednisolona* (Corticoterapia precoce sem prevenção de choque);
-   - *Sofosbuvir, Niclosamida, Ribavirina* (Modelos *in vitro* e animais com EC50 explícita);
-   - *Sinefungina e Quercetina* (Simulações *in silico* de docking molecular na metiltransferase NS5).
-5. Agora explore as abas **Catálogo**, **Comparador**, **Relatórios** e **Triagem** com os dados reais já visualizados e filtráveis!
+## Ciência de dados e dashboards
 
----
+A página inicial abre sem login. Resultados aparecem após a publicação explícita de uma execução; a curadoria permanece protegida. Séries temporais, perfil dos ensaios, países, intervenções, completude e vínculos são calculados por scripts reproduzíveis.
 
-## 🧪 Execução das Suítes de Teste Automatizadas
+Consulte **[Etapa 4: coleta piloto, análise, revisão e publicação](docs/IMPLEMENTACAO_ETAPA_4.md)** para executar os comandos. O piloto tem até 25 registros por fonte e gera uma planilha pendente de revisão; a coleta completa por CLI exige essa validação. O notebook de exploração está em `notebooks/01_exploracao_corpus.ipynb`.
 
-### 1. Testes de Integração do Backend (Java / Testcontainers)
-Testa o fluxo completo do Spring Boot subindo um container isolado do PostgreSQL 16 via Testcontainers:
+## Análises de evidências revisadas (compatibilidade v2)
+
+1. Registre um protocolo, importe fontes e realize a triagem.
+2. Revise e publique campos com suporte documental. A extração por regras cobre apenas alguns padrões; demais campos podem permanecer pendentes.
+3. Em **Relatórios → Análises descritivas**, selecione os filtros e solicite a execução com perfil PESQUISADOR/ADMINISTRADOR.
+4. Consulte o estado, tabelas, gráficos e pacote ZIP. LEITOR pode consultar e baixar análises existentes.
+
+O snapshot congela os dados aprovados na solicitação. Atualizações e retratações posteriores afetam novas análises, preservando as antigas. Substância, desenho, fase e categoria de desfecho só aparecem quando aprovados campo a campo. Dados demonstrativos ficam fora das análises científicas.
+
+### Reproduzir por comando
+
+Baixe `dataset.json` de uma análise e execute:
+
 ```powershell
-mvn -B -q -f backend/pom.xml test
+workers\.venv\Scripts\python.exe -m pip install -r workers/requirements.lock
+workers\.venv\Scripts\python.exe -m pip install --no-deps -e workers
+workers\.venv\Scripts\python.exe -m denguepharma_workers.analysis --input dataset.json --output resultados
 ```
-*Total:* **35 testes** passando (autenticação, imutabilidade, regras científicas, T1 a T10 e módulo experimental).
 
-### 2. Testes dos Workers e IA (Python / Pytest)
-Testa sanitização contra injeção de prompt, validação de denominadores e frações, cálculo de métricas F1 e ablação offline H3:
+Se necessário, crie antes o ambiente com `python -m venv workers/.venv`. Os scripts não precisam de credenciais para analisar esse arquivo local.
+
+O pacote contém dados estruturados sem texto integral, tabelas CSV, resumo JSON, relatório HTML, gráficos PNG e manifesto de reprodução. Extraia o ZIP para abrir o HTML com suas imagens. A análise não transforma falta de registros em prova de ausência de evidência na literatura.
+
+## Testes
+
 ```powershell
 workers\.venv\Scripts\python.exe -m pytest workers -q
-```
-*Total:* **9 testes** passando.
-
-### 3. Testes do Frontend e Compilação de Produção (Vitest / Vite)
-Testa permissões de rotas, navegação por perfil, formulários e faz a verificação estática de tipos do TypeScript:
-```powershell
 npm test --prefix frontend -- --run
 npm run build --prefix frontend
+mvn -B -f backend/pom.xml test
 ```
-*Total:* **7 testes** passando e compilação de produção sem erros de tipos (`tsc -b`).
 
----
+Para incluir o teste completo com PostgreSQL, RabbitMQ, MinIO, servidor HTTP e processo Python reais:
 
-## 📊 Módulo de Avaliação Experimental e Métricas (Seções 14 a 17)
+```powershell
+docker compose build minio
+$env:PIPELINE_INTEGRATION = 'true'
+$env:PIPELINE_PYTHON = (Resolve-Path workers/.venv/Scripts/python.exe).Path
+mvn -B -f backend/pom.xml test
+```
 
-O sistema possui uma API dedicada para conduzir a validação experimental formal da proposta de pesquisa:
+Os testes de integração usam recursos isolados. Sem a variável de habilitação, o teste completo opcional é ignorado.
 
-- **Partição por Famílias de Estudo (`POST /api/experiment/split`):** Garante que documentos derivados do mesmo ensaio clínico permaneçam na mesma partição estratificada (**25% DEV**, **25% Validação**, **50% Teste Congelado**).
-- **Alocação Crossover Balanceada (`POST /api/experiment/allocate`):** Aloca os documentos entre revisores nas condições **A (Manual)** e **C (Assistida por IA com trecho literal)**, garantindo que o mesmo revisor nunca avalie o mesmo documento em duas condições distintas.
-- **Sessões Cronometradas (`POST /api/experiment/sessions`):** Captura o tempo ativo de leitura, tempo de pausas, volume de correções e dificuldade do artigo.
-- **Métricas Científicas Consolidadas (`GET /api/experiment/metrics`):**
-  - **Precisão, Recall e F1** em campos preenchidos, **excluindo verdadeiros negativos de ausência** (evitando inflar artificialmente a acurácia com campos que naturalmente não existiam no artigo);
-  - **Acurácia de Ausência Correta:** Avaliação segregada dos status `NOT_REPORTED`, `NOT_APPLICABLE`, `UNCERTAIN` e `CONFLICTING`;
-  - **Taxa de Fidelidade:** Proporção de campos onde o trecho citado sustenta factualmente a afirmação clínica sob revisão cega;
-  - **Concordância Interobservador:** **Kappa de Cohen** e percentual de acordo na triagem independente antes da adjudicação;
-  - **Mediana de Tempo por Condição:** Comparação do tempo gasto na condição manual vs assistida por IA, confrontando com a meta de engenharia de **redução mínima de 20% no tempo de curadoria**.
+## Compatibilidade e histórico
 
----
+Os endpoints `/api/experiment/split`, `/allocate`, `/sessions` e `/metrics` foram retirados do MVP e retornam `410 Gone`. Registros experimentais antigos não são apagados. As hipóteses de IA H1/H2/H3 não são requisitos obrigatórios das versões 2 e 3; o experimento fica para uma etapa posterior.
 
-## 📄 Licença e Termos de Uso
-Este software é distribuído sob licença acadêmica para fins de pesquisa em saúde pública e informática médica. Dados bibliográficos recuperados de fontes externas permanecem sob os termos de uso e direitos autorais de suas respectivas instituições e periódicos de origem.
+- [Especificação Analytics](spec/README.md) — fonte vigente, derivada do novo PDF.
+- [Requisitos v3](docs/REQUISITOS_V3.md) — escopo anterior, preservado como histórico.
+- [Requisitos v2](docs/REQUISITOS_V2.md) — escopo anterior, preservado para histórico e compatibilidade.
+- [Etapa 3: análises descritivas](docs/IMPLEMENTACAO_ETAPA_3.md) — contratos, uso, reprodução e limites.
+- [Etapa 2: pipeline](docs/IMPLEMENTACAO_ETAPA_2.md) — configuração de filas, armazenamento e worker.
+- [Etapa 1](docs/IMPLEMENTACAO_ETAPA_1.md) e [auditoria](docs/AUDITORIA_REQUISITOS.md) — registros históricos de achados e correções.
+- `DenguePharma_Proposta_Formal.pdf` — proposta original preservada.
+
+A implementação das análises v2 não equivale a homologação de toda a plataforma. Pendências gerais de operação e curadoria permanecem descritas nos documentos, incluindo recuperação de backup, testes de carga e acessibilidade completa.
+
+## Registro final das alterações
+
+Consulte o **[registro consolidado das etapas 1 a 4](docs/ALTERACOES_CONSOLIDADAS.md)** para todas as alterações de escopo, curadoria, coleta, processamento, APIs, banco, análises, dashboards e reprodução. Ele reúne os resultados finais dos testes, os limites operacionais e as pendências.
+
+A [validação do piloto real](docs/TESTE_CIENCIA_DADOS.md) registra 50 documentos coletados, 19 tabelas CSV e oito gráficos. O panorama está disponível sem login; a revisão humana do piloto e a coleta completa continuam pendentes.
+
+### Migração Python — primeiro marco
+
+A [etapa de migração Analytics](docs/MIGRACAO_ANALYTICS.md) registra a estrutura nova, as diferenças em relação ao PDF, a leitura somente de leitura, os marts e a validação. Java/React e dados históricos permanecem disponíveis até a paridade dos fluxos substitutos. A primeira entrega não conclui os eixos B, C e D nem a avaliação científica do corpus.

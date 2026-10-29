@@ -1,0 +1,16 @@
+{
+  "artifacts": {
+    "publication-refs-coverage.png": "6a70fe0e659a12ce30766cd0869f0a76545f62cbbb82f017f2700da3bc06ddb4",
+    "publication_reference_coverage.csv": "53ee0d5c39cb70086cf19a092f7c76e352a9c67a498c63a7ae25450eebc3a833",
+    "publication_reference_links.csv": "1cac70e7042ca5d867b998632f965acc04e720112a4ccc27f44873c99f3969c9",
+    "publication_reference_missing.csv": "942d2e1e01b9c56a8034b369f0db19cbbbe800ce8d749637edd47336854f204a",
+    "summary.json": "80cebd3d8be11b1f48efdc60df4fb40c550bce1becfcbb6e812a490cfe36630e"
+  },
+  "code_hash": "cc710540ae6ee2b59caf670a013c577fe40f9ccf365483d88d1c64342f37d6f4",
+  "input_hash": "fb8d1a58ed83ac29dd5391cb4184402e5d46523d7d0bef8db74d0751d8ee4f00",
+  "method": "registry-publication-reference-audit-1",
+  "run_id": "7a1897915598231a92e7b969185fc13d33e23d88e245d5c015bab26b13984424",
+  "run_manifest_hash": "cff4114596eb273cd60cba83ff05a746f3e73fccf95aaad60d81a453196a2bd3",
+  "schema_version": "publication-reference-public-artifacts-1",
+  "software_version": "0.14.0"
+}

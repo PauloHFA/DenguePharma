@@ -1,0 +1,327 @@
+{
+  "baseline_documents": 20,
+  "comparable": true,
+  "comparison_id": "772a3a15932911a604941f152d74fea4adc93a6f30d5e24b3019b3b429c9ea43",
+  "configuration": {
+    "baseline": "234e2aab4c96ee7ffb287e735439db3bf4d6f4c2a0d3dbf63ec16c0d56239df6",
+    "baseline_input_hash": "6170bd7583d266c2954a503b630098e7d8c32fbbbbb248f3984ce106077e24eb",
+    "baseline_manifest_hash": "b8c09ff5338a0995bdcc9f4b567521312aeaaa53feea8bfdd4cba562a4ec996c",
+    "code_hash": "a66f5b9ca5575c13383624792e86fcf4b8e9191ea50c711571d2ff1a8888b1c6",
+    "current": "19d81d238efa1134b188a06e7cffe45dc2e7166af1f8de9b8ffbef146d7685ed",
+    "current_input_hash": "6170bd7583d266c2954a503b630098e7d8c32fbbbbb248f3984ce106077e24eb",
+    "current_manifest_hash": "a86c04e90aff8c51fb81af6d37f81a4c0e33eeb0272b84b896ade066c9cb96be",
+    "schema_version": "published-comparison-1",
+    "software_version": "0.11.0"
+  },
+  "counts": {
+    "CONTEUDO_ALTERADO": 0,
+    "DATA_RECUPERACAO_ALTERADA": 0,
+    "INALTERADO": 20,
+    "NAO_OBSERVADO": 0,
+    "NOVO": 0,
+    "REFERENCIA_ALTERADA": 0,
+    "REPRESENTACAO_ALTERADA": 0
+  },
+  "current_documents": 20,
+  "document_changes": [],
+  "metrics": [
+    {
+      "change_kind": "NOVO",
+      "count": 0,
+      "denominator": 20,
+      "proportion": 0.0,
+      "unit": "documento_de_origem_por_documentId"
+    },
+    {
+      "change_kind": "NAO_OBSERVADO",
+      "count": 0,
+      "denominator": 20,
+      "proportion": 0.0,
+      "unit": "documento_de_origem_por_documentId"
+    },
+    {
+      "change_kind": "CONTEUDO_ALTERADO",
+      "count": 0,
+      "denominator": 20,
+      "proportion": 0.0,
+      "unit": "documento_de_origem_por_documentId"
+    },
+    {
+      "change_kind": "REFERENCIA_ALTERADA",
+      "count": 0,
+      "denominator": 20,
+      "proportion": 0.0,
+      "unit": "documento_de_origem_por_documentId"
+    },
+    {
+      "change_kind": "REPRESENTACAO_ALTERADA",
+      "count": 0,
+      "denominator": 20,
+      "proportion": 0.0,
+      "unit": "documento_de_origem_por_documentId"
+    },
+    {
+      "change_kind": "DATA_RECUPERACAO_ALTERADA",
+      "count": 0,
+      "denominator": 20,
+      "proportion": 0.0,
+      "unit": "documento_de_origem_por_documentId"
+    },
+    {
+      "change_kind": "INALTERADO",
+      "count": 20,
+      "denominator": 20,
+      "proportion": 1.0,
+      "unit": "documento_de_origem_por_documentId"
+    }
+  ],
+  "notice": "Documentos por ID persistido, sem correspondencia aproximada. Nao observado nao significa exclusao, retratacao ou ausencia na literatura. Alteracao de conteudo nao demonstra mudanca de efeito clinico; mudanca de software nao equivale a nova evidencia.",
+  "same_input": true,
+  "shared_documents": 20,
+  "source_versions": [
+    "0.6.0",
+    "0.8.0"
+  ],
+  "table_changes": [
+    {
+      "current_logical_hash": "45bbf3d451cffd5f474d5d93721e52566dbb19a75aa1d3a1eed65c870c88d912",
+      "current_rows": 20,
+      "data_changed": false,
+      "previous_logical_hash": "45bbf3d451cffd5f474d5d93721e52566dbb19a75aa1d3a1eed65c870c88d912",
+      "previous_rows": 20,
+      "schema_changed": false,
+      "status": "INALTERADA",
+      "table": "calibration_documents"
+    },
+    {
+      "current_logical_hash": "ff832f9cc6f5df9960a587d2e76ef0780a7cf711ea46612ba1a4cb3bab3fa088",
+      "current_rows": 3,
+      "data_changed": false,
+      "previous_logical_hash": "ff832f9cc6f5df9960a587d2e76ef0780a7cf711ea46612ba1a4cb3bab3fa088",
+      "previous_rows": 3,
+      "schema_changed": false,
+      "status": "INALTERADA",
+      "table": "calibration_intervention_types"
+    },
+    {
+      "current_logical_hash": "3091147061037985202a3d90c81c9a5225c123d296d4ecf07f6188030f3348cc",
+      "current_rows": 2,
+      "data_changed": false,
+      "previous_logical_hash": "3091147061037985202a3d90c81c9a5225c123d296d4ecf07f6188030f3348cc",
+      "previous_rows": 2,
+      "schema_changed": false,
+      "status": "INALTERADA",
+      "table": "calibration_searches"
+    },
+    {
+      "current_logical_hash": "905d31c35cea572e853261943738be454ab28b0e978e95757013ee56afede92c",
+      "current_rows": 18,
+      "data_changed": false,
+      "previous_logical_hash": "905d31c35cea572e853261943738be454ab28b0e978e95757013ee56afede92c",
+      "previous_rows": 18,
+      "schema_changed": false,
+      "status": "INALTERADA",
+      "table": "calibration_signals"
+    },
+    {
+      "current_logical_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "current_rows": 0,
+      "data_changed": false,
+      "previous_logical_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "previous_rows": 0,
+      "schema_changed": false,
+      "status": "INALTERADA",
+      "table": "clinical_absences"
+    },
+    {
+      "current_logical_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "current_rows": 0,
+      "data_changed": false,
+      "previous_logical_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "previous_rows": 0,
+      "schema_changed": false,
+      "status": "INALTERADA",
+      "table": "clinical_conflicts"
+    },
+    {
+      "current_logical_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "current_rows": 0,
+      "data_changed": false,
+      "previous_logical_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "previous_rows": 0,
+      "schema_changed": false,
+      "status": "INALTERADA",
+      "table": "clinical_references"
+    },
+    {
+      "current_logical_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "current_rows": 0,
+      "data_changed": false,
+      "previous_logical_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "previous_rows": 0,
+      "schema_changed": false,
+      "status": "INALTERADA",
+      "table": "clinical_results"
+    },
+    {
+      "current_logical_hash": "f540e1506fdfdeb3a83e0a1a8da824e64c2c8eea6b97aa4124d070977971d94f",
+      "current_rows": 20,
+      "data_changed": false,
+      "previous_logical_hash": "f540e1506fdfdeb3a83e0a1a8da824e64c2c8eea6b97aa4124d070977971d94f",
+      "previous_rows": 20,
+      "schema_changed": false,
+      "status": "INALTERADA",
+      "table": "clinical_screening"
+    },
+    {
+      "current_logical_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "current_rows": 0,
+      "data_changed": false,
+      "previous_logical_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "previous_rows": 0,
+      "schema_changed": false,
+      "status": "INALTERADA",
+      "table": "clinical_synthesis"
+    },
+    {
+      "current_logical_hash": "d972b2da59fc5c338d9b3d40ef46fb6330c620849d8d7d50b69238a493cc735b",
+      "current_rows": 12,
+      "data_changed": false,
+      "previous_logical_hash": "d972b2da59fc5c338d9b3d40ef46fb6330c620849d8d7d50b69238a493cc735b",
+      "previous_rows": 12,
+      "schema_changed": false,
+      "status": "INALTERADA",
+      "table": "corpus_completeness"
+    },
+    {
+      "current_logical_hash": "cf60be9b466cc4f98309126f341c3b9b125d1d3d02535426aad19bb307cfdeb0",
+      "current_rows": 42,
+      "data_changed": false,
+      "previous_logical_hash": "cf60be9b466cc4f98309126f341c3b9b125d1d3d02535426aad19bb307cfdeb0",
+      "previous_rows": 42,
+      "schema_changed": false,
+      "status": "INALTERADA",
+      "table": "corpus_distributions"
+    },
+    {
+      "current_logical_hash": "c93aa41d4ecb488bec4d127d275cd65fe0f653e5df4aa95097e63b6fce56f4a8",
+      "current_rows": 20,
+      "data_changed": false,
+      "previous_logical_hash": "c93aa41d4ecb488bec4d127d275cd65fe0f653e5df4aa95097e63b6fce56f4a8",
+      "previous_rows": 20,
+      "schema_changed": false,
+      "status": "INALTERADA",
+      "table": "corpus_documents"
+    },
+    {
+      "current_logical_hash": "7d624b554ad2a189dbd56e0e0779f275f7af53a6b1da5b00a13524816bfeaa20",
+      "current_rows": 3,
+      "data_changed": false,
+      "previous_logical_hash": "7d624b554ad2a189dbd56e0e0779f275f7af53a6b1da5b00a13524816bfeaa20",
+      "previous_rows": 3,
+      "schema_changed": false,
+      "status": "INALTERADA",
+      "table": "corpus_enrollment"
+    },
+    {
+      "current_logical_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "current_rows": 0,
+      "data_changed": false,
+      "previous_logical_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "previous_rows": 0,
+      "schema_changed": false,
+      "status": "INALTERADA",
+      "table": "corpus_link_candidates"
+    },
+    {
+      "current_logical_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "current_rows": 0,
+      "data_changed": false,
+      "previous_logical_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "previous_rows": 0,
+      "schema_changed": false,
+      "status": "INALTERADA",
+      "table": "corpus_links"
+    },
+    {
+      "current_logical_hash": "ed2443fcbe2ea446d2935c96ccb0b370eaee215350f4dbdb3d5e15226160ffa3",
+      "current_rows": 9,
+      "data_changed": false,
+      "previous_logical_hash": "ed2443fcbe2ea446d2935c96ccb0b370eaee215350f4dbdb3d5e15226160ffa3",
+      "previous_rows": 9,
+      "schema_changed": false,
+      "status": "INALTERADA",
+      "table": "corpus_temporal"
+    },
+    {
+      "current_logical_hash": "151e78e88d4650e823e99066eabb2891c131919dce969b55b6cfa8a510af1be7",
+      "current_rows": 2,
+      "data_changed": false,
+      "previous_logical_hash": "151e78e88d4650e823e99066eabb2891c131919dce969b55b6cfa8a510af1be7",
+      "previous_rows": 2,
+      "schema_changed": false,
+      "status": "INALTERADA",
+      "table": "corpus_temporal_flags"
+    },
+    {
+      "current_logical_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "current_rows": 0,
+      "data_changed": false,
+      "previous_logical_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "previous_rows": 0,
+      "schema_changed": false,
+      "status": "INALTERADA",
+      "table": "mart_panorama"
+    },
+    {
+      "current_logical_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "current_rows": 0,
+      "data_changed": false,
+      "previous_logical_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "previous_rows": 0,
+      "schema_changed": false,
+      "status": "INALTERADA",
+      "table": "reviewed_completeness"
+    },
+    {
+      "current_logical_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "current_rows": 0,
+      "data_changed": false,
+      "previous_logical_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "previous_rows": 0,
+      "schema_changed": false,
+      "status": "INALTERADA",
+      "table": "reviewed_distributions"
+    },
+    {
+      "current_logical_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "current_rows": 0,
+      "data_changed": false,
+      "previous_logical_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "previous_rows": 0,
+      "schema_changed": false,
+      "status": "INALTERADA",
+      "table": "reviewed_gaps"
+    },
+    {
+      "current_logical_hash": "f223d6d957e6e0e55846a46500982a494a16a442f5b2cf5168b23dff9bd18b5e",
+      "current_rows": 4,
+      "data_changed": false,
+      "previous_logical_hash": "f223d6d957e6e0e55846a46500982a494a16a442f5b2cf5168b23dff9bd18b5e",
+      "previous_rows": 4,
+      "schema_changed": false,
+      "status": "INALTERADA",
+      "table": "reviewed_traceability"
+    },
+    {
+      "current_logical_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "current_rows": 0,
+      "data_changed": false,
+      "previous_logical_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "previous_rows": 0,
+      "schema_changed": false,
+      "status": "INALTERADA",
+      "table": "scientific_field_availability"
+    }
+  ]
+}

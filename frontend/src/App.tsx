@@ -11,6 +11,7 @@ import { ReportsPage } from "./pages/ReportsPage";
 import { ReviewPage } from "./pages/ReviewPage";
 import { ScreeningPage } from "./pages/ScreeningPage";
 import { ScreenPage } from "./pages/ScreenPage";
+import { DashboardPage } from "./pages/DashboardPage";
 import { SCREENS } from "./screens";
 
 function Shell() {
@@ -21,7 +22,7 @@ function Shell() {
   return (
     <div className="shell">
       <header>
-        <strong>DenguePharma</strong>
+        <a href="/">DenguePharma · Dashboards</a>
         <span className="muted">
           {session.email} ({session.roles.join(", ")})
         </span>
@@ -48,6 +49,7 @@ function Shell() {
 
 function Home() {
   const { session } = useAuth();
+  if (!session) return <Navigate to="/login" replace />;
   const first = SCREENS.find((s) => hasAnyRole(session, s.roles));
   return first ? <Navigate to={`/${first.path}`} replace /> : <p>Sem telas disponíveis para o seu perfil.</p>;
 }
@@ -72,9 +74,11 @@ function Guarded({ path }: { path: string }) {
 export function App() {
   return (
     <Routes>
+      <Route path="/" element={<DashboardPage />} />
+      <Route path="/dashboard" element={<DashboardPage />} />
+      <Route path="/curadoria" element={<Home />} />
       <Route path="/login" element={<LoginPage />} />
       <Route element={<Shell />}>
-        <Route index element={<Home />} />
         {SCREENS.map((s) => (
           <Route key={s.path} path={s.path} element={<Guarded path={s.path} />} />
         ))}
