@@ -1,5 +1,13 @@
 # Registro final das alterações — DenguePharma
 
+## 31. Mapa de cobertura da extração — versão 0.20.0
+
+O [painel privado de cobertura](ETAPA_COBERTURA_EXTRACAO.md) apresenta uma célula por identidade incluída e desfecho do protocolo, contando somente resultados canônicos revisados. Mantém conflitos visíveis e distingue falta de revisão de ausência de benefício ou aplicabilidade. Não soma participantes, efeitos ou publicações repetidas. A exportação autenticada inclui CSV, resumo e manifesto de hashes, sem votos ou textos de fontes.
+
+Os pilotos permanecem sem inclusões resolvidas, com mapas vazios e 40 e 100 avaliações independentes faltantes. Nenhum voto ou resultado clínico foi criado, e os snapshots anteriores foram preservados. Por orientação do pesquisador, as próximas entregas passam a ser commitadas após validação; o checkpoint até 0.19.0 é `0d2739f`, com política registrada em [VERSIONAMENTO.md](VERSIONAMENTO.md).
+
+Validação: 160 testes aprovados, com seis casos novos, PostgreSQL e Quarto reais. O login, o estado vazio e o download passaram no Chrome; o ZIP coincidiu com o módulo e seus hashes foram conferidos. A matriz continua com 96 requisitos e 29 com evidência automatizada.
+
 ## 30. Integridade documental — versão 0.19.0
 
 Foi acrescentado o [fluxo protegido de alertas documentais](ETAPA_INTEGRIDADE_DOCUMENTAL.md), com [contrato](../spec/clinical/INTEGRIDADE_DOCUMENTAL.md). Adjudicadores/administradores registram reavaliação, retirada ou regularização com referência e justificativa, mediante prévia de impacto e confirmação vinculada à conta e ao estado atual. O alerta modifica a base do estudo e impede uso de aprovações antigas, sem remover fontes ou eventos.

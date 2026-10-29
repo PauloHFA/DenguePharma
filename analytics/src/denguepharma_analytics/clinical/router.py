@@ -142,6 +142,19 @@ def router(root: Path, authenticate=None):
         try: return workflow(workspace(key),actor)
         except ValueError: raise HTTPException(409,"Integridade do fluxo de extracao invalida") from None
 
+    @routes.get("/{key}/extraction-coverage")
+    def extraction_coverage(key: str,actor: Principal=Depends(principal)):
+        from .extraction_coverage import view
+        try:return Response(content=json.dumps(view(workspace(key),actor),ensure_ascii=False),media_type="application/json",headers={"Cache-Control":"no-store"})
+        except ValueError:raise HTTPException(409,"Integridade do mapa de extracao invalida") from None
+
+    @routes.get("/{key}/extraction-coverage/export")
+    def extraction_coverage_export(key: str,actor: Principal=Depends(principal)):
+        from .extraction_coverage import package
+        try:return Response(content=package(workspace(key),actor),media_type="application/zip",
+            headers={"Cache-Control":"no-store","Content-Disposition":'attachment; filename="extraction-coverage.zip"'})
+        except ValueError:raise HTTPException(409,"Integridade do mapa de extracao invalida") from None
+
     @routes.get("/{key}/synthesis")
     def synthesis_state(key: str,actor: Principal=Depends(principal)):
         try: return synthesis_view(workspace(key),actor)

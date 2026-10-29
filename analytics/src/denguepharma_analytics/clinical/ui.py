@@ -83,6 +83,8 @@ def curation():
             source_tools(key,token,state["sources"])
             from .extraction_ui import render as extraction_forms
             extraction_forms(state,key,token)
+            from .extraction_coverage_ui import render as coverage_form
+            coverage_form(key,token)
             from .synthesis_ui import render as synthesis_forms
             synthesis_forms(key,token)
             from .collection_ui import render as collection_form

@@ -1,5 +1,9 @@
 # Plano atual — síntese clínica do DenguePharma Analytics
 
+## 28. Cobertura do trabalho de extração
+
+O [mapa 0.20.0](ETAPA_COBERTURA_EXTRACAO.md) distingue resultados revisados, células sem resultado e conflitos por estudo incluído e desfecho do protocolo. Não infere aplicabilidade ou benefício e permanece vazio enquanto a seleção independente não incluir estudos. A revisão humana do piloto clínico mantém 40 avaliações pendentes. A implementação foi separada do checkpoint 0.19.0 para seguir o versionamento por etapa.
+
 ## 27. Integridade documental da evidência corrente
 
 O [fluxo 0.19.0](ETAPA_INTEGRIDADE_DOCUMENTAL.md) permite registrar alertas humanos e suspender evidências correntes, sem reativar aprovações após regularização. Snapshots e relatórios anteriores são preservados; a apresentação pública atualizada exige nova execução publicada. Os documentos reais não receberam alertas ou votos na validação. Permanecem 40 avaliações independentes faltantes no piloto clínico.

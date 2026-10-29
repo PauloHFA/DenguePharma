@@ -17,6 +17,8 @@ A retirada do legado depende de backup/restauração validada, equivalência de 
 
 ## M08 — emenda clínica prioritária
 
+Continuidade 0.20.0: [mapa de cobertura da extração](../docs/ETAPA_COBERTURA_EXTRACAO.md), coberto por CLN-009. Consulta por estudo incluído e desfecho do protocolo, com resultados revisados consolidados, conflitos e exportação privada. Ausência de extração não é interpretada como desfecho não aplicável ou ausência de benefício.
+
 Continuidade 0.19.0: [integridade documental](clinical/INTEGRIDADE_DOCUMENTAL.md), coberta por CLN-003. Alertas humanos com prévia/recibo, suspensão corrente, regularização sem reativação e preservação de snapshots. A detecção automática e o atendimento integral do requisito de retratação do PDF continuam planejados.
 
 Continuidade 0.18.0: [atualização independente da curadoria](../docs/ETAPA_ATUALIZACAO_CURADORIA.md), coberta por MIG-006 e CLN-008. Fragmento privado e escolha do escopo de atualização, sem cache de dados clínicos, repetição automática de ações ou alteração das validações científicas.

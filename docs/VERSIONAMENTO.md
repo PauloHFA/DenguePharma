@@ -4,6 +4,8 @@ A partir de 28/10/2026, por orientação do pesquisador, cada etapa concluída d
 
 O checkpoint inclui a migração, os módulos operacionais anteriores, a documentação e os artefatos compartilháveis já presentes. A validação Python mais recente desse estado tem 154 testes aprovados; isso não constitui nova validação integral de todos os componentes Java/React do legado.
 
+Checkpoint registrado: `0d2739f` — estado até 0.19.0. A entrega 0.20.0 inaugura os commits separados por implementação posterior.
+
 Não versionar `.env`, credenciais, tokens, bases privadas de curadoria, snapshots operacionais, ambientes virtuais, ferramentas locais ou saídas de execução em `target/`. Os caminhos privados permanecem protegidos pelas regras de `.gitignore`. Artefatos em `docs/resultados/` são entregas compartilháveis deliberadas e devem continuar sem textos integrais ou dados privados de revisão.
 
 Antes de cada commit, conferir o conjunto staged e executar as verificações apropriadas à mudança. O resumo da entrega deve informar o hash do commit e a validação realizada. Commits de software não representam aprovação de revisão humana ou conclusão da pesquisa clínica.

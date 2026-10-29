@@ -1302,7 +1302,7 @@
     {
       "id": "REQ-CLN-009",
       "statement": "Extracao clinica por campos, referencias literais por ocorrencia, previa sem efeitos persistentes e revisao/adjudicacao explicitas com independencia e classificacao atual.",
-      "acceptance": "Verificar ausencias e zero, decimais, previa equivalente a validacao do rascunho, inclusao obrigatoria, permissao, invalidacao por classificacao e formularios de revisao.",
+      "acceptance": "Verificar ausencias e zero, decimais, previa equivalente a validacao do rascunho, inclusao obrigatoria, permissao, invalidacao por classificacao e formularios de revisao. Mapa operacional por estudo incluido e desfecho usa resultados revisados consolidados, preserva conflitos e fontes desatualizadas, sem interpretar ausencia de extracao como ausencia de beneficio ou aplicabilidade.",
       "verification": "T",
       "priority": "M",
       "research": "RQ-CLINICA",
@@ -1317,7 +1317,13 @@
         "test_extraction_endpoints_are_private_and_pending_studies_are_blocked",
         "test_extraction_form_shows_pending_block_without_save_controls",
         "test_field_form_previews_and_saves_only_a_draft",
-        "test_review_and_adjudication_forms_require_explicit_decisions"
+        "test_review_and_adjudication_forms_require_explicit_decisions",
+        "test_coverage_has_no_synthetic_cells_before_independent_inclusion",
+        "test_coverage_counts_only_reviewed_results_without_document_duplicates",
+        "test_coverage_preserves_conflicts_even_when_another_comparison_is_reviewed",
+        "test_coverage_drops_stale_evidence_and_does_not_restore_it_after_rescreening",
+        "test_coverage_export_is_reproducible_private_and_requires_permissions",
+        "test_coverage_ui_explains_empty_state_and_export_does_not_create_decisions"
       ],
       "source": "Continuidade: extracao e revisao por campos, 2026-10-28",
       "coverage": "Software validado em cenarios sinteticos; resultados reais dependem de selecao e revisao humanas"

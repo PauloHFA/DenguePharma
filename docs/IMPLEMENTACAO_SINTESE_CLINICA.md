@@ -112,3 +112,5 @@ Execução clínica publicada do novo piloto: `2665dc99d26e8a4b765664bed913e894b
 **Atualização 0.18.0:** a [curadoria independente do dashboard público](ETAPA_ATUALIZACAO_CURADORIA.md) reduz reconstruções durante as interações privadas. As consultas de curadoria continuam atuais, sem cache de votos ou tokens. Não houve alteração nos resultados científicos publicados.
 
 **Atualização 0.19.0:** o [fluxo de integridade documental](ETAPA_INTEGRIDADE_DOCUMENTAL.md) suspende a evidência corrente após alerta humano confirmado e preserva o histórico. Regularização exige novas revisões. A detecção automática e a atualização automática de relatórios históricos não foram implementadas nesta etapa.
+
+**Atualização 0.20.0:** o [mapa de cobertura por desfecho](ETAPA_COBERTURA_EXTRACAO.md) organiza resultados revisados e pendências dos estudos incluídos. Preserva conflitos e deduplicação, com exportação privada reproduzível. Não gera efeitos, conclusões ou desfechos ausentes por inferência.

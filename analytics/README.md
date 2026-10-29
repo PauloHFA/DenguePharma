@@ -1,5 +1,7 @@
 # DenguePharma Analytics — fundação Python
 
+**Versão 0.20.0:** [cobertura da extração por desfecho](../docs/ETAPA_COBERTURA_EXTRACAO.md), mapa privado por estudo incluído e desfecho, com resultados canônicos e conflitos. Exporta CSV/JSON/manifesto sem votos ou textos. Não calcula eficácia ou porcentagem genérica de completude.
+
 **Versão 0.19.0:** [retratações e correções documentais](../docs/ETAPA_INTEGRIDADE_DOCUMENTAL.md), registradas por humano autorizado com prévia e confirmação. No dashboard: **Curadoria clínica → Integridade documental — retratações e correções**. O alerta não atualiza automaticamente execuções públicas históricas.
 
 **Versão 0.18.0:** [atualização independente da curadoria](../docs/ETAPA_ATUALIZACAO_CURADORIA.md), com fragmento Streamlit e atualização no escopo permitido. Trocar filtros privados deixa de reconstruir os dashboards públicos; não há cache de votos ou tokens.
