@@ -1,5 +1,7 @@
 # DenguePharma
 
+**Versão 0.22.0:** [concordância inter-avaliadores na triagem duplo-cega](docs/ETAPA_CONCORDANCIA_REVISAO.md), com cálculo determinístico de concordância observada ($P_o$), Kappa de Cohen ($\kappa$) e AC1 de Gwet imune ao paradoxo de prevalência, matriz de contingência 3x3 e visualização protegida na curadoria.
+
 **Versão 0.21.0:** [inspeção de alterações em resultados clínicos](docs/ETAPA_ALTERACOES_RESULTADOS.md), com comparação estrutural entre versões de rascunhos e correções, preservação de ausência/null/zero e hashes de integridade sem expor trechos literais privados. As novas etapas seguem a [política de commits](docs/VERSIONAMENTO.md).
 
 **Versão 0.20.0:** [mapa de cobertura da extração por desfecho](docs/ETAPA_COBERTURA_EXTRACAO.md), com resultados revisados, pendências, conflitos e exportação privada rastreável. As novas etapas seguem a [política de commits](docs/VERSIONAMENTO.md).
