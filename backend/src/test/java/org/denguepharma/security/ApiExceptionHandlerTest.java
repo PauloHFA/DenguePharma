@@ -90,3 +90,4 @@ class ApiExceptionHandlerTest {
         assertThat(problem.getDetail()).isEqualTo("Argumento inválido de teste");
     }
 }
+

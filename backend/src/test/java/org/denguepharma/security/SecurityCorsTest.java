@@ -29,3 +29,4 @@ class SecurityCorsTest {
         assertThat(corsConfig.getExposedHeaders()).contains("Authorization", "Content-Disposition");
     }
 }
+
