@@ -3,6 +3,7 @@ import { useAuth } from "./auth/AuthContext";
 import { hasAnyRole } from "./auth/roles";
 import { CatalogPage } from "./pages/CatalogPage";
 import { TargetExplorerPage } from "./pages/TargetExplorerPage";
+import { EvidenceGraphPage } from "./pages/EvidenceGraphPage";
 import { ComparatorPage } from "./pages/ComparatorPage";
 import { ImportsPage } from "./pages/ImportsPage";
 import { LoginPage } from "./pages/LoginPage";
@@ -67,6 +68,7 @@ function Guarded({ path }: { path: string }) {
   if (path === "revisao") return <ReviewPage />;
   if (path === "catalogo") return <CatalogPage />;
   if (path === "alvos") return <TargetExplorerPage />;
+  if (path === "grafo") return <EvidenceGraphPage />;
   if (path === "comparador") return <ComparatorPage />;
   if (path === "relatorios") return <ReportsPage />;
   if (path === "painel") return <OperationalPanelPage />;

@@ -54,6 +54,13 @@ export const SCREENS: readonly ScreenDef[] = [
     roles: [],
   },
   {
+    path: "grafo",
+    title: "Grafo de Evidências (Eixo E)",
+    description: "Visualização em rede da topologia de substâncias, alvos moleculares, desfechos e evidências.",
+    emptyMessage: "Nenhum nó de evidência disponível.",
+    roles: [],
+  },
+  {
     path: "comparador",
     title: "Comparador",
     description: "Comparação por desfecho e tempo, com incompatibilidades visíveis. Não há ranking clínico automático.",
