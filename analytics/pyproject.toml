@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "denguepharma-analytics"
-version = "0.20.0"
+version = "0.21.0"
 description = "Fundacao analitica do DenguePharma: dados versionados, marts e dashboards"
 requires-python = ">=3.12,<3.13"
 dependencies = [

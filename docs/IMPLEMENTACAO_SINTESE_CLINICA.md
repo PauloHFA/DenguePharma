@@ -1,5 +1,7 @@
 # Síntese clínica — implementação e operação
 
+**Atualização 0.21.0:** a [inspeção de alterações](ETAPA_ALTERACOES_RESULTADOS.md) acrescenta comparação estrutural antes/depois de correções (`supersedes`) na curadoria protegida, sem expor trechos literais privados. Ausência, null e zero são distintos; mudanças de fonte marcam base desatualizada. A revisão humana do piloto continua pendente.
+
 **Atualização 0.10.0:** a [identidade dos estudos](ETAPA_IDENTIDADE_ESTUDOS.md) recebeu prévia e confirmação por campos. Vínculos divergentes exigem conferência humana, e correções não reativam revisões antigas. Os agrupamentos dos pilotos reais permaneceram iguais.
 
 **Atualização 0.9.0:** o [backup da curadoria](ETAPA_BACKUP_CURADORIA.md) preserva snapshot, protocolo, fontes e auditoria, com restauração em diretório separado. É uma entrega operacional; os resultados publicados da versão 0.8.0 e a pendência de revisão humana continuam preservados.

@@ -171,6 +171,13 @@ def router(root: Path, authenticate=None):
         except ValidationError: raise HTTPException(422,"Campos do resultado invalidos; preencha os dados e preserve ausencias") from None
         except ValueError as error: raise HTTPException(409,str(error)) from None
 
+    @routes.get("/{key}/results/{result_id}/changes")
+    def result_changes(key: str,result_id: str,actor: Principal=Depends(principal)):
+        from .result_changes import view
+        try:return Response(content=json.dumps(view(workspace(key),result_id,actor),ensure_ascii=False),
+            media_type="application/json",headers={"Cache-Control":"no-store"})
+        except ValueError as error:raise HTTPException(404 if str(error)=='RESULT_NOT_FOUND' else 409,str(error)) from None
+
     @routes.get("/{key}/review-package")
     def review_package(key: str,actor: Principal=Depends(principal)):
         content=package(workspace(key),actor)

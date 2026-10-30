@@ -147,6 +147,9 @@ def draft_form(flow,state,key,token):
                 if check:
                     value=client.private(f"/{key}/results/preview",token=token,data=validated)
                     st.json(value);st.caption("Prévia somente de leitura. Intervalo e presença de trechos não definem benefício.")
+                    if value.get('changes'):
+                        from .result_changes_ui import render as show_changes
+                        show_changes(value['changes'])
                 else:
                     value=client.private(f"/{key}/actions/RESULT_DRAFTED",token=token,data=validated)
                     st.success("Rascunho registrado; ainda não aprovado nem publicado.");st.json(value)
@@ -160,6 +163,12 @@ def decisions(flow,key,token):
     cards={r["id"]:r for r in flow["candidates"]}
     selected=st.selectbox("Resultado a conferir",list(cards),format_func=lambda i:cards[i]["data"]["intervention"]+" / "+cards[i]["data"]["outcome_code"]+" / "+cards[i]["stage"]+" / "+i[:8],key="extraction_decision_"+key)
     card=cards[selected];st.write("Estado: **"+card["stage"]+"**");st.json(card["data"]);st.json(card["effect"])
+    if card['data'].get('supersedes'):
+        with st.expander('Alterações desta correção'):
+            changes=client.private(f'/{key}/results/{selected}/changes',token=token)
+            from .result_changes_ui import render as show_changes
+            if not changes['current_basis']:st.warning('Base desatualizada: a comparação é histórica e não autoriza aprovação.')
+            show_changes(changes)
     st.caption("Conferir braços, denominadores, unidades, população, tempo e fontes. A API exige identidades independentes e suporte literal antes da aprovação final.")
     reopen=True
     if card["stage"] in {"APROVADO","CONFLITO","ADJUDICACAO_REJEITADA","REVISAO_REJEITADA"}:

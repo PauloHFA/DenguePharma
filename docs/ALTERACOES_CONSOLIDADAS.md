@@ -1,5 +1,13 @@
 # Registro final das alterações — DenguePharma
 
+## 32. Inspeção de alterações em resultados clínicos — versão 0.21.0
+
+A [inspeção estrutural de alterações](ETAPA_ALTERACOES_RESULTADOS.md) permite comparar rascunhos e correções (`supersedes`) na curadoria protegida sem expor trechos privados. O comparador distingue campos científicos e de fluxo, preserva a distinção entre ausência, nulo e zero, e representa o suporte documental por hashes e localizadores. A conferência é somente de leitura e identifica bases documentais desatualizadas (`current_basis: false`).
+
+Os pilotos reais permanecem sem resultados clínicos revisados e com 40 e 100 avaliações independentes faltantes. Não foram criados votos ou decisões automáticas.
+
+Validação: 167 testes aprovados na suíte analítica, com sete casos novos cobrindo caminhos RFC 6901, privacidade de trechos, idempotência de ordem em referências, integridade de prévias e renderização sem mutação no Streamlit. A matriz mantém 96 requisitos e 29 com evidência automatizada; REQ-CLN-009 incorporou os novos cenários.
+
 ## 31. Mapa de cobertura da extração — versão 0.20.0
 
 O [painel privado de cobertura](ETAPA_COBERTURA_EXTRACAO.md) apresenta uma célula por identidade incluída e desfecho do protocolo, contando somente resultados canônicos revisados. Mantém conflitos visíveis e distingue falta de revisão de ausência de benefício ou aplicabilidade. Não soma participantes, efeitos ou publicações repetidas. A exportação autenticada inclui CSV, resumo e manifesto de hashes, sem votos ou textos de fontes.

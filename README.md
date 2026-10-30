@@ -1,5 +1,7 @@
 # DenguePharma
 
+**Versão 0.21.0:** [inspeção de alterações em resultados clínicos](docs/ETAPA_ALTERACOES_RESULTADOS.md), com comparação estrutural entre versões de rascunhos e correções, preservação de ausência/null/zero e hashes de integridade sem expor trechos literais privados. As novas etapas seguem a [política de commits](docs/VERSIONAMENTO.md).
+
 **Versão 0.20.0:** [mapa de cobertura da extração por desfecho](docs/ETAPA_COBERTURA_EXTRACAO.md), com resultados revisados, pendências, conflitos e exportação privada rastreável. As novas etapas seguem a [política de commits](docs/VERSIONAMENTO.md).
 
 **Versão 0.19.0:** [integridade documental](docs/ETAPA_INTEGRIDADE_DOCUMENTAL.md), com alerta humano, prévia de impacto e suspensão da evidência corrente. Regularizar um documento exige nova revisão; publicações históricas permanecem imutáveis.

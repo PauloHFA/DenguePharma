@@ -1,5 +1,9 @@
 # Plano atual — síntese clínica do DenguePharma Analytics
 
+## 29. Inspeção estrutural e histórico de alterações dos resultados
+
+A [inspeção de alterações 0.21.0](ETAPA_ALTERACOES_RESULTADOS.md) permite comparar diferenças entre versões de rascunhos e correções (`supersedes`) na curadoria protegida, sem expor trechos literais privados. Separa campos científicos de campos de fluxo, preserva nulo, ausência e zero, e alerta quando a base documental de uma correção estiver desatualizada. A revisão humana do piloto clínico mantém 40 avaliações pendentes.
+
 ## 28. Cobertura do trabalho de extração
 
 O [mapa 0.20.0](ETAPA_COBERTURA_EXTRACAO.md) distingue resultados revisados, células sem resultado e conflitos por estudo incluído e desfecho do protocolo. Não infere aplicabilidade ou benefício e permanece vazio enquanto a seleção independente não incluir estudos. A revisão humana do piloto clínico mantém 40 avaliações pendentes. A implementação foi separada do checkpoint 0.19.0 para seguir o versionamento por etapa.

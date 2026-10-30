@@ -10,7 +10,10 @@ def preview(workspace,payload,actor):
         try:
             workspace.validate_evidence(db,data,events); support=dict(complete=True,code="LITERAL_REFERENCES_VALID")
         except ValueError as error: support=dict(complete=False,code=str(error))
+        from .result_changes import predecessor,compare
+        prior=predecessor(events,data)
         return dict(effect=estimate(data),support=support,published=False,
+            **({'changes':compare(prior['payload'],data)} if prior else {}),
             notice="Prévia por estudo. Suporte literal não comprova interpretação semântica; revisão independente e adjudicação continuam necessárias.")
 
 
