@@ -97,7 +97,7 @@ public class SecurityConfig {
             .authorizeHttpRequests(a -> a
                 .requestMatchers(HttpMethod.POST, "/api/auth/login").permitAll()
                 .requestMatchers("/actuator/health").permitAll()
-                .requestMatchers(HttpMethod.GET, "/api/public/analyses", "/api/public/analyses/**", "/api/public/evidence-graph", "/api/public/bioactivities").permitAll()
+                .requestMatchers(HttpMethod.GET, "/api/public/analyses", "/api/public/analyses/**", "/api/public/evidence-graph", "/api/public/bioactivities", "/api/public/disease-burden").permitAll()
                 .requestMatchers("/api/admin/**").hasRole("ADMINISTRADOR")
                 .requestMatchers("/api/internal/pipeline/**").hasRole("PIPELINE_WORKER")
                 .anyRequest().authenticated())
