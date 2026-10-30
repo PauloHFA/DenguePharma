@@ -73,7 +73,7 @@ Entretanto, uma auditoria exaustiva confrontando a proposta formal original (v1.
 10. [CONCLUÍDO] **Testabilidade do Backend sem Docker Ativo**: Ajustar `AbstractIntegrationTest.java` com verificação de `DockerClientFactory.isDockerAvailable()` e fallback de `Assumptions.assumeTrue`, permitindo execução limpa de testes unitários mesmo sem daemon ativo. (Commit `69c55f4`)
 
 ### 3.2 Prioridade Secundária (Fases Futuras)
-- Ativação de chamadas a modelos LLM proprietários com medição em tempo real de tokens consumidos.
-- Geração de relatórios com diagramação multipáginas em PDFBox/Quarto.
-- Visualização em grafo de rede para topologia de evidências (Eixo E).
-- Curadoria manual completa do corpus de 120 documentos.
+- [CONCLUÍDO] **Visualização em Grafo de Rede para Topologia de Evidências (Eixo E)**: Endpoint `GET /api/public/evidence-graph` no Spring Boot (`EvidenceGraphController.java`), interface interativa SVG com nós tipados (Fármacos, Alvos, Desfechos, Estudos) e gaveta de detalhes (`EvidenceGraphPage.tsx`). Validado em testes unitários backend e frontend. (Commit `f0be291`)
+- **Ativação de Chamadas a Modelos LLM**: Adaptador para chamadas com medição em tempo real de tokens e custo acoplado ao `BudgetGuard`.
+- **Geração de Relatórios Multipáginas**: Diagramação avançada em PDFBox/Quarto com bioatividades ChEMBL e mecanismos de ação de alvos.
+- **Curadoria Manual Completa do Corpus**: Conclusão da triagem duplo-cega humana dos 120 documentos.
