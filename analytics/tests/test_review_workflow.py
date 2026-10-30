@@ -138,6 +138,15 @@ def test_review_routes_require_role_and_create_only_screening_events(workspace,t
     assert app.get(prefix+"/progress",headers=auth).json()["calibration_approved"] is False
     assert app.post(prefix+"/screening/import",headers=headers,content=b"invalid").status_code==409
     assert all(e["kind"]=="SCREENED" for e in events(workspace))
+
+    # Teste do endpoint de concordância inter-avaliadores (Etapa 0.22.0)
+    agreement_res = app.get(prefix+"/screening/agreement", headers=auth)
+    assert agreement_res.status_code == 200
+    assert agreement_res.headers["cache-control"] == "no-store"
+    agreement_data = agreement_res.json()
+    assert "contingency_matrix" in agreement_data
+    assert agreement_data["valid_paired_studies"] == 0  # Apenas 1 revisor votou no teste até aqui
+
     version=workspace.private_state(R1)["sources"][0]["version_id"]
     ref=app.post(prefix+"/locators",headers=auth,json=dict(version_id=version,field="population",start=0,end=1))
     assert ref.status_code==200 and len(ref.json()["reference"]["quote"])==1

@@ -1264,8 +1264,8 @@
     },
     {
       "id": "REQ-CLN-008",
-      "statement": "Apoio a revisao independente: pacote privado sem votos ou textos, painel de pendencias e importacao de triagem autenticada, atomica, idempotente e vinculada a versoes. Dossie privado por estudo integra documentos e versoes na triagem, sem votos ou sugestoes. A fila pessoal distingue tarefas iniciais, reavaliacoes, revisoes atuais e vagas ocupadas, sem atribuir votos automaticamente.",
-      "acceptance": "Conferir cegamento, hashes, restricoes de papeis, rollback integral, repeticao sem duplicacao, pendencias incertas e ausencia de aprovacao automatica. Conferir escopo documental, base desatualizada, integridade textual, permissao e ausencia de escrita no dossie. Conferir progresso da conta versus votos globais, incerteza, invalidacao por fontes/identidade, permissao, filtros e atualizacao somente apos envio humano. Atualizacoes privadas usam fragmento isolado, sem cache de curadoria ou repeticao automatica de decisoes confirmadas; fora dele, preservar atualizacao valida da aplicacao.",
+      "statement": "Apoio a revisao independente: pacote privado sem votos ou textos, painel de pendencias e importacao de triagem autenticada, atomica, idempotente e vinculada a versoes. Dossie privado por estudo integra documentos e versoes na triagem, sem votos ou sugestoes. A fila pessoal distingue tarefas iniciais, reavaliacoes, revisoes atuais e vagas ocupadas, sem atribuir votos automaticamente. Concordancia inter-avaliadores (Etapa 0.22.0) calcula concordancia observada, Kappa de Cohen e AC1 de Gwet na triagem duplo-cega.",
+      "acceptance": "Conferir cegamento, hashes, restricoes de papeis, rollback integral, repeticao sem duplicacao, pendencias incertas e ausencia de aprovacao automatica. Conferir escopo documental, base desatualizada, integridade textual, permissao e ausencia de escrita no dossie. Conferir progresso da conta versus votos globais, incerteza, invalidacao por fontes/identidade, permissao, filtros e atualizacao somente apos envio humano. Atualizacoes privadas usam fragmento isolado, sem cache de curadoria ou repeticao automatica de decisoes confirmadas; fora dele, preservar atualizacao valida da aplicacao. Metricas de concordancia (Po, Kappa, AC1) e matriz de contingencia sao calculadas de forma deterministica sobre votos pareados reais.",
       "verification": "T",
       "priority": "M",
       "research": "RQ-CLINICA",
@@ -1294,7 +1294,13 @@
         "test_personal_ui_refreshes_to_next_pending_study_only_after_human_submit",
         "test_curation_refresh_uses_legal_runtime_scope",
         "test_curation_fragment_login_logout_uses_current_session_without_cache",
-        "test_curation_fragment_refresh_never_duplicates_confirmed_action"
+        "test_curation_fragment_refresh_never_duplicates_confirmed_action",
+        "test_cohen_kappa_perfect_agreement",
+        "test_cohen_kappa_chance_agreement",
+        "test_gwet_ac1_prevalence_paradox",
+        "test_compute_inter_rater_agreement_empty_or_unpaired",
+        "test_compute_inter_rater_agreement_realistic_pilot",
+        "test_interpret_agreement"
       ],
       "source": "Proxima etapa operacional da calibracao, 2026-10-28",
       "coverage": "Software de apoio; revisao e calibracao cientificas continuam humanas"

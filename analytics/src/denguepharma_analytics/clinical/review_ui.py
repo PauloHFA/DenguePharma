@@ -48,6 +48,23 @@ def render(key,token):
         st.write("Seleção:",state["screening_counts"])
         st.write("Calibração aprovada para a seleção atual:","Sim" if state["calibration_approved"] else "Não")
         st.caption(state["notice"])
+
+        # Métricas de concordância inter-avaliadores (Etapa 0.22.0)
+        try:
+            agreement = client.private(f"/{key}/screening/agreement", token=token)
+            if agreement and agreement.get("valid_paired_studies", 0) > 0:
+                st.markdown("#### Concordância Inter-Avaliadores (Triagem Duplo-Cega)")
+                col1, col2, col3 = st.columns(3)
+                col1.metric("Concordância Observada (Po)", f"{agreement['observed_agreement'] * 100:.1f}%")
+                col2.metric("Kappa de Cohen", f"{agreement['cohen_kappa']:.3f}" if agreement.get("cohen_kappa") is not None else "N/A", help=f"Classificação: {agreement['interpretation_kappa']}")
+                col3.metric("AC1 de Gwet", f"{agreement['gwet_ac1']:.3f}" if agreement.get("gwet_ac1") is not None else "N/A", help=f"Classificação: {agreement['interpretation_ac1']}")
+                st.caption(f"{agreement['valid_paired_studies']} estudos com votos pareados. {agreement['notice']}")
+                with st.expander("Matriz de contingência (Revisor 1 vs Revisor 2)"):
+                    matrix = agreement["contingency_matrix"]
+                    st.table({row: matrix[row] for row in agreement["categories"]})
+        except Exception:
+            pass
+
         if state.get("unresolved_identity_documents"):
             st.warning(f"{state['unresolved_identity_documents']} documentos com identidade ambígua. Conferir os vínculos antes de aprovar a calibração.")
         if st.button("Preparar pacote de revisão independente",key="review_package_"+key):

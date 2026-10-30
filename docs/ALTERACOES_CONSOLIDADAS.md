@@ -1,5 +1,18 @@
 # Registro final das alterações — DenguePharma
 
+## 33. Concordância inter-avaliadores na triagem duplo-cega — versão 0.22.0
+
+A [etapa de concordância inter-avaliadores](ETAPA_CONCORDANCIA_REVISAO.md) implementa métricas estatísticas sobre a triagem independente:
+- Concordância observada ($P_o$).
+- Kappa de Cohen ($\kappa$) com erro padrão assintótico.
+- Coeficiente AC1 de Gwet, preservando estabilidade métrica frente ao paradoxo de alta concordância e alta taxa natural de exclusão.
+- Matriz de contingência 3x3 (`INCLUIR`, `EXCLUIR`, `INCERTO`) detalhada.
+- Endpoint protegido `GET /api/clinical/{key}/screening/agreement` com `Cache-Control: no-store` e visualização integrada no painel de acompanhamento da curadoria Streamlit.
+
+Os pilotos reais permanecem sem resultados clínicos revisados e com 40 e 100 avaliações independentes faltantes. Não foram criados votos ou decisões automáticas.
+
+Validação: 173 testes aprovados na suíte analítica, com 6 testes novos cobrindo cenários teóricos, paradoxo de prevalência e piloto realista. A matriz mantém 96 requisitos; `REQ-CLN-008` incorporou os novos cenários.
+
 ## 32. Inspeção de alterações em resultados clínicos — versão 0.21.0
 
 A [inspeção estrutural de alterações](ETAPA_ALTERACOES_RESULTADOS.md) permite comparar rascunhos e correções (`supersedes`) na curadoria protegida sem expor trechos privados. O comparador distingue campos científicos e de fluxo, preserva a distinção entre ausência, nulo e zero, e representa o suporte documental por hashes e localizadores. A conferência é somente de leitura e identifica bases documentais desatualizadas (`current_basis: false`).

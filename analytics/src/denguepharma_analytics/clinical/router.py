@@ -213,6 +213,16 @@ def router(root: Path, authenticate=None):
         except ValueError as error:
             raise HTTPException(404 if str(error)=="UNKNOWN_STUDY" else 409,str(error)) from None
 
+    @routes.get("/{key}/screening/agreement")
+    def screening_agreement(key: str,actor: Principal=Depends(principal)):
+        from .agreement import evaluate_workspace_agreement
+        try:
+            result = evaluate_workspace_agreement(workspace(key), actor)
+            return Response(content=json.dumps(result, ensure_ascii=False), media_type="application/json",
+                headers={"Cache-Control": "no-store"})
+        except ValueError as error:
+            raise HTTPException(409, str(error)) from None
+
     @routes.post("/{key}/actions/{kind}")
     def action(key: str,kind: str,payload: dict,actor: Principal=Depends(principal)):
         try: return workspace(key).act(kind,payload,actor)
