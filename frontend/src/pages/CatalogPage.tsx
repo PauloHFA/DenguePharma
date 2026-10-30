@@ -27,6 +27,7 @@ interface CatalogStudy {
   regulatory_indication: string | null;
   substance_published_name: string | null;
   substance_normalized_name: string | null;
+  pubchem_cid: string | null;
   scientific_notices?: string[];
 }
 
@@ -114,6 +115,17 @@ export function CatalogPage() {
       <div className="catalog-cards">
         {studies.map((st) => (
           <article key={st.id} className="card">
+            {st.pubchem_cid && (
+              <div style={{ float: "right", textAlign: "center", marginLeft: "1rem" }}>
+                <img
+                  src={`https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/${st.pubchem_cid}/PNG`}
+                  alt={`Estrutura 2D de ${st.substance_published_name ?? "composto"}`}
+                  style={{ maxWidth: 120, maxHeight: 120, borderRadius: 4, border: "1px solid #e5e7eb", background: "#fff" }}
+                  loading="lazy"
+                />
+                <div><small className="muted">PubChem CID: {st.pubchem_cid}</small></div>
+              </div>
+            )}
             <h2>{st.title}</h2>
             <p>
               <strong>Substância:</strong> {st.substance_published_name ?? "Não vinculada"} |{" "}

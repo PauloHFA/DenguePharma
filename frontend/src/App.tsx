@@ -2,6 +2,7 @@ import { Navigate, NavLink, Outlet, Route, Routes } from "react-router-dom";
 import { useAuth } from "./auth/AuthContext";
 import { hasAnyRole } from "./auth/roles";
 import { CatalogPage } from "./pages/CatalogPage";
+import { TargetExplorerPage } from "./pages/TargetExplorerPage";
 import { ComparatorPage } from "./pages/ComparatorPage";
 import { ImportsPage } from "./pages/ImportsPage";
 import { LoginPage } from "./pages/LoginPage";
@@ -65,6 +66,7 @@ function Guarded({ path }: { path: string }) {
   if (path === "triagem") return <ScreeningPage />;
   if (path === "revisao") return <ReviewPage />;
   if (path === "catalogo") return <CatalogPage />;
+  if (path === "alvos") return <TargetExplorerPage />;
   if (path === "comparador") return <ComparatorPage />;
   if (path === "relatorios") return <ReportsPage />;
   if (path === "painel") return <OperationalPanelPage />;

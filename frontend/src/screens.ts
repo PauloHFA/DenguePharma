@@ -47,6 +47,13 @@ export const SCREENS: readonly ScreenDef[] = [
     roles: [],
   },
   {
+    path: "alvos",
+    title: "Alvos Biológicos",
+    description: "Explorador de alvos virais DENV (NS5, NS3, Proteína E) e do hospedeiro, domínios e inibidores.",
+    emptyMessage: "Nenhum alvo biológico selecionado.",
+    roles: [],
+  },
+  {
     path: "comparador",
     title: "Comparador",
     description: "Comparação por desfecho e tempo, com incompatibilidades visíveis. Não há ranking clínico automático.",

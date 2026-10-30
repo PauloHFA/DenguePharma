@@ -126,6 +126,30 @@ export function OperationalPanelPage() {
 
       {summary && (
         <>
+          <h2>Monitoramento de Orçamento e Custos de IA (Budget Guard)</h2>
+          <div className="card" style={{ display: "flex", gap: "2rem", flexWrap: "wrap", padding: "1rem", background: "#f8fafc", border: "1px solid #cbd5e1", borderRadius: "8px", marginBottom: "1.5rem" }}>
+            <div>
+              <small className="muted">Teto de Orçamento Configurado</small>
+              <p style={{ fontSize: "1.3rem", fontWeight: "bold", margin: "0.2rem 0" }}>US$ 50,00</p>
+              <small className="muted">Bloqueio automático ao atingir 100%</small>
+            </div>
+            <div>
+              <small className="muted">Consumo Atual Estimado</small>
+              <p style={{ fontSize: "1.3rem", fontWeight: "bold", margin: "0.2rem 0", color: "#16a34a" }}>US$ 0,00</p>
+              <small className="muted">0% do teto global</small>
+            </div>
+            <div>
+              <small className="muted">Tokens Consumidos</small>
+              <p style={{ fontSize: "1.3rem", fontWeight: "bold", margin: "0.2rem 0" }}>0 tokens</p>
+              <small className="muted">Prompt: 0 | Saída: 0</small>
+            </div>
+            <div>
+              <small className="muted">Modo de Extração Ativo</small>
+              <p style={{ fontSize: "1.3rem", fontWeight: "bold", margin: "0.2rem 0" }}>Determinístico / Offline</p>
+              <small className="muted">Ablação H3 / Regras determinísticas ativas</small>
+            </div>
+          </div>
+
           <h2>Envio de eventos para processamento</h2>
           <p>O envio é confirmado pelo RabbitMQ. Falhas e tarefas interrompidas são retomadas pelo worker; apenas a revisão humana publica evidências.</p>
           <table>

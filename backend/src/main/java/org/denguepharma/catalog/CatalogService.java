@@ -46,6 +46,7 @@ public class CatalogService {
                        s.regulatory_status, s.regulatory_authority, s.regulatory_jurisdiction,
                        s.regulatory_indication, s.regulatory_date,
                        sub.published_name as substance_published_name, sub.normalized_name as substance_normalized_name,
+                       (select sa.external_id from substance_alias sa where sa.substance_id = s.primary_substance_id and sa.external_source = 'PUBCHEM' limit 1) as pubchem_cid,
                        (select dv.access_status from document_version dv
                         join study_document sd on sd.document_id = dv.document_id
                         where sd.study_id = s.id order by dv.version_no desc limit 1) as access_status
