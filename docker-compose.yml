@@ -71,6 +71,31 @@ services:
       minio:
         condition: service_started
 
+  backend:
+    build: ./backend
+    restart: unless-stopped
+    ports:
+      - "${SERVER_PORT:-18080}:18080"
+    environment:
+      DB_URL: jdbc:postgresql://postgres:5432/${DB_NAME:-denguepharma}
+      DB_USER: ${DB_USER:-denguepharma}
+      DB_PASSWORD: ${DB_PASSWORD:?defina DB_PASSWORD no .env}
+      JWT_SECRET: ${JWT_SECRET:-super_secret_jwt_key_with_at_least_32_characters_12345}
+      BOOTSTRAP_ADMIN_EMAIL: ${BOOTSTRAP_ADMIN_EMAIL:-admin@denguepharma.org}
+      BOOTSTRAP_ADMIN_PASSWORD: ${BOOTSTRAP_ADMIN_PASSWORD:-AdminPassword123!}
+      PIPELINE_TOKEN: ${PIPELINE_TOKEN:-}
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  frontend:
+    build: ./frontend
+    restart: unless-stopped
+    ports:
+      - "5173:80"
+    depends_on:
+      - backend
+
 volumes:
   pgdata:
   rabbitdata:

@@ -7,6 +7,7 @@ import java.util.Map;
 import org.denguepharma.user.AppUser;
 import org.denguepharma.user.Role;
 import org.denguepharma.user.UserRepository;
+import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -17,29 +18,50 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
+import org.testcontainers.DockerClientFactory;
 import org.testcontainers.containers.PostgreSQLContainer;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-/** Base com um PostgreSQL único por JVM e usuários de cada papel. */
+/** Base com um PostgreSQL único por JVM (via Testcontainers quando Docker ativo) e usuários de cada papel. */
 @SpringBootTest
 @AutoConfigureMockMvc
 abstract class AbstractIntegrationTest {
 
-    static final PostgreSQLContainer<?> PG = new PostgreSQLContainer<>("postgres:16-alpine");
+    static final boolean DOCKER_AVAILABLE;
+    static final PostgreSQLContainer<?> PG;
 
     static {
-        PG.start();
+        boolean available = false;
+        PostgreSQLContainer<?> container = null;
+        try {
+            if (DockerClientFactory.instance().isDockerAvailable()) {
+                container = new PostgreSQLContainer<>("postgres:16-alpine");
+                container.start();
+                available = true;
+            }
+        } catch (Throwable t) {
+            available = false;
+            container = null;
+        }
+        DOCKER_AVAILABLE = available;
+        PG = container;
     }
 
     static final String PASSWORD = "senha-de-teste-123";
 
     @DynamicPropertySource
     static void props(DynamicPropertyRegistry r) {
-        r.add("spring.datasource.url", PG::getJdbcUrl);
-        r.add("spring.datasource.username", PG::getUsername);
-        r.add("spring.datasource.password", PG::getPassword);
+        if (DOCKER_AVAILABLE && PG != null) {
+            r.add("spring.datasource.url", PG::getJdbcUrl);
+            r.add("spring.datasource.username", PG::getUsername);
+            r.add("spring.datasource.password", PG::getPassword);
+        } else {
+            r.add("spring.datasource.url", () -> "jdbc:postgresql://localhost:5434/denguepharma");
+            r.add("spring.datasource.username", () -> "denguepharma");
+            r.add("spring.datasource.password", () -> "denguepharma_local_dev_secret_123");
+        }
         r.add("denguepharma.security.jwt-secret", () -> "test-secret-with-more-than-32-characters!!");
     }
 
@@ -51,6 +73,7 @@ abstract class AbstractIntegrationTest {
 
     @BeforeEach
     void seedUsersAndCleanData() {
+        Assumptions.assumeTrue(DOCKER_AVAILABLE, "Docker não disponível para Testcontainers: teste de integração de banco ignorado.");
         for (Role role : Role.values()) {
             String email = role.name().toLowerCase() + "@test.org";
             if (users.findByEmailIgnoreCase(email).isEmpty()) {
@@ -80,4 +103,3 @@ abstract class AbstractIntegrationTest {
         return "Bearer " + node.get("token").asText();
     }
 }
-
