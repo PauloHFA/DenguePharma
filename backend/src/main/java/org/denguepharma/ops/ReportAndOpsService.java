@@ -192,20 +192,31 @@ public class ReportAndOpsService {
         lines.add("Filtros aplicados: " + filters.toString());
         lines.add("Status da evidencia: REVISADA E APROVADA POR CURADORIA HUMANA");
         lines.add("Aviso: Uso exclusivo para pesquisa. Nao realiza diagnostico nem prescricao.");
-        lines.add("----------------------------------------------------------------------");
+        lines.add("Regras metodologicas: RC-01 (Sem extrapolacao pre-clinica) | RC-04 (Sem ranking de eficacia)");
+        lines.add("-----------------------------------------------------------------------------------------------");
 
         for (JsonNode st : data.path("studies")) {
             String sid = st.path("id").asText("");
             lines.add("Estudo: " + st.path("title").asText(sid));
             lines.add("  Contexto experimental (RC-01): " + st.path("context").asText("NAO_CLASSIFICADO")
                     + " | Finalidade: " + st.path("purpose").asText("NAO_INFORMADO"));
-            lines.add("  Substancia: " + st.path("substance_published_name").asText("N/A")
+            String subst = st.path("substance_published_name").asText("N/A");
+            String pubchemCid = st.path("pubchem_cid").asText("");
+            lines.add("  Substancia: " + subst + (pubchemCid.isEmpty() ? "" : " (PubChem CID: " + pubchemCid + ")")
                     + " | Desenho: " + st.path("design").asText("N/A")
                     + " | Sorotipo: " + st.path("serotype").asText("N/A"));
+
+            // Alvos moleculares e mecanismos associados (NS5, NS3, E, Alvos do Hospedeiro)
+            String targetMechanism = resolveTargetMechanism(subst);
+            if (targetMechanism != null) {
+                lines.add("  Mecanismo Molecular / Alvo Viral: " + targetMechanism);
+            }
+
             lines.add("  Desfecho: " + st.path("outcome_summary").asText("N/A")
                     + " | Resultado: " + st.path("effect_summary").asText("N/A"));
             lines.add("  Status Regulatorio (RC-02): " + st.path("regulatory_status").asText("CANDIDATO_EM_PESQUISA"));
-            lines.add("  Limitacoes: " + st.path("limitations").asText(""));
+            lines.add("  Eventos Adversos (RC-03): " + st.path("adverse_events_status").asText("NAO_RELATADO"));
+            lines.add("  Limitacoes Metodologicas: " + st.path("limitations").asText(""));
             for (JsonNode ref : refs) {
                 if (sid.equals(ref.path("study_id").asText())) {
                     lines.add("  Fonte documental: " + ref.path("source").asText()
@@ -214,9 +225,30 @@ public class ReportAndOpsService {
                             + " | Licenca: " + ref.path("license").asText());
                 }
             }
-            lines.add("----------------------------------------------------------------------");
+            lines.add("-----------------------------------------------------------------------------------------------");
         }
         return buildMinimalPdf(lines);
+    }
+
+    private static String resolveTargetMechanism(String substance) {
+        if (substance == null) return null;
+        String s = substance.toLowerCase().trim();
+        if (s.contains("balapiravir") || s.contains("rg1626")) {
+            return "Inibidor de NS5 RdRp (Polimerase viral de RNA dependente de RNA - DENV 1-4).";
+        }
+        if (s.contains("cloroquina") || s.contains("chloroquine")) {
+            return "Modulador de pH endossomal do hospedeiro; inibicao indireta do desnudamento viral e fusao mediada por E.";
+        }
+        if (s.contains("celgosivir")) {
+            return "Inibidor de Alfa-Glicosidase do hospedeiro; bloqueio do enovelamento das glicoproteinas prM/E.";
+        }
+        if (s.contains("ivermectina") || s.contains("ivermectin")) {
+            return "Inibidor da importina IMP-alfa/beta1 do hospedeiro; bloqueio do transporte nuclear de NS5.";
+        }
+        if (s.contains("lovastatina") || s.contains("lovastatin")) {
+            return "Inibidor de HMG-CoA Redutase do hospedeiro; deplecao de jangadas lipidicas de membrana necessarias a replicacao.";
+        }
+        return null;
     }
 
     // ==================== RNF-03, RF-12 & T9: Pacote de reprodução ====================

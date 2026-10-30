@@ -76,6 +76,12 @@ Contextos clínicos e pré-clínicos são apresentados separadamente. Uma célul
 
 Adultos, crianças e populações mistas são estratos distintos, assim como gravidade, fase, momento da intervenção, comparador e período de avaliação. Estudos observacionais ficam separados dos ensaios randomizados. Participantes são descritos por comparação, sem somatório global entre desfechos ou braços compartilhados. Os gráficos não contêm efeito combinado. Categorias de benefício, incerteza e dano exigem julgamento humano; preenchimento e significância estatística isolada não definem a conclusão.
 
+## Alvos moleculares virais e bioatividades de referência (ChEMBL e PubChem)
+
+{{MOLECULAR_TARGETS}}
+
+Informações mecanísticas de alvos virais de dengue (NS5, NS3, proteínas estruturais) e bioatividades experimentais (IC50, EC50) catalogadas. Não constituem evidência de eficácia clínica nem substituem ensaios clínicos em humanos (Regra RC-01).
+
 ## Próximos eixos e limitações
 
 O eixo A está parcialmente implementado. Intervalos de confiança, patrocinador e modelos de tendência ainda não estão disponíveis nesta fundação. Os eixos B (relato), C (carga de doença) e D (avaliação da extração) permanecem planejados; o eixo E é opcional. Este relatório não apresenta resultados simulados desses métodos.

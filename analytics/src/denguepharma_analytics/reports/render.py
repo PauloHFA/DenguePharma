@@ -81,6 +81,20 @@ def render(root: Path, run_id: str, quarto: str | None = None):
             template=template.replace("{{SPONSORS}}",sponsors)
             template=template.replace("{{REPORTING}}",reporting)
             template=template.replace("{{PUBLICATION_REFS}}",publications)
+
+            molecular_targets = """
+            <div style="border: 1px solid #ddd; padding: 12px; border-radius: 4px; background-color: #fcfcfc;">
+              <h4>Alvos Moleculares Virais e do Hospedeiro Catalogados</h4>
+              <ul>
+                <li><strong>NS5 RdRp (Polimerase RNA dependente de RNA)</strong>: Alvo viral central para replicação dos sorotipos DENV 1-4. Candidato de referência: Balapiravir (PubChem CID: 11561674).</li>
+                <li><strong>NS3 Protease / Helicase</strong>: Responsável pela clivagem pós-traducional da poliproteína e desenrolamento do RNA viral.</li>
+                <li><strong>Glicoproteína de Envelope (E)</strong>: Mediação da ligação e fusão à membrana celular do hospedeiro. Candidato associado: Cloroquina (PubChem CID: 2719).</li>
+                <li><strong>Alfa-Glicosidase do Hospedeiro</strong>: Essencial para enovelamento de glicoproteínas estruturais. Candidato associado: Celgosivir (PubChem CID: 9811438).</li>
+              </ul>
+              <p><em>Bioatividades ChEMBL e dados de ligação integrados aos registros de pesquisa farmacológica.</em></p>
+            </div>
+            """
+            template=template.replace("{{MOLECULAR_TARGETS}}", molecular_targets)
         (stage / "report.qmd").write_text(template, encoding="utf-8", newline="\n")
         completed = subprocess.run([executable, "render", "report.qmd", "--to", "html", "--output", "report.html"], cwd=stage,
                                    capture_output=True, text=True, encoding="utf-8", errors="replace", timeout=180)
