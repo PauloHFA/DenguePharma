@@ -142,3 +142,4 @@ def test_get_compound_and_target_activities():
     target_acts = client.get_target_activities("CHEMBL613768")
     assert len(target_acts) == 1
     assert target_acts[0]["target_chembl_id"] == "CHEMBL613768"
+

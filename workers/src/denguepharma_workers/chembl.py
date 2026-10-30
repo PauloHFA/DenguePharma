@@ -134,3 +134,4 @@ class ChEMBLClient:
             "molecular_weight": props.get("full_mwt"),
             "alogp": props.get("alogp"),
         }
+
