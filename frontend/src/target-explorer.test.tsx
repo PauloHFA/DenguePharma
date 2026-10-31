@@ -8,7 +8,7 @@ describe("TargetExplorerPage", () => {
     render(<TargetExplorerPage />);
     expect(screen.getByRole("heading", { name: /Explorador de Alvos Biológicos/ })).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: /NS5 \(Polimerase RdRp & Metiltransferase\)/ })).toBeInTheDocument();
-    expect(screen.getByText(/Balapiravir/)).toBeInTheDocument();
+    expect(screen.getAllByText(/Balapiravir/)[0]).toBeInTheDocument();
     expect(screen.getByText(/PDB 5ZQK/)).toBeInTheDocument();
   });
 
@@ -17,7 +17,7 @@ describe("TargetExplorerPage", () => {
     const ns3Button = screen.getByRole("button", { name: /NS3 \(Serino Protease & RNA Helicase\)/ });
     await userEvent.click(ns3Button);
     expect(screen.getByRole("heading", { name: /NS3 \(Serino Protease & RNA Helicase\)/ })).toBeInTheDocument();
-    expect(screen.getByText(/Ivermectina/)).toBeInTheDocument();
+    expect(screen.getAllByText(/Ivermectina/)[0]).toBeInTheDocument();
     expect(screen.getByText(/PDB 2FOM/)).toBeInTheDocument();
   });
 

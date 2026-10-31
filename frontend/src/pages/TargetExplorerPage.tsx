@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Molecule3DViewer } from "../components/Molecule3DViewer";
 
 interface Target {
   id: string;
@@ -175,6 +176,15 @@ export function TargetExplorerPage() {
           </table>
 
           <h3>Fármacos e Inibidores Candidatos Documentados</h3>
+          {selectedTarget.inhibitors.find((i) => i.pubchemCid) && (
+            <div style={{ marginBottom: "1.2rem" }}>
+              <Molecule3DViewer
+                cid={selectedTarget.inhibitors.find((i) => i.pubchemCid)?.pubchemCid}
+                name={selectedTarget.inhibitors.find((i) => i.pubchemCid)?.name || ""}
+                height={260}
+              />
+            </div>
+          )}
           <table>
             <thead>
               <tr>
