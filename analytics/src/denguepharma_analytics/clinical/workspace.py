@@ -162,6 +162,10 @@ class Workspace:
         status="PENDENTE" if len(votes)<2 else "CONFLITO" if len(values)>1 else next(iter(votes.values()))["payload"]["decision"]
         return {"status":status,"classification":next(iter(votes.values()))["payload"]["classification"] if status in {"INCLUIR","EXCLUIR"} else None,"basis_hash":basis,"votes_hash":signature,"votes":votes}
 
+    def shadow_advisory(self, study_id, docs, basis_hash):
+        from .shadow_screening import get_shadow_recommendation
+        return get_shadow_recommendation(study_id, docs, basis_hash, self.protocol)
+
     def queue(self, actor):
         from .personal_review import assignment
         actor.require(*REVIEW_ROLES)
@@ -172,7 +176,7 @@ class Workspace:
                 rows.append({"study_id":study,"title":docs[0].get("title"),"document_ids":[d["documentId"] for d in docs],"basis_hash":state["basis_hash"],"status":state["status"],
                     "personal_review":assignment(actor.id,study,state,events),
                     "can_adjudicate_screening":state["status"]=="CONFLITO" and bool(set(actor.roles).intersection(ADJUDICATORS)) and actor.id not in state["votes"],
-                    "adjudication": {"votes_hash":state["votes_hash"],"votes":[e["payload"] for e in state["votes"].values()]} if state["status"]=="CONFLITO" and set(actor.roles).intersection(ADJUDICATORS) else None,
+                    "adjudication": {"votes_hash":state["votes_hash"],"votes":[e["payload"] for e in state["votes"].values()],"shadow_screening":self.shadow_advisory(study,docs,state["basis_hash"])} if state["status"]=="CONFLITO" and set(actor.roles).intersection(ADJUDICATORS) else None,
                     "own_decision":own["payload"] if own else None,"classification":state["classification"] if own or actor.roles and set(actor.roles).intersection(ADJUDICATORS) else None})
             return rows
 
