@@ -34,6 +34,10 @@ it("mostra resultados publicados, filtra documentos e distingue ausencia de revi
   await userEvent.click(screen.getByRole("button", { name: "Evidências revisadas" }));
   expect(screen.getByText(/Sem estudos com campos científicos revisados/)).toBeInTheDocument();
   expect(screen.getByRole("link", { name: "Pacote completo" })).toHaveAttribute("href", "/api/public/analyses/a/artifacts?name=bundle.zip");
+
+  await userEvent.click(screen.getByRole("button", { name: "Carga Global (Eixo C)" }));
+  expect(screen.getByRole("heading", { name: /Eixo C — Carga Global de Doença/ })).toBeInTheDocument();
+  expect(screen.getByText(/Deserto de pesquisa clínica: altíssima mortalidade/)).toBeInTheDocument();
 });
 
 it("exibe falha de carregamento sem simular dados", async () => {
