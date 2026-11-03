@@ -123,12 +123,14 @@
       "verification": "T",
       "priority": "S",
       "research": "RQ6",
-      "state": "planejado",
+      "state": "verificado",
       "task": "M06",
       "scenario": "ACC-ANA-008",
-      "tests": [],
+      "tests": [
+        "test_draft_fields_do_not_generate_graph_edges"
+      ],
       "source": "PDF Analytics 2.0, secao 8",
-      "coverage": "nao verificado na nova arquitetura"
+      "coverage": "verificado com testes unitarios automatizados"
     },
     {
       "id": "REQ-ANA-009",

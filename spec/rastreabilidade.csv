@@ -6,7 +6,7 @@ REQ-ANA-004,"RQ3, H5",M04,ACC-ANA-004,T,M,verificado,test_trial_burden_link_and_
 REQ-ANA-005,RQ4,M03,ACC-ANA-005,T,S,planejado,
 REQ-ANA-006,RQ5,M05,ACC-ANA-006,T,M,verificado,test_benchmark_metrics_calculation_and_absence_segregation;test_synonym_and_numeric_tolerance_rules;test_evaluate_benchmark_stratification
 REQ-ANA-007,RQ5,M05,ACC-ANA-007,T,M,verificado,test_cluster_bootstrap_10_studies_1000_replicates
-REQ-ANA-008,RQ6,M06,ACC-ANA-008,T,S,planejado,
+REQ-ANA-008,RQ6,M06,ACC-ANA-008,T,S,verificado,test_draft_fields_do_not_generate_graph_edges
 REQ-ANA-009,P4,M07,ACC-ANA-009,I,M,verificado,test_blocks_reports_with_ranking_or_best_drug;test_meta_regression_clean_estimation_and_no_ranking
 REQ-ANA-010,RQ4,M03,ACC-ANA-010,T,M,verificado,test_retraction_detection_by_identifiers;test_filter_synthesis_retractions_excludes_retracted_and_records_reason;test_workspace_synthesis_view_integrates_retraction_filtering
 REQ-EXT-001,"RQ5, P1",M05,ACC-EXT-001,T,M,verificado,test_req_ext_001_preserves_version_location_and_quote

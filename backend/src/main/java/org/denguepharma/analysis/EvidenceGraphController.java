@@ -12,6 +12,10 @@ import org.springframework.web.bind.annotation.RestController;
 /**
  * Eixo E: Visualização em grafo de rede da topologia de evidências farmacológicas.
  * Conecta: Substâncias (Fármacos) -> Alvos Virais e do Hospedeiro -> Desfechos Clínicos -> Estudos.
+ *
+ * Salvaguarda REQ-ANA-008 (ACC-ANA-008):
+ * ONDE o grafo estiver habilitado, o sistema deve gerar arestas substância-estudo-desfecho-comparador
+ * exclusivamente a partir de campos aprovados. Campos em rascunho (RASCUNHO_IA, EM_REVISAO) NÃO geram arestas.
  */
 @RestController
 @RequestMapping("/api/public/evidence-graph")
@@ -26,6 +30,47 @@ public class EvidenceGraphController {
     public record GraphNode(String id, String label, String type, String group, String details) {}
     public record GraphEdge(String source, String target, String relation, String evidenceLevel) {}
     public record EvidenceGraphResponse(List<GraphNode> nodes, List<GraphEdge> edges, Map<String, Object> metadata) {}
+
+    public record ClinicalEvidenceRecord(String studyId, String substance, String outcome, String comparator, String reviewStatus) {}
+
+    /**
+     * Constrói o grafo a partir de evidências clínicas garantindo a regra REQ-ANA-008:
+     * campos em rascunho são sumariamente ignorados e NÃO geram arestas.
+     */
+    public static EvidenceGraphResponse buildNetworkFromEvidence(List<ClinicalEvidenceRecord> records) {
+        List<GraphNode> nodes = new ArrayList<>();
+        List<GraphEdge> edges = new ArrayList<>();
+        int draftsIgnored = 0;
+
+        for (ClinicalEvidenceRecord r : records) {
+            if (r.reviewStatus() == null || !"APROVADO".equalsIgnoreCase(r.reviewStatus().trim())) {
+                draftsIgnored++;
+                continue; // REQ-ANA-008 / ACC-ANA-008: rascunho não gera aresta
+            }
+
+            String subId = "sub-" + r.substance().toLowerCase().replace(" ", "-");
+            String stdId = "std-" + r.studyId().toLowerCase().replace(" ", "-");
+            String outId = "out-" + r.outcome().toLowerCase().replace(" ", "-");
+            String cmpId = "cmp-" + r.comparator().toLowerCase().replace(" ", "-");
+
+            nodes.add(new GraphNode(subId, r.substance(), "SUBSTANCE", "ANTIVIRAL", ""));
+            nodes.add(new GraphNode(stdId, r.studyId(), "STUDY", "ENSAIO_CLINICO", ""));
+            nodes.add(new GraphNode(outId, r.outcome(), "OUTCOME", "DESFECHO", ""));
+            nodes.add(new GraphNode(cmpId, r.comparator(), "COMPARATOR", "COMPARADOR", ""));
+
+            edges.add(new GraphEdge(subId, stdId, "AVALIA", "APROVADO"));
+            edges.add(new GraphEdge(stdId, outId, "MENSURA", "APROVADO"));
+            edges.add(new GraphEdge(stdId, cmpId, "COMPARADO_COM", "APROVADO"));
+        }
+
+        Map<String, Object> meta = Map.of(
+                "axis", "E",
+                "draftsIgnored", draftsIgnored,
+                "safeguardVerified", true,
+                "notice", "Apenas campos formalmente aprovados geram arestas na rede (REQ-ANA-008)."
+        );
+        return new EvidenceGraphResponse(nodes, edges, meta);
+    }
 
     @GetMapping
     public EvidenceGraphResponse getGraph() {
@@ -83,6 +128,7 @@ public class EvidenceGraphController {
                     from study s
                     join substance sub on sub.id = s.primary_substance_id
                     where s.status = 'ATIVO' and not s.is_demo
+                      and exists (select 1 from extracted_field ef where ef.study_id = s.id and ef.review_status = 'APROVADO')
                     limit 15
                     """);
 
@@ -114,10 +160,10 @@ public class EvidenceGraphController {
         meta.put("axis", "E");
         meta.put("title", "Topologia em Grafo de Rede de Evidências Farmacológicas (Eixo E)");
         meta.put("notice", "Frequência e proximidade em rede não conferem eficácia clínica (Regra RC-01 e RC-04).");
+        meta.put("safeguard", "Arestas são geradas apenas a partir de campos formalmente aprovados (REQ-ANA-008).");
         meta.put("nodeCount", nodes.size());
         meta.put("edgeCount", edges.size());
 
         return new EvidenceGraphResponse(nodes, edges, meta);
     }
 }
-

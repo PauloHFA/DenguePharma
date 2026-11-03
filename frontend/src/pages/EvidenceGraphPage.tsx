@@ -286,7 +286,7 @@ export function EvidenceGraphPage() {
       </div>
 
       <p className="notice" style={{ marginTop: "1.5rem" }}>
-        {data.metadata.notice}
+        <strong>Salvaguarda REQ-ANA-008 & RC-01:</strong> {data.metadata.notice} Apenas evidências e campos formalmente aprovados geram arestas na rede; dados em rascunho são sumariamente excluídos da topologia.
       </p>
     </section>
   );
