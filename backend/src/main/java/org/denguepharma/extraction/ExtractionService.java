@@ -36,7 +36,7 @@ public class ExtractionService {
             "outcome", "time_frame", "sample_size", "result");
 
     private static final Pattern PROMPT_INJECTION_PATTERN = Pattern.compile(
-            "(?i)(ignore\\s+(all\\s+)?(previous|prior)\\s+instructions|system\\s+override|<script\\b|drop\\s+table|rm\\s+-rf|curl\\s+http|exec\\()");
+            "(?i)(ignore\\s+(all\\s+)?(previous|prior)\\s+instructions|ignore\\s+(as\\s+)?instru[çc][õo]es|ignore.*publique|system\\s+override|altere\\s+o\\s+status|force\\s+publish|<script\\b|drop\\s+table|rm\\s+-rf|curl\\s+http|exec\\(|eval\\()");
 
     // Detecta fração "X/Y" ou "X de Y" ou "X of Y" para validar numerador <= denominador (T5).
     private static final Pattern FRACTION_PATTERN = Pattern.compile("(\\d+)\\s*(?:/|de|of)\\s*(\\d+)");

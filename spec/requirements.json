@@ -240,12 +240,14 @@
       "verification": "T",
       "priority": "M",
       "research": "P5",
-      "state": "planejado",
+      "state": "verificado",
       "task": "M05",
       "scenario": "ACC-EXT-005",
-      "tests": [],
+      "tests": [
+        "test_req_ext_005_prompt_injection_passive_data_flow_unaltered"
+      ],
       "source": "PDF Analytics 2.0, secao 8",
-      "coverage": "nao verificado na nova arquitetura"
+      "coverage": "verificado no pytest analytics e backend junit"
     },
     {
       "id": "REQ-EXT-006",
@@ -254,12 +256,14 @@
       "verification": "T",
       "priority": "M",
       "research": "RQ5",
-      "state": "planejado",
+      "state": "verificado",
       "task": "M05",
       "scenario": "ACC-EXT-006",
-      "tests": [],
+      "tests": [
+        "test_req_ext_006_numeric_and_population_coherence_blocking"
+      ],
       "source": "PDF Analytics 2.0, secao 8",
-      "coverage": "nao verificado na nova arquitetura"
+      "coverage": "verificado no pytest analytics e backend junit"
     },
     {
       "id": "REQ-EXT-007",

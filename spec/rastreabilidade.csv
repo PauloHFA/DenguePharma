@@ -13,8 +13,8 @@ REQ-EXT-001,"RQ5, P1",M05,ACC-EXT-001,T,M,verificado,test_req_ext_001_preserves_
 REQ-EXT-002,OE3,M05,ACC-EXT-002,T,M,verificado,test_req_ext_002_schema_validation_and_blocks_publication
 REQ-EXT-003,H3,M05,ACC-EXT-003,T,M,verificado,test_req_ext_003_deterministic_literal_quote_and_numbers
 REQ-EXT-004,"RQ5, H3, P3",M05,ACC-EXT-004,T,M,verificado,test_req_ext_004_abstention_and_blocks_unsupported_publication
-REQ-EXT-005,P5,M05,ACC-EXT-005,T,M,planejado,
-REQ-EXT-006,RQ5,M05,ACC-EXT-006,T,M,planejado,
+REQ-EXT-005,P5,M05,ACC-EXT-005,T,M,verificado,test_req_ext_005_prompt_injection_passive_data_flow_unaltered
+REQ-EXT-006,RQ5,M05,ACC-EXT-006,T,M,verificado,test_req_ext_006_numeric_and_population_coherence_blocking
 REQ-EXT-007,RQ5,M05,ACC-EXT-007,T,M,planejado,
 REQ-EXT-008,P6,M05,ACC-EXT-008,T,M,planejado,
 REQ-EXT-009,P10,M05,ACC-EXT-009,T,M,planejado,
