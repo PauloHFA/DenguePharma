@@ -59,12 +59,14 @@
       "verification": "T",
       "priority": "M",
       "research": "RQ3, H5",
-      "state": "planejado",
+      "state": "verificado",
       "task": "M04",
       "scenario": "ACC-ANA-004",
-      "tests": [],
+      "tests": [
+        "test_trial_burden_link_and_missing_data_safeguard"
+      ],
       "source": "PDF Analytics 2.0, secao 8",
-      "coverage": "nao verificado na nova arquitetura"
+      "coverage": "verificado com testes unitarios automatizados"
     },
     {
       "id": "REQ-ANA-005",

@@ -1,5 +1,7 @@
 # DenguePharma
 
+**Versão 0.28.0:** cruzamento analítico de sítios e participantes de ensaios clínicos com a carga epidemiológica de dengue por país e ano (Eixo C - REQ-ANA-004), com salvaguarda estrita contra imputação de zeros em países sem série histórica (classificação compulsória como `SEM_DADO_CARGA` / `null` conforme ACC-ANA-004 e regra RC-04), API REST `/api/public/trial-burden-link` no backend Java Spring Boot e visualização detalhada no painel de Carga Global no frontend React, totalizando **38 requisitos formais verificados no SDD**.
+
 **Versão 0.27.0:** fluxo de seleção e triagem PRISMA-ScR interativo (REQ-SEL-004), com verificação de igualdade contábil estrita (`identificados = duplicados_removidos + registros_triados` e `registros_triados = incluidos + excluidos`), categorização padronizada de exclusões por motivo pré-definido, API REST no backend (`/api/public/prisma-flow`) e visualizador interativo em blocos no Dashboard do frontend (`PrismaFlowView`), totalizando **37 requisitos formais verificados no SDD**.
 
 **Versão 0.26.0:** modelo de meta-regressão por efeitos aleatórios (DerSimonian-Laird ponderado), salvaguardas metodológicas de compatibilidade de contextos (bloqueio estrito de fusão in vitro e humano, ou profilaxia e tratamento - REQ-ANA-002) e proibição de ranqueamento de eficácia / certeza GRADE automática (REQ-ANA-009 / RC-07), com ciclo reprodutível de ingestão multi-fonte (OpenDengue, SINAN/DATASUS e bioatividades ChEMBL), totalizando **36 requisitos formais verificados no SDD**.
