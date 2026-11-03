@@ -1,5 +1,7 @@
 # DenguePharma
 
+**Versão 0.25.0:** benchmark empírico de extração por IA frente à referência adjudicada (Eixo D - REQ-ANA-006 e REQ-ANA-007), com cálculo de Precisão, Recall e F1 por campo/estrato, regras congeladas para sinônimos/números e intervalos de confiança de 95% via Cluster Bootstrap por família de estudo (1000 réplicas), totalizando 34 requisitos SDD formalmente verificados.
+
 **Versão 0.24.0:** análise de sobrevivência Kaplan–Meier de relato (Eixo B), monitoramento de retratações científicas com expurgo automático da síntese (REQ-ANA-010) e ingestão de microdados OpenDengue/SINAN (REQ-ING-008), com visualização interativa em degraus no frontend e 32 requisitos SDD verificados.
 
 **Versão 0.23.0:** [expansão multidisciplinar e salvaguardas avançadas](docs/ETAPA_MELHORIAS_ESTRUTURAIS.md), integrando CI/CD multisserviço no GitHub Actions, interoperabilidade ChEMBL no backend, análise de Carga Global de Doença (Eixo C - GBD/DATASUS) e identificação de Desertos de Pesquisa no frontend, visualizador molecular 2D/3D interativo do PubChem e parecer consultivo por IA (Shadow Screening) para apoio à adjudicação humana com salvaguardas RC-01 a RC-07.

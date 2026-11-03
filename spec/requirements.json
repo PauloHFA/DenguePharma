@@ -83,12 +83,16 @@
       "verification": "T",
       "priority": "M",
       "research": "RQ5",
-      "state": "planejado",
+      "state": "verificado",
       "task": "M05",
       "scenario": "ACC-ANA-006",
-      "tests": [],
+      "tests": [
+        "test_benchmark_metrics_calculation_and_absence_segregation",
+        "test_synonym_and_numeric_tolerance_rules",
+        "test_evaluate_benchmark_stratification"
+      ],
       "source": "PDF Analytics 2.0, secao 8",
-      "coverage": "nao verificado na nova arquitetura"
+      "coverage": "verificado com testes unitarios automatizados"
     },
     {
       "id": "REQ-ANA-007",
@@ -97,12 +101,14 @@
       "verification": "T",
       "priority": "M",
       "research": "RQ5",
-      "state": "planejado",
+      "state": "verificado",
       "task": "M05",
       "scenario": "ACC-ANA-007",
-      "tests": [],
+      "tests": [
+        "test_cluster_bootstrap_10_studies_1000_replicates"
+      ],
       "source": "PDF Analytics 2.0, secao 8",
-      "coverage": "nao verificado na nova arquitetura"
+      "coverage": "verificado com testes unitarios automatizados"
     },
     {
       "id": "REQ-ANA-008",

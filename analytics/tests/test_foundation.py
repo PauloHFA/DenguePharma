@@ -173,7 +173,8 @@ def test_spec_traceability(tmp_path):
     module = importlib.util.spec_from_file_location("spec_check", root / "check.py"); checker = importlib.util.module_from_spec(module); module.loader.exec_module(checker)
     data = checker.validate(root)
     assert len(data["requirements"]) == 96
-    assert all(r["state"] == "planejado" for r in data["requirements"] if not r["id"].startswith(("REQ-MIG-", "REQ-CLN-")))
+    assert all(r["state"] in ("planejado", "verificado") for r in data["requirements"])
+    assert sum(1 for r in data["requirements"] if r["state"] == "verificado") == 34
     copy_root = tmp_path / "spec"; copy_root.mkdir()
     for name in ("requirements.json", "rastreabilidade.csv"): shutil.copyfile(root / name, copy_root / name)
     invalid = json.loads((copy_root / "requirements.json").read_bytes()); invalid["requirements"][0]["acceptance"] = ""
