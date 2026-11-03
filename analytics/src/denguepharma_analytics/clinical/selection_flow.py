@@ -108,3 +108,40 @@ def export_summary(workspace, actor):
     data = view(workspace, actor)
     # Uniform aggregate export, even for adjudicators; no study decisions or justifications.
     return {key: value for key, value in data.items() if key not in ('excluded_studies', 'can_record')}
+
+
+def compute_prisma_flow(
+    identified_records: int,
+    duplicates_removed: int,
+    screened_records: int,
+    included_records: int,
+    exclusion_reasons: dict[str, int],
+) -> dict:
+    """Gera contagens consistentes do fluxograma PRISMA-ScR (REQ-SEL-004).
+
+    Garante a igualdade contábil fundamental exigida pelo critério de aceitação:
+    identificados = duplicados + triados
+    triados = incluidos + excluidos
+    exclusoes = soma das categorias de exclusao
+    """
+    if identified_records != duplicates_removed + screened_records:
+        raise ValueError(
+            f"Inconsistência contábil PRISMA-ScR: identificados ({identified_records}) "
+            f"deve ser igual a duplicados ({duplicates_removed}) + triados ({screened_records})."
+        )
+    total_excluded = sum(exclusion_reasons.values())
+    if screened_records != included_records + total_excluded:
+        raise ValueError(
+            f"Inconsistência contábil PRISMA-ScR: triados ({screened_records}) "
+            f"deve ser igual a incluídos ({included_records}) + exclusões ({total_excluded})."
+        )
+    return {
+        "identified_records": identified_records,
+        "duplicates_removed": duplicates_removed,
+        "screened_records": screened_records,
+        "included_records": included_records,
+        "excluded_records": total_excluded,
+        "exclusion_reasons": exclusion_reasons,
+        "formula_verified": True,
+        "notice": "Fluxograma estruturado conforme recomendação PRISMA-ScR (Tricco et al., 2018).",
+    }

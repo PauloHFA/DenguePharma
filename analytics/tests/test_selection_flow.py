@@ -197,3 +197,54 @@ def test_selection_flow_form_requires_explicit_category_and_confirmation(workspa
     assert writes[0][1]['data']['resolution_hash']==state['excluded_studies'][0]['resolution_hash']
     assert writes[0][1]['data']['category']=='DESENHO_NAO_ELEGIVEL'
     assert 'private-token' not in json.dumps(writes[0][1]['data'])
+
+
+@pytest.mark.requirement("REQ-SEL-004")
+def test_prisma_scr_flow_accounting_and_exclusion_categories():
+    """REQ-SEL-004: identificados = duplicados + triados e exclusões somam por motivo."""
+    from denguepharma_analytics.clinical.selection_flow import compute_prisma_flow
+    reasons = {
+        "POPULACAO_FORA_ESCOPO": 45,
+        "CONTEXTO_FORA_ESCOPO": 30,
+        "INTERVENCAO_NAO_ELEGIVEL": 15,
+        "DESENHO_NAO_ELEGIVEL": 8,
+        "OUTRO_CRITERIO_PROTOCOLO": 2,
+    }
+    # total_excluidos = 45 + 30 + 15 + 8 + 2 = 100
+    # incluidos = 20
+    # triados = 120
+    # duplicados = 30
+    # identificados = 150
+    flow = compute_prisma_flow(
+        identified_records=150,
+        duplicates_removed=30,
+        screened_records=120,
+        included_records=20,
+        exclusion_reasons=reasons,
+    )
+    assert flow["identified_records"] == 150
+    assert flow["identified_records"] == flow["duplicates_removed"] + flow["screened_records"]
+    assert flow["screened_records"] == flow["included_records"] + flow["excluded_records"]
+    assert flow["excluded_records"] == sum(reasons.values()) == 100
+    assert flow["formula_verified"] is True
+
+    # Teste de violação contábil (identificados != duplicados + triados)
+    with pytest.raises(ValueError, match="Inconsistência contábil"):
+        compute_prisma_flow(
+            identified_records=200,
+            duplicates_removed=30,
+            screened_records=120,
+            included_records=20,
+            exclusion_reasons=reasons,
+        )
+
+    # Teste de violação na soma das exclusões
+    with pytest.raises(ValueError, match="Inconsistência contábil"):
+        compute_prisma_flow(
+            identified_records=150,
+            duplicates_removed=30,
+            screened_records=120,
+            included_records=50,  # 50 + 100 != 120
+            exclusion_reasons=reasons,
+        )
+

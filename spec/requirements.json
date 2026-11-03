@@ -1127,12 +1127,14 @@
       "verification": "T",
       "priority": "M",
       "research": "OE1",
-      "state": "planejado",
+      "state": "verificado",
       "task": "M02",
       "scenario": "ACC-SEL-004",
-      "tests": [],
+      "tests": [
+        "test_prisma_scr_flow_accounting_and_exclusion_categories"
+      ],
       "source": "PDF Analytics 2.0, secao 8",
-      "coverage": "nao verificado na nova arquitetura"
+      "coverage": "verificado com testes unitarios automatizados"
     },
     {
       "id": "REQ-SEL-005",

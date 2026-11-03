@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { DiseaseBurdenView } from "../components/DiseaseBurdenView";
 import { ExtractionBenchmarkView } from "../components/ExtractionBenchmarkView";
+import { PrismaFlowView } from "../components/PrismaFlowView";
 import { SurvivalReportingView } from "../components/SurvivalReportingView";
 
 type Row = Record<string, unknown>;
@@ -85,7 +86,7 @@ export function DashboardPage() {
         {summary.protocol?.eligibility?.stage === "pilot" && <p className="notice"><strong>Coleta piloto: até {summary.protocol.maxRecordsPerSource} registros por fonte.</strong> Amostra de conveniência para validar a preparação dos dados. A revisão científica permanece pendente nos registros sem decisão consolidada.</p>}
         <p className="muted">Protocolo {current?.protocol_code} · Data de corte {current?.cutoff_date} · Resultados congelados desta execução.</p>
         <div className="metrics">{[["Documentos após deduplicação", summary.documentCount], ["Publicações", summary.publicationCount], ["Registros de ensaios", summary.trialCount], ["Estudos com campos revisados", summary.studyCount]].map(([label, value]) => <article key={label}><strong>{value}</strong><span>{label}</span></article>)}</div>
-        <nav aria-label="Análises" className="dashboard-tabs">{[["panorama", "Corpus e evolução"], ["ensaios", "Ensaios e intervenções"], ["sobrevivencia", "Sobrevivência (Eixo B)"], ["evidencias", "Evidências revisadas"], ["qualidade", "Qualidade e integração"], ["carga", "Carga Global (Eixo C)"], ["benchmark", "Benchmark IA (Eixo D)"]].map(([value, label]) => <button key={value} aria-pressed={tab === value} onClick={() => { setTab(value); setSearch(""); }}>{label}</button>)}</nav>
+        <nav aria-label="Análises" className="dashboard-tabs">{[["panorama", "Corpus e evolução"], ["ensaios", "Ensaios e intervenções"], ["sobrevivencia", "Sobrevivência (Eixo B)"], ["evidencias", "Evidências revisadas"], ["qualidade", "Qualidade e integração"], ["carga", "Carga Global (Eixo C)"], ["benchmark", "Benchmark IA (Eixo D)"], ["prisma", "Fluxo PRISMA-ScR"]].map(([value, label]) => <button key={value} aria-pressed={tab === value} onClick={() => { setTab(value); setSearch(""); }}>{label}</button>)}</nav>
         <label>Buscar nas tabelas desta aba <input type="search" value={search} onChange={e => setSearch(e.target.value)} placeholder="Substância, país, categoria…" /></label>
         {tab === "panorama" && <>
           <h2>Corpus coletado</h2><p>A elegibilidade pode estar pendente. Ano de publicação e ano de início de ensaio representam eventos distintos.</p>
@@ -125,6 +126,7 @@ export function DashboardPage() {
         </>}
         {tab === "carga" && <DiseaseBurdenView />}
         {tab === "benchmark" && <ExtractionBenchmarkView />}
+        {tab === "prisma" && <PrismaFlowView />}
         <section><h2>Gráficos da execução completa</h2><div className="dashboard-figures">{figures.filter(name => tab === "evidencias" ? name.includes("reviewed_") : !name.includes("reviewed_") && (tab === "panorama" ? name.includes("temporal") : tab === "qualidade" ? name.includes("completeness") : !name.includes("temporal") && !name.includes("completeness"))).map(name => <figure key={name}><img src={artifact(name)} alt={name.replace("figures/", "").replace(".png", "")} loading="lazy" /><figcaption><a href={artifact(name)} download>Baixar PNG</a></figcaption></figure>)}</div></section>
         <section><h2>Dados e reprodução</h2><div className="actions">{[["bundle.zip", "Pacote completo"], ["documents.csv", "Documentos CSV"], ["summary.json", "Resumo JSON"], ["manifest.json", "Manifesto"], ["pilot_review.csv", "Planilha de revisão do piloto"]].map(([name, label]) => <a key={name} href={artifact(name)} download>{label}</a>)}</div></section>
       </>}

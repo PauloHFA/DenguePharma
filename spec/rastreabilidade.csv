@@ -75,7 +75,7 @@ REQ-REV-005,"RQ5, H1",M05,ACC-REV-005,T,M,planejado,
 REQ-SEL-001,OE1,M02,ACC-SEL-001,T,M,planejado,
 REQ-SEL-002,OE1,M02,ACC-SEL-002,T,M,planejado,
 REQ-SEL-003,P5,M02,ACC-SEL-003,T,M,planejado,
-REQ-SEL-004,OE1,M02,ACC-SEL-004,T,M,planejado,
+REQ-SEL-004,OE1,M02,ACC-SEL-004,T,M,verificado,test_prisma_scr_flow_accounting_and_exclusion_categories
 REQ-SEL-005,P1,M02,ACC-SEL-005,T,S,planejado,
 REQ-CLN-001,RQ-CLINICA,M08,ACC-CLN-001,T,M,verificado,test_independent_screening_and_stale_sources;test_observational_and_mixed_populations;test_screening_form_never_reuses_other_vote_or_infers_inclusion;test_structured_screening_form_submits_current_basis;test_selection_flow_preserves_units_pending_values_and_blinding;test_selection_flow_annotation_is_human_and_never_changes_screening;test_selection_flow_rejects_ineligible_annotation_actions;test_selection_flow_vote_and_source_changes_do_not_reactivate_annotations;test_selection_flow_adjudication_changes_invalidate_reason;test_selection_flow_identity_and_empty_corpus_do_not_invent_totals;test_selection_flow_export_permissions_totals_and_no_private_rationales;test_selection_flow_form_requires_explicit_category_and_confirmation
 REQ-CLN-002,RQ-CLINICA,M08,ACC-CLN-002,T,M,verificado,test_effects_known_values
