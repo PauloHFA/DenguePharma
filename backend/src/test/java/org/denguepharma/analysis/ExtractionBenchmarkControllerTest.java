@@ -43,3 +43,4 @@ class ExtractionBenchmarkControllerTest {
         assertThat(fields.get(0).field()).isEqualTo("intervention");
     }
 }
+

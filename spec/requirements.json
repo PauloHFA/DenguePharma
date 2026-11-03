@@ -23,12 +23,16 @@
       "verification": "T",
       "priority": "M",
       "research": "P2",
-      "state": "planejado",
+      "state": "verificado",
       "task": "M02",
       "scenario": "ACC-ANA-002",
-      "tests": [],
+      "tests": [
+        "test_blocks_incompatible_biological_contexts_human_and_in_vitro",
+        "test_blocks_incompatible_clinical_purposes_prophylaxis_and_treatment",
+        "test_meta_regression_clean_estimation_and_no_ranking"
+      ],
       "source": "PDF Analytics 2.0, secao 8",
-      "coverage": "nao verificado na nova arquitetura"
+      "coverage": "verificado com testes unitarios automatizados"
     },
     {
       "id": "REQ-ANA-003",
@@ -131,12 +135,15 @@
       "verification": "I",
       "priority": "M",
       "research": "P4",
-      "state": "planejado",
+      "state": "verificado",
       "task": "M07",
       "scenario": "ACC-ANA-009",
-      "tests": [],
+      "tests": [
+        "test_blocks_reports_with_ranking_or_best_drug",
+        "test_meta_regression_clean_estimation_and_no_ranking"
+      ],
       "source": "PDF Analytics 2.0, secao 8",
-      "coverage": "nao verificado na nova arquitetura"
+      "coverage": "verificado com testes unitarios automatizados"
     },
     {
       "id": "REQ-ANA-010",

@@ -307,3 +307,4 @@ export function ExtractionBenchmarkView() {
     </div>
   );
 }
+

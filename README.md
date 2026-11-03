@@ -1,5 +1,7 @@
 # DenguePharma
 
+**Versão 0.26.0:** modelo de meta-regressão por efeitos aleatórios (DerSimonian-Laird ponderado), salvaguardas metodológicas de compatibilidade de contextos (bloqueio estrito de fusão in vitro e humano, ou profilaxia e tratamento - REQ-ANA-002) e proibição de ranqueamento de eficácia / certeza GRADE automática (REQ-ANA-009 / RC-07), com ciclo reprodutível de ingestão multi-fonte (OpenDengue, SINAN/DATASUS e bioatividades ChEMBL), totalizando **36 requisitos formais verificados no SDD**.
+
 **Versão 0.25.0:** benchmark empírico de extração por IA frente à referência adjudicada (Eixo D - REQ-ANA-006 e REQ-ANA-007), com cálculo de Precisão, Recall e F1 por campo/estrato, regras congeladas para sinônimos/números e intervalos de confiança de 95% via Cluster Bootstrap por família de estudo (1000 réplicas), totalizando 34 requisitos SDD formalmente verificados, com API REST no backend (`/api/public/extraction-benchmark`) e visualizador interativo integrado no Dashboard do frontend (`ExtractionBenchmarkView`).
 
 **Versão 0.24.0:** análise de sobrevivência Kaplan–Meier de relato (Eixo B), monitoramento de retratações científicas com expurgo automático da síntese (REQ-ANA-010) e ingestão de microdados OpenDengue/SINAN (REQ-ING-008), com visualização interativa em degraus no frontend e 32 requisitos SDD verificados.
