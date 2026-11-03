@@ -9,10 +9,10 @@ REQ-ANA-007,RQ5,M05,ACC-ANA-007,T,M,verificado,test_cluster_bootstrap_10_studies
 REQ-ANA-008,RQ6,M06,ACC-ANA-008,T,S,planejado,
 REQ-ANA-009,P4,M07,ACC-ANA-009,I,M,verificado,test_blocks_reports_with_ranking_or_best_drug;test_meta_regression_clean_estimation_and_no_ranking
 REQ-ANA-010,RQ4,M03,ACC-ANA-010,T,M,verificado,test_retraction_detection_by_identifiers;test_filter_synthesis_retractions_excludes_retracted_and_records_reason;test_workspace_synthesis_view_integrates_retraction_filtering
-REQ-EXT-001,"RQ5, P1",M05,ACC-EXT-001,T,M,planejado,
-REQ-EXT-002,OE3,M05,ACC-EXT-002,T,M,planejado,
-REQ-EXT-003,H3,M05,ACC-EXT-003,T,M,planejado,
-REQ-EXT-004,"RQ5, H3, P3",M05,ACC-EXT-004,T,M,planejado,
+REQ-EXT-001,"RQ5, P1",M05,ACC-EXT-001,T,M,verificado,test_req_ext_001_preserves_version_location_and_quote
+REQ-EXT-002,OE3,M05,ACC-EXT-002,T,M,verificado,test_req_ext_002_schema_validation_and_blocks_publication
+REQ-EXT-003,H3,M05,ACC-EXT-003,T,M,verificado,test_req_ext_003_deterministic_literal_quote_and_numbers
+REQ-EXT-004,"RQ5, H3, P3",M05,ACC-EXT-004,T,M,verificado,test_req_ext_004_abstention_and_blocks_unsupported_publication
 REQ-EXT-005,P5,M05,ACC-EXT-005,T,M,planejado,
 REQ-EXT-006,RQ5,M05,ACC-EXT-006,T,M,planejado,
 REQ-EXT-007,RQ5,M05,ACC-EXT-007,T,M,planejado,

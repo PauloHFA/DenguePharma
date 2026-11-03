@@ -172,12 +172,14 @@
       "verification": "T",
       "priority": "M",
       "research": "RQ5, P1",
-      "state": "planejado",
+      "state": "verificado",
       "task": "M05",
       "scenario": "ACC-EXT-001",
-      "tests": [],
+      "tests": [
+        "test_req_ext_001_preserves_version_location_and_quote"
+      ],
       "source": "PDF Analytics 2.0, secao 8",
-      "coverage": "nao verificado na nova arquitetura"
+      "coverage": "verificado com testes unitarios automatizados"
     },
     {
       "id": "REQ-EXT-002",
@@ -186,12 +188,14 @@
       "verification": "T",
       "priority": "M",
       "research": "OE3",
-      "state": "planejado",
+      "state": "verificado",
       "task": "M05",
       "scenario": "ACC-EXT-002",
-      "tests": [],
+      "tests": [
+        "test_req_ext_002_schema_validation_and_blocks_publication"
+      ],
       "source": "PDF Analytics 2.0, secao 8",
-      "coverage": "nao verificado na nova arquitetura"
+      "coverage": "verificado com testes unitarios automatizados"
     },
     {
       "id": "REQ-EXT-003",
@@ -200,12 +204,14 @@
       "verification": "T",
       "priority": "M",
       "research": "H3",
-      "state": "planejado",
+      "state": "verificado",
       "task": "M05",
       "scenario": "ACC-EXT-003",
-      "tests": [],
+      "tests": [
+        "test_req_ext_003_deterministic_literal_quote_and_numbers"
+      ],
       "source": "PDF Analytics 2.0, secao 8",
-      "coverage": "nao verificado na nova arquitetura"
+      "coverage": "verificado com testes unitarios automatizados"
     },
     {
       "id": "REQ-EXT-004",
@@ -214,12 +220,14 @@
       "verification": "T",
       "priority": "M",
       "research": "RQ5, H3, P3",
-      "state": "planejado",
+      "state": "verificado",
       "task": "M05",
       "scenario": "ACC-EXT-004",
-      "tests": [],
+      "tests": [
+        "test_req_ext_004_abstention_and_blocks_unsupported_publication"
+      ],
       "source": "PDF Analytics 2.0, secao 8",
-      "coverage": "nao verificado na nova arquitetura"
+      "coverage": "verificado com testes unitarios automatizados"
     },
     {
       "id": "REQ-EXT-005",
