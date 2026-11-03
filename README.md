@@ -1,5 +1,7 @@
 # DenguePharma
 
+**Versão 0.24.0:** análise de sobrevivência Kaplan–Meier de relato (Eixo B), monitoramento de retratações científicas com expurgo automático da síntese (REQ-ANA-010) e ingestão de microdados OpenDengue/SINAN (REQ-ING-008), com visualização interativa em degraus no frontend e 32 requisitos SDD verificados.
+
 **Versão 0.23.0:** [expansão multidisciplinar e salvaguardas avançadas](docs/ETAPA_MELHORIAS_ESTRUTURAIS.md), integrando CI/CD multisserviço no GitHub Actions, interoperabilidade ChEMBL no backend, análise de Carga Global de Doença (Eixo C - GBD/DATASUS) e identificação de Desertos de Pesquisa no frontend, visualizador molecular 2D/3D interativo do PubChem e parecer consultivo por IA (Shadow Screening) para apoio à adjudicação humana com salvaguardas RC-01 a RC-07.
 
 **Versão 0.22.0:** [concordância inter-avaliadores na triagem duplo-cega](docs/ETAPA_CONCORDANCIA_REVISAO.md), com cálculo determinístico de concordância observada ($P_o$), Kappa de Cohen ($\kappa$) e AC1 de Gwet imune ao paradoxo de prevalência, matriz de contingência 3x3 e visualização protegida na curadoria.
