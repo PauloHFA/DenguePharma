@@ -37,12 +37,16 @@
       "verification": "T",
       "priority": "M",
       "research": "RQ2, H4",
-      "state": "planejado",
+      "state": "verificado",
       "task": "M03",
       "scenario": "ACC-ANA-003",
-      "tests": [],
+      "tests": [
+        "test_kaplan_meier_with_10_known_trials_matches_manual_reference",
+        "test_analyze_trials_survival_handles_cohort_and_stratification",
+        "test_kaplan_meier_empty_and_no_event_edge_cases"
+      ],
       "source": "PDF Analytics 2.0, secao 8",
-      "coverage": "nao verificado na nova arquitetura"
+      "coverage": "verificado com testes unitarios automatizados"
     },
     {
       "id": "REQ-ANA-004",
@@ -135,12 +139,16 @@
       "verification": "T",
       "priority": "M",
       "research": "RQ4",
-      "state": "planejado",
+      "state": "verificado",
       "task": "M03",
       "scenario": "ACC-ANA-010",
-      "tests": [],
+      "tests": [
+        "test_retraction_detection_by_identifiers",
+        "test_filter_synthesis_retractions_excludes_retracted_and_records_reason",
+        "test_workspace_synthesis_view_integrates_retraction_filtering"
+      ],
       "source": "PDF Analytics 2.0, secao 8",
-      "coverage": "nao verificado na nova arquitetura"
+      "coverage": "verificado com testes unitarios automatizados"
     },
     {
       "id": "REQ-EXT-001",
@@ -555,12 +563,16 @@
       "verification": "T",
       "priority": "M",
       "research": "RQ3",
-      "state": "planejado",
+      "state": "verificado",
       "task": "M04",
       "scenario": "ACC-ING-008",
-      "tests": [],
+      "tests": [
+        "test_ingest_opendengue_csv_aggregates_totals_by_country_and_year",
+        "test_ingest_sinan_aggregated_records",
+        "test_validation_rejects_invalid_iso_or_out_of_bounds_year"
+      ],
       "source": "PDF Analytics 2.0, secao 8",
-      "coverage": "nao verificado na nova arquitetura"
+      "coverage": "verificado com testes unitarios automatizados"
     },
     {
       "id": "REQ-ING-009",

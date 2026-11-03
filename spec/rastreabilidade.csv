@@ -1,14 +1,14 @@
 requirement,research,task,scenario,verification,priority,state,tests
 REQ-ANA-001,RQ1,M02,ACC-ANA-001,T,M,planejado,
 REQ-ANA-002,P2,M02,ACC-ANA-002,T,M,planejado,
-REQ-ANA-003,"RQ2, H4",M03,ACC-ANA-003,T,M,planejado,
+REQ-ANA-003,"RQ2, H4",M03,ACC-ANA-003,T,M,verificado,test_kaplan_meier_with_10_known_trials_matches_manual_reference;test_analyze_trials_survival_handles_cohort_and_stratification;test_kaplan_meier_empty_and_no_event_edge_cases
 REQ-ANA-004,"RQ3, H5",M04,ACC-ANA-004,T,M,planejado,
 REQ-ANA-005,RQ4,M03,ACC-ANA-005,T,S,planejado,
 REQ-ANA-006,RQ5,M05,ACC-ANA-006,T,M,planejado,
 REQ-ANA-007,RQ5,M05,ACC-ANA-007,T,M,planejado,
 REQ-ANA-008,RQ6,M06,ACC-ANA-008,T,S,planejado,
 REQ-ANA-009,P4,M07,ACC-ANA-009,I,M,planejado,
-REQ-ANA-010,RQ4,M03,ACC-ANA-010,T,M,planejado,
+REQ-ANA-010,RQ4,M03,ACC-ANA-010,T,M,verificado,test_retraction_detection_by_identifiers;test_filter_synthesis_retractions_excludes_retracted_and_records_reason;test_workspace_synthesis_view_integrates_retraction_filtering
 REQ-EXT-001,"RQ5, P1",M05,ACC-EXT-001,T,M,planejado,
 REQ-EXT-002,OE3,M05,ACC-EXT-002,T,M,planejado,
 REQ-EXT-003,H3,M05,ACC-EXT-003,T,M,planejado,
@@ -38,7 +38,7 @@ REQ-ING-004,"RNF, P10",M02,ACC-ING-004,T,M,planejado,
 REQ-ING-005,P10,M02,ACC-ING-005,T,M,planejado,
 REQ-ING-006,"RQ4, RF original",M03,ACC-ING-006,T,S,planejado,
 REQ-ING-007,P7,M02,ACC-ING-007,T,M,planejado,
-REQ-ING-008,RQ3,M04,ACC-ING-008,T,M,planejado,
+REQ-ING-008,RQ3,M04,ACC-ING-008,T,M,verificado,test_ingest_opendengue_csv_aggregates_totals_by_country_and_year;test_ingest_sinan_aggregated_records;test_validation_rejects_invalid_iso_or_out_of_bounds_year
 REQ-ING-009,"P1, P6",M02,ACC-ING-009,T,M,planejado,
 REQ-MIG-001,"P1, P5, P6; fundacao da migracao",M01,ACC-MIG-001,T,M,verificado,test_postgres_read_only
 REQ-MIG-002,"P1, P5, P6; fundacao da migracao",M01,ACC-MIG-002,T,M,verificado,test_provenance_and_atomicity
