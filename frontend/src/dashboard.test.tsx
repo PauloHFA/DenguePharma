@@ -38,6 +38,10 @@ it("mostra resultados publicados, filtra documentos e distingue ausencia de revi
   await userEvent.click(screen.getByRole("button", { name: "Carga Global (Eixo C)" }));
   expect(screen.getByRole("heading", { name: /Eixo C — Carga Global de Doença/ })).toBeInTheDocument();
   expect(screen.getByText(/Deserto de pesquisa clínica: altíssima mortalidade/)).toBeInTheDocument();
+
+  await userEvent.click(screen.getByRole("button", { name: "Sobrevivência (Eixo B)" }));
+  expect(screen.getByRole("heading", { name: /Eixo B — Curva de Sobrevivência/ })).toBeInTheDocument();
+  expect(screen.getByText(/Tempo mediano até o relato global/)).toBeInTheDocument();
 });
 
 it("exibe falha de carregamento sem simular dados", async () => {
