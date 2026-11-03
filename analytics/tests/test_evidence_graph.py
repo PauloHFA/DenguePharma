@@ -99,3 +99,4 @@ def test_disabled_graph_generates_no_edges():
     assert graph["enabled"] is False
     assert len(graph["nodes"]) == 0
     assert len(graph["edges"]) == 0
+

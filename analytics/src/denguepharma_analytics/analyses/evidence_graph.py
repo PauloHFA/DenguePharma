@@ -144,3 +144,4 @@ def build_evidence_network(
         "safeguard_verified": all(e.evidence_status == "APROVADO" for e in edges),
         "notice": "Apenas campos formalmente aprovados geram arestas na rede (REQ-ANA-008).",
     }
+

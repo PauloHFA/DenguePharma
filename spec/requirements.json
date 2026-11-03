@@ -75,12 +75,14 @@
       "verification": "T",
       "priority": "S",
       "research": "RQ4",
-      "state": "planejado",
+      "state": "verificado",
       "task": "M03",
       "scenario": "ACC-ANA-005",
-      "tests": [],
+      "tests": [
+        "test_outcome_switching_and_discrepancy_detection"
+      ],
       "source": "PDF Analytics 2.0, secao 8",
-      "coverage": "nao verificado na nova arquitetura"
+      "coverage": "verificado no pytest analytics"
     },
     {
       "id": "REQ-ANA-006",
@@ -560,12 +562,14 @@
       "verification": "T",
       "priority": "S",
       "research": "RQ4, RF original",
-      "state": "planejado",
+      "state": "verificado",
       "task": "M03",
       "scenario": "ACC-ING-006",
-      "tests": [],
+      "tests": [
+        "test_registry_hash_change_generates_new_version_and_diff"
+      ],
       "source": "PDF Analytics 2.0, secao 8",
-      "coverage": "nao verificado na nova arquitetura"
+      "coverage": "verificado no pytest analytics"
     },
     {
       "id": "REQ-ING-007",
