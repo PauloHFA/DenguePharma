@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { DiseaseBurdenView } from "../components/DiseaseBurdenView";
+import { DiscrepancyAuditView } from "../components/DiscrepancyAuditView";
 import { ExtractionBenchmarkView } from "../components/ExtractionBenchmarkView";
 import { PrismaFlowView } from "../components/PrismaFlowView";
 import { SurvivalReportingView } from "../components/SurvivalReportingView";
@@ -86,7 +87,7 @@ export function DashboardPage() {
         {summary.protocol?.eligibility?.stage === "pilot" && <p className="notice"><strong>Coleta piloto: até {summary.protocol.maxRecordsPerSource} registros por fonte.</strong> Amostra de conveniência para validar a preparação dos dados. A revisão científica permanece pendente nos registros sem decisão consolidada.</p>}
         <p className="muted">Protocolo {current?.protocol_code} · Data de corte {current?.cutoff_date} · Resultados congelados desta execução.</p>
         <div className="metrics">{[["Documentos após deduplicação", summary.documentCount], ["Publicações", summary.publicationCount], ["Registros de ensaios", summary.trialCount], ["Estudos com campos revisados", summary.studyCount]].map(([label, value]) => <article key={label}><strong>{value}</strong><span>{label}</span></article>)}</div>
-        <nav aria-label="Análises" className="dashboard-tabs">{[["panorama", "Corpus e evolução"], ["ensaios", "Ensaios e intervenções"], ["sobrevivencia", "Sobrevivência (Eixo B)"], ["evidencias", "Evidências revisadas"], ["qualidade", "Qualidade e integração"], ["carga", "Carga Global (Eixo C)"], ["benchmark", "Benchmark IA (Eixo D)"], ["prisma", "Fluxo PRISMA-ScR"]].map(([value, label]) => <button key={value} aria-pressed={tab === value} onClick={() => { setTab(value); setSearch(""); }}>{label}</button>)}</nav>
+        <nav aria-label="Análises" className="dashboard-tabs">{[["panorama", "Corpus e evolução"], ["ensaios", "Ensaios e intervenções"], ["sobrevivencia", "Sobrevivência (Eixo B)"], ["auditoria", "Auditoria e Outcome Switching"], ["evidencias", "Evidências revisadas"], ["qualidade", "Qualidade e integração"], ["carga", "Carga Global (Eixo C)"], ["benchmark", "Benchmark IA (Eixo D)"], ["prisma", "Fluxo PRISMA-ScR"]].map(([value, label]) => <button key={value} aria-pressed={tab === value} onClick={() => { setTab(value); setSearch(""); }}>{label}</button>)}</nav>
         <label>Buscar nas tabelas desta aba <input type="search" value={search} onChange={e => setSearch(e.target.value)} placeholder="Substância, país, categoria…" /></label>
         {tab === "panorama" && <>
           <h2>Corpus coletado</h2><p>A elegibilidade pode estar pendente. Ano de publicação e ano de início de ensaio representam eventos distintos.</p>
@@ -105,6 +106,7 @@ export function DashboardPage() {
           <Table title="Participantes informados por registro — sem somatório" rows={summary.enrollment} columns={["field", "available", "denominator", "missing", "median", "q1", "q3", "min", "max"]} search={search} />
         </>}
         {tab === "sobrevivencia" && <SurvivalReportingView />}
+        {tab === "auditoria" && <DiscrepancyAuditView />}
         {tab === "evidencias" && <>
           <h2>Mapa de evidências revisadas</h2><p>{summary.reviewed.notice}</p>
           {!summary.studyCount && <p className="empty">Sem estudos com campos científicos revisados neste snapshot. O panorama coletado continua disponível nas outras abas.</p>}
