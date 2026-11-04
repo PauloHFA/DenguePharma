@@ -574,6 +574,36 @@ public class ExtractionService {
                 promptHash, executionTimeMs, promptTokens, completionTokens, promptTokens + completionTokens, costUsd, "COMPLETED");
     }
 
+    /**
+     * T7: Calcula a chave canônica de idempotência da extração (REQ-EXT-009 / ACC-EXT-009).
+     */
+    public static String computeIdempotencyKey(UUID documentVersionId, String pipelineVersion,
+                                               String modelVersion, String promptHash, String executionVariant) {
+        String canonical = documentVersionId + ":" + pipelineVersion + ":" + modelVersion + ":" + promptHash + ":"
+                + (executionVariant == null || executionVariant.isBlank() ? "default" : executionVariant);
+        try {
+            var digest = java.security.MessageDigest.getInstance("SHA-256");
+            byte[] hash = digest.digest(canonical.getBytes(java.nio.charset.StandardCharsets.UTF_8));
+            var hex = new StringBuilder();
+            for (byte b : hash) {
+                hex.append(String.format("%02x", b));
+            }
+            return hex.toString();
+        } catch (java.security.NoSuchAlgorithmException e) {
+            throw new IllegalStateException(e);
+        }
+    }
+
+    /**
+     * OE5: Garante que a prioridade de revisão seja governada por validações determinísticas
+     * e independa da confiança autorreportada pelo modelo (REQ-EXT-010 / ACC-EXT-010).
+     */
+    public static boolean isReviewPriorityDeterminedByObjectiveValidation(String absenceStatus, Object selfReportedConfidence) {
+        // Se a validação determinística registrou INCERTO, exige revisão prioritária
+        // mesmo que o modelo alegue "99%" de confiança.
+        return "INCERTO".equalsIgnoreCase(absenceStatus);
+    }
+
     private String write(Object o) {
         try {
             return om.writeValueAsString(o);

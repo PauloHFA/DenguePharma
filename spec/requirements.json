@@ -304,12 +304,14 @@
       "verification": "T",
       "priority": "M",
       "research": "P10",
-      "state": "planejado",
+      "state": "verificado",
       "task": "M05",
       "scenario": "ACC-EXT-009",
-      "tests": [],
+      "tests": [
+        "test_req_ext_009_idempotency_composite_key_single_logical_run"
+      ],
       "source": "PDF Analytics 2.0, secao 8",
-      "coverage": "nao verificado na nova arquitetura"
+      "coverage": "verificado no pytest analytics e backend junit"
     },
     {
       "id": "REQ-EXT-010",
@@ -318,12 +320,14 @@
       "verification": "A",
       "priority": "S",
       "research": "OE5",
-      "state": "planejado",
+      "state": "verificado",
       "task": "M05",
       "scenario": "ACC-EXT-010",
-      "tests": [],
+      "tests": [
+        "test_req_ext_010_disregards_self_reported_confidence_for_prioritization"
+      ],
       "source": "PDF Analytics 2.0, secao 8",
-      "coverage": "nao verificado na nova arquitetura"
+      "coverage": "verificado no pytest analytics e backend junit"
     },
     {
       "id": "REQ-EXT-011",

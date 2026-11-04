@@ -553,3 +553,120 @@ def validate_extraction_batch(
         ),
         "fields": [r.to_dict() for r in results],
     }
+
+
+def compute_extraction_idempotency_key(
+    document_version_id: str,
+    pipeline_version: str,
+    model_version: str,
+    prompt_hash: str,
+    execution_variant: str = "default",
+) -> str:
+    """Calcula a chave canônica de idempotência de extração (REQ-EXT-009 / ACC-EXT-009 / T7).
+
+    Chave: document_version_id + pipeline_version + model_version + prompt_hash + execution_variant.
+    """
+    import hashlib
+
+    canonical = (
+        f"{str(document_version_id).strip()}:"
+        f"{str(pipeline_version).strip()}:"
+        f"{str(model_version).strip()}:"
+        f"{str(prompt_hash).strip()}:"
+        f"{str(execution_variant).strip() or 'default'}"
+    )
+    return hashlib.sha256(canonical.encode("utf-8")).hexdigest()
+
+
+class ExtractionRunRegistry:
+    """Registro determinístico de execuções de extração para garantia de idempotência (REQ-EXT-009).
+
+    A repetição da mesma chave não cria nova execução lógica (T7).
+    """
+
+    def __init__(self) -> None:
+        self._runs: dict[str, ExtractionRunAuditRecord] = {}
+
+    def get_or_create(
+        self,
+        document_version_id: str,
+        pipeline_version: str,
+        model_version: str,
+        prompt_hash: str,
+        execution_variant: str,
+        run_record: ExtractionRunAuditRecord,
+    ) -> tuple[ExtractionRunAuditRecord, bool]:
+        key = compute_extraction_idempotency_key(
+            document_version_id,
+            pipeline_version,
+            model_version,
+            prompt_hash,
+            execution_variant,
+        )
+        if key in self._runs:
+            # Retorna execução existente sem duplicar registros lógicos
+            return self._runs[key], True
+
+        self._runs[key] = run_record
+        return run_record, False
+
+
+def prioritize_for_human_review(
+    candidate_fields: Sequence[Mapping[str, Any]],
+) -> list[dict[str, Any]]:
+    """Prioriza campos para revisão humana sem usar a confiança autorreportada pelo modelo (REQ-EXT-010 / ACC-EXT-010 / OE5).
+
+    Qualquer confiança informada pelo LLM (ex: '99%', 0.99, 'high') é expressamente
+    desconsiderada. A priorização é estritamente baseada em critérios objetivos:
+    - Status INCERTO / abstenção (T4)
+    - Bloqueio por tabela desalinhada / OCR incerto (T6)
+    - Incoerência numérica / violação de denominador (T5)
+    - Desfecho primário ou discrepâncias críticas
+    """
+    prioritized: list[dict[str, Any]] = []
+
+    for item in candidate_fields:
+        field_name = str(item.get("field_name", ""))
+        absence_status = str(item.get("absence_status", "PRESENTE"))
+        is_valid = bool(item.get("is_valid", True))
+        rejection_reasons = list(item.get("rejection_reasons", []))
+        ignored_model_confidence = item.get("self_reported_confidence")
+
+        # Cálculo do peso de prioridade baseado exclusivamente em validações determinísticas
+        priority_score = 0
+        reasons_for_priority: list[str] = []
+
+        if not is_valid or absence_status == "INCERTO":
+            priority_score += 100
+            reasons_for_priority.append("Status INCERTO ou validação determinística reprovada (abstenção T4)")
+
+        if any("desalinhada" in r.lower() or "ocr" in r.lower() for r in rejection_reasons):
+            priority_score += 80
+            reasons_for_priority.append("Tabela desalinhada ou leitura incerta (T6)")
+
+        if any("maior que" in r.lower() or "denominador" in r.lower() for r in rejection_reasons):
+            priority_score += 70
+            reasons_for_priority.append("Incoerência numérica ou proporcional (T5)")
+
+        if field_name in {"primary_outcome", "outcome", "sample_size", "n_randomized"}:
+            priority_score += 50
+            reasons_for_priority.append(f"Campo crítico para a síntese ({field_name})")
+
+        prioritized.append({
+            "field_name": field_name,
+            "original_value": item.get("original_value"),
+            "absence_status": absence_status,
+            "is_valid": is_valid,
+            "priority_score": priority_score,
+            "priority_reasons": reasons_for_priority,
+            "requires_human_adjudication": priority_score > 0,
+            "ignored_model_confidence": ignored_model_confidence,
+            "governance_notice": (
+                "Decisão de priorização calculada exclusivamente por validações determinísticas; "
+                "a confiança autorreportada pelo modelo foi expressamente desconsiderada (REQ-EXT-010 / OE5)."
+            ),
+        })
+
+    # Ordena decrescente pelo score objetivo de prioridade
+    prioritized.sort(key=lambda x: int(x["priority_score"]), reverse=True)
+    return prioritized

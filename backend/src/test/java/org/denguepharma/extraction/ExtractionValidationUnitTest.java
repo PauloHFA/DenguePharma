@@ -117,4 +117,31 @@ class ExtractionValidationUnitTest {
                 )
         );
     }
+
+    @Test
+    void testIdempotencyKeyComputationAndDeterminism() {
+        // ACC-EXT-009 / T7: Chave composta determinística
+        java.util.UUID docVerId = java.util.UUID.randomUUID();
+        String key1 = ExtractionService.computeIdempotencyKey(docVerId, "v1.0", "gemini-1.5", "sha256-prompt", "default");
+        String key2 = ExtractionService.computeIdempotencyKey(docVerId, "v1.0", "gemini-1.5", "sha256-prompt", "default");
+        assertNotNull(key1);
+        assertEquals(64, key1.length());
+        assertEquals(key1, key2);
+
+        // Chave diferente se mudar a variante ou prompt
+        String key3 = ExtractionService.computeIdempotencyKey(docVerId, "v1.0", "gemini-1.5", "sha256-prompt-novo", "default");
+        assertNotEquals(key1, key3);
+    }
+
+    @Test
+    void testSelfReportedConfidenceDisregardedInHumanReviewPriority() {
+        // ACC-EXT-010 / OE5: Decisão e prioridade independem de "confiança 99%" alegada pelo modelo
+        boolean prioritizedIncertoWith99Claim =
+                ExtractionService.isReviewPriorityDeterminedByObjectiveValidation("INCERTO", "99%");
+        assertTrue(prioritizedIncertoWith99Claim, "Campo INCERTO deve ser priorizado mesmo com 'confiança 99%'");
+
+        boolean supportedWith70Claim =
+                ExtractionService.isReviewPriorityDeterminedByObjectiveValidation("PRESENTE", 0.70);
+        assertFalse(supportedWith70Claim, "Campo PRESENTE validado não deve ser forçado como incerto");
+    }
 }

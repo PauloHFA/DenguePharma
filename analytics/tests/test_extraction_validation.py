@@ -376,3 +376,107 @@ def test_req_ext_008_extraction_run_audit_fields_complete():
             completion_tokens=50,
             cost_usd=0.001,
         )
+
+
+@pytest.mark.requirement("REQ-EXT-009")
+def test_req_ext_009_idempotency_composite_key_single_logical_run():
+    """O sistema deve usar a chave de idempotência document_version_id + pipeline_version +
+
+    model_version + prompt_hash + execution_variant; repetir a mesma chave não cria nova execução lógica (ACC-EXT-009 / T7).
+    Dado a mesma chave enviada duas vezes, quando processada, então existe uma única extração lógica.
+    """
+    from denguepharma_analytics.clinical.extraction_validation import (
+        ExtractionRunRegistry,
+        compute_extraction_idempotency_key,
+        create_audited_extraction_run,
+    )
+
+    doc_ver = "doc-ver-uuid-1234"
+    pipeline = "v1.0-clinical"
+    model = "gemini-1.5-pro"
+    prompt_hash = "sha256-prompt-abc-123"
+    variant = "temperature_zero"
+
+    key1 = compute_extraction_idempotency_key(doc_ver, pipeline, model, prompt_hash, variant)
+    key2 = compute_extraction_idempotency_key(doc_ver, pipeline, model, prompt_hash, variant)
+    assert key1 == key2
+    assert len(key1) == 64  # SHA-256
+
+    # Registro de execuções
+    registry = ExtractionRunRegistry()
+    run_record = create_audited_extraction_run(
+        run_id="run-original-001",
+        document_version_id=doc_ver,
+        provider="google",
+        model=model,
+        model_version="v2.5",
+        parameters={"temperature": 0.0},
+        prompt_hash=prompt_hash,
+        execution_time_ms=1200,
+        prompt_tokens=900,
+        completion_tokens=150,
+        cost_usd=0.0025,
+    )
+
+    # Primeira submissão: registra execução
+    run_1, is_replay_1 = registry.get_or_create(doc_ver, pipeline, model, prompt_hash, variant, run_record)
+    assert is_replay_1 is False
+    assert run_1.run_id == "run-original-001"
+
+    # Segunda submissão com mesma chave de idempotência: retorna a mesma execução lógica
+    duplicate_candidate = create_audited_extraction_run(
+        run_id="run-tentativa-duplicada-002",
+        document_version_id=doc_ver,
+        provider="google",
+        model=model,
+        model_version="v2.5",
+        parameters={"temperature": 0.0},
+        prompt_hash=prompt_hash,
+        execution_time_ms=1100,
+        prompt_tokens=900,
+        completion_tokens=150,
+        cost_usd=0.0025,
+    )
+    run_2, is_replay_2 = registry.get_or_create(doc_ver, pipeline, model, prompt_hash, variant, duplicate_candidate)
+    assert is_replay_2 is True
+    assert run_2.run_id == "run-original-001"  # Permanece a primeira execução lógica (T7)
+
+
+@pytest.mark.requirement("REQ-EXT-010")
+def test_req_ext_010_disregards_self_reported_confidence_for_prioritization():
+    """O sistema não deve usar a confiança autorreportada pelo modelo como probabilidade;
+
+    deve priorizar revisão por cobertura de evidência, validações determinísticas e julgamento humano (ACC-EXT-010 / OE5).
+    Dado uma saída com 'confiança 99%', quando priorizada, então a decisão independe desse valor.
+    """
+    from denguepharma_analytics.clinical.extraction_validation import (
+        prioritize_for_human_review,
+    )
+
+    # Campo 1: IA alega '99% de confiança', porém falhou em suporte literal determinístico (INCERTO)
+    field_unsupported_high_claim = {
+        "field_name": "primary_outcome",
+        "original_value": "Complete viral clearance at 48h",
+        "absence_status": "INCERTO",
+        "is_valid": False,
+        "self_reported_confidence": "99%",  # confiança autorreportada
+        "rejection_reasons": ["Sem trecho de suporte literal na fonte (abstenção T4)"],
+    }
+
+    # Campo 2: IA reportou 'confiança 70%', mas o campo é perfeitamente válido com trecho literal comprovado
+    field_supported_lower_claim = {
+        "field_name": "sample_size",
+        "original_value": 54,
+        "absence_status": "PRESENTE",
+        "is_valid": True,
+        "self_reported_confidence": 0.70,
+        "rejection_reasons": [],
+    }
+
+    queue = prioritize_for_human_review([field_supported_lower_claim, field_unsupported_high_claim])
+
+    # O campo com 'confiança 99%' DEVE ter maior prioridade de revisão devido à incerteza determinística
+    assert queue[0]["field_name"] == "primary_outcome"
+    assert queue[0]["requires_human_adjudication"] is True
+    assert queue[0]["priority_score"] > queue[1]["priority_score"]
+    assert "confiança autorreportada pelo modelo foi expressamente desconsiderada" in queue[0]["governance_notice"]
