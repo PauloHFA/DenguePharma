@@ -54,8 +54,8 @@ REQ-MIG-011,"P1, P5, P6; fundacao da migracao",M01,ACC-MIG-011,T,M,verificado,te
 REQ-MIG-012,"P1, P5, P6; fundacao da migracao",M01,ACC-MIG-012,T,M,verificado,test_provenance_and_atomicity
 REQ-OPS-001,P10,M07,ACC-OPS-001,T,M,verificado,test_outbox_atomic_mutation_and_event_persistence;test_outbox_publisher_retry_preserves_stable_event_id;TransactionalOutboxInboxUnitTest::failOutboxResetsLeasePreservingStableEventId
 REQ-OPS-002,P10,M07,ACC-OPS-002,T,M,verificado,test_inbox_idempotent_consumer_strictly_executes_once;test_inbox_distinct_consumers_independent_processing;TransactionalOutboxInboxUnitTest::claimDeliveryOnCompletedEventReturnsCompletedWithoutNewLease
-REQ-OPS-003,RNF,M07,ACC-OPS-003,T,M,planejado,
-REQ-OPS-004,P10,M07,ACC-OPS-004,T,M,planejado,
+REQ-OPS-003,RNF,M07,ACC-OPS-003,T,M,verificado,test_no_sql_transaction_open_during_ai_call;test_fails_if_attempted_with_open_transaction;TransactionalOutboxInboxUnitTest::confirmOutboxSucceedsWhenLeaseValidAndThrowsWhenExpired
+REQ-OPS-004,P10,M07,ACC-OPS-004,T,M,verificado,test_stale_worker_result_is_discarded_and_recorded;test_lease_renewal_and_quarantine;TransactionalOutboxInboxUnitTest::staleWorkerDeliveryRejectedWhenLeaseExpired;TransactionalOutboxInboxUnitTest::renewLeaseThrowsWhenExpiredOrTokenInvalid
 REQ-OPS-005,RF-11,M07,ACC-OPS-005,T,S,planejado,
 REQ-OPS-006,RNF,M05,ACC-OPS-006,T,M,planejado,
 REQ-OPS-007,RNF-02,M07,ACC-OPS-007,T,M,planejado,

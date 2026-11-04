@@ -164,5 +164,67 @@ class TransactionalOutboxInboxUnitTest {
                 eq(PipelineService.CONSUMER)
         );
     }
+
+    @Test
+    void renewLeaseThrowsWhenExpiredOrTokenInvalid() {
+        UUID jobId = UUID.randomUUID();
+        UUID token = UUID.randomUUID();
+
+        // REQ-OPS-004: Se o lease já expirou, a tentativa de renovação afeta 0 linhas e lança erro
+        when(jdbc.update(anyString(), eq(jobId), eq(token))).thenReturn(0);
+
+        assertThatThrownBy(() -> pipelineService.renew(jobId, token))
+                .isInstanceOf(ResponseStatusException.class)
+                .hasMessageContaining("lease expirado");
+    }
+
+    @Test
+    void renewLeaseSucceedsWhenValid() {
+        UUID jobId = UUID.randomUUID();
+        UUID token = UUID.randomUUID();
+
+        when(jdbc.update(anyString(), eq(jobId), eq(token))).thenReturn(1);
+
+        // Sucesso na renovação sem exceção
+        pipelineService.renew(jobId, token);
+        verify(jdbc).update(anyString(), eq(jobId), eq(token));
+    }
+
+    @Test
+    void staleWorkerDeliveryRejectedWhenLeaseExpired() {
+        UUID jobId = UUID.randomUUID();
+        UUID staleToken = UUID.randomUUID();
+
+        // REQ-OPS-004 / ACC-OPS-004: Worker atrasado tenta buscar input ou comitar job cujo lease expirou
+        when(jdbc.queryForList(anyString(), eq(jobId), eq(staleToken)))
+                .thenReturn(List.of()); // Nenhuma linha porque lease expirou
+
+        assertThatThrownBy(() -> pipelineService.input(jobId, staleToken))
+                .isInstanceOf(ResponseStatusException.class)
+                .hasMessageContaining("lease expirado ou token invalido");
+    }
+
+    @Test
+    void failJobTransitionsToQuarantinedWhenMaxAttemptsExceeded() {
+        UUID jobId = UUID.randomUUID();
+        UUID token = UUID.randomUUID();
+        UUID eventId = UUID.randomUUID();
+
+        // Job que já atingiu o limite de tentativas
+        when(jdbc.queryForList(anyString(), eq(jobId), eq(token)))
+                .thenReturn(List.of(Map.of(
+                        "id", jobId,
+                        "attempts", 3,
+                        "max_attempts", 3,
+                        "source_event_id", eventId
+                )));
+
+        Map<String, Object> result = pipelineService.fail(jobId, token, "AI_EXTRACTION_TIMEOUT");
+
+        assertThat(result.get("status")).isEqualTo("QUARANTINED");
+        // Verifica que o update colocou status = 'QUARANTINED'
+        verify(jdbc).update(anyString(), eq("QUARANTINED"), eq("AI_EXTRACTION_TIMEOUT"), eq(jobId));
+    }
 }
+
 

@@ -869,12 +869,16 @@
       "verification": "T",
       "priority": "M",
       "research": "RNF",
-      "state": "planejado",
+      "state": "verificado",
       "task": "M07",
       "scenario": "ACC-OPS-003",
-      "tests": [],
+      "tests": [
+        "test_no_sql_transaction_open_during_ai_call",
+        "test_fails_if_attempted_with_open_transaction",
+        "TransactionalOutboxInboxUnitTest::confirmOutboxSucceedsWhenLeaseValidAndThrowsWhenExpired"
+      ],
       "source": "PDF Analytics 2.0, secao 8",
-      "coverage": "nao verificado na nova arquitetura"
+      "coverage": "verificado no pytest analytics e backend junit"
     },
     {
       "id": "REQ-OPS-004",
@@ -883,12 +887,17 @@
       "verification": "T",
       "priority": "M",
       "research": "P10",
-      "state": "planejado",
+      "state": "verificado",
       "task": "M07",
       "scenario": "ACC-OPS-004",
-      "tests": [],
+      "tests": [
+        "test_stale_worker_result_is_discarded_and_recorded",
+        "test_lease_renewal_and_quarantine",
+        "TransactionalOutboxInboxUnitTest::staleWorkerDeliveryRejectedWhenLeaseExpired",
+        "TransactionalOutboxInboxUnitTest::renewLeaseThrowsWhenExpiredOrTokenInvalid"
+      ],
       "source": "PDF Analytics 2.0, secao 8",
-      "coverage": "nao verificado na nova arquitetura"
+      "coverage": "verificado no pytest analytics e backend junit"
     },
     {
       "id": "REQ-OPS-005",
