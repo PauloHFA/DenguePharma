@@ -833,12 +833,16 @@
       "verification": "T",
       "priority": "M",
       "research": "P10",
-      "state": "planejado",
+      "state": "verificado",
       "task": "M07",
       "scenario": "ACC-OPS-001",
-      "tests": [],
+      "tests": [
+        "test_outbox_atomic_mutation_and_event_persistence",
+        "test_outbox_publisher_retry_preserves_stable_event_id",
+        "TransactionalOutboxInboxUnitTest::failOutboxResetsLeasePreservingStableEventId"
+      ],
       "source": "PDF Analytics 2.0, secao 8",
-      "coverage": "nao verificado na nova arquitetura"
+      "coverage": "verificado no pytest analytics e backend junit"
     },
     {
       "id": "REQ-OPS-002",
@@ -847,12 +851,16 @@
       "verification": "T",
       "priority": "M",
       "research": "P10",
-      "state": "planejado",
+      "state": "verificado",
       "task": "M07",
       "scenario": "ACC-OPS-002",
-      "tests": [],
+      "tests": [
+        "test_inbox_idempotent_consumer_strictly_executes_once",
+        "test_inbox_distinct_consumers_independent_processing",
+        "TransactionalOutboxInboxUnitTest::claimDeliveryOnCompletedEventReturnsCompletedWithoutNewLease"
+      ],
       "source": "PDF Analytics 2.0, secao 8",
-      "coverage": "nao verificado na nova arquitetura"
+      "coverage": "verificado no pytest analytics e backend junit"
     },
     {
       "id": "REQ-OPS-003",

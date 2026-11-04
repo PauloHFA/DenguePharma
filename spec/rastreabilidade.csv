@@ -52,8 +52,8 @@ REQ-MIG-009,"P1, P5, P6; fundacao da migracao",M00,ACC-MIG-009,T,M,verificado,te
 REQ-MIG-010,"P1, P5, P6; fundacao da migracao",M01,ACC-MIG-010,T,M,verificado,test_capabilities
 REQ-MIG-011,"P1, P5, P6; fundacao da migracao",M01,ACC-MIG-011,T,M,verificado,test_public_privacy
 REQ-MIG-012,"P1, P5, P6; fundacao da migracao",M01,ACC-MIG-012,T,M,verificado,test_provenance_and_atomicity
-REQ-OPS-001,P10,M07,ACC-OPS-001,T,M,planejado,
-REQ-OPS-002,P10,M07,ACC-OPS-002,T,M,planejado,
+REQ-OPS-001,P10,M07,ACC-OPS-001,T,M,verificado,test_outbox_atomic_mutation_and_event_persistence;test_outbox_publisher_retry_preserves_stable_event_id;TransactionalOutboxInboxUnitTest::failOutboxResetsLeasePreservingStableEventId
+REQ-OPS-002,P10,M07,ACC-OPS-002,T,M,verificado,test_inbox_idempotent_consumer_strictly_executes_once;test_inbox_distinct_consumers_independent_processing;TransactionalOutboxInboxUnitTest::claimDeliveryOnCompletedEventReturnsCompletedWithoutNewLease
 REQ-OPS-003,RNF,M07,ACC-OPS-003,T,M,planejado,
 REQ-OPS-004,P10,M07,ACC-OPS-004,T,M,planejado,
 REQ-OPS-005,RF-11,M07,ACC-OPS-005,T,S,planejado,

@@ -161,8 +161,8 @@ def build_pdf(filename="DenguePharma_Relatorio_Consolidado_Execucao.pdf"):
     story.append(Paragraph("Relatório Consolidado de Implementação, Arquitetura e Evidências", subtitle_style))
     story.append(Paragraph(
         f"<b>Data de Geração:</b> {datetime.now().strftime('%d/%m/%Y %H:%M')} | "
-        "<b>Versão de Entrega:</b> 0.34.0 | "
-        "<b>Branch:</b> main (41+ commits sincronizados)",
+        "<b>Versão de Entrega:</b> 0.35.0 | "
+        "<b>Branch:</b> main (42+ commits sincronizados)",
         body_style
     ))
     story.append(HRFlowable(width="100%", thickness=1.5, color=colors.HexColor("#0284c7"), spaceAfter=8))
@@ -170,24 +170,26 @@ def build_pdf(filename="DenguePharma_Relatorio_Consolidado_Execucao.pdf"):
     # Box Resumo Executivo
     callout_data = [[
         Paragraph(
-            "<b>SUMÁRIO EXECUTIVO (VERSÃO 0.34.0):</b> Este documento consolida a totalidade dos componentes "
+            "<b>SUMÁRIO EXECUTIVO (VERSÃO 0.35.0):</b> Este documento consolida a totalidade dos componentes "
             "de software, infraestrutura multisserviço de contêineres, pipeline CI/CD GitHub Actions, "
+            "resiliência transacional com Outbox atômico e reenvio com event_id estável (REQ-OPS-001), "
+            "consumidor idempotente com Inbox e garantia de processamento exactly-once sob retentativas (REQ-OPS-002), "
             "idempotência canônica de extração por chave composta sem re-execuções duplicadas (REQ-EXT-009), "
-            "governança de priorização humana com rejeição formal da confiança autorreportada pelo modelo (REQ-EXT-010), "
+            "governança de priorização humana com rejeição da confiança autorreportada pelo modelo (REQ-EXT-010), "
             "conclusão integral do subsistema de extração por IA (Eixo D / Módulo M05), "
             "salvaguardas de tabelas e OCR com bloqueio de extração numérica sob desalinhamento (REQ-EXT-007), "
             "auditoria metrológica integral de execuções de IA com parâmetros, tempo, tokens e custo em ExtractionRun (REQ-EXT-008), "
             "segurança de extração por IA contra prompt injection com tratamento de texto como dado inerte (REQ-EXT-005), "
-            "salvaguardas de coerência numérica, denominadores e população com bloqueio de n_analisado > n_randomizado (REQ-EXT-006), "
-            "auditoria de discrepâncias registro vs publicação e outcome switching com roteamento para revisão humana (REQ-ANA-005), "
+            "salvaguardas de coerência numérica com bloqueio de n_analisado > n_randomizado (REQ-EXT-006), "
+            "auditoria de discrepâncias registro vs publicação e outcome switching com revisão humana (REQ-ANA-005), "
             "versionamento determinístico por hash e diff de campos (REQ-ING-006), "
-            "Grafo de Evidências Clínicas exclusivamente a partir de campos aprovados (REQ-ANA-008), "
-            "validação determinística de extração por IA com suporte literal e abstenção anti-alucinação (REQ-EXT-001/002/003/004), "
+            "Grafo de Evidências Clínicas a partir de campos aprovados (REQ-ANA-008), "
+            "validação determinística de extração por IA com suporte literal e abstenção anti-alucinação (REQ-EXT-001..004), "
             "cruzamento analítico de sítios/participantes com carga epidemiológica (REQ-ANA-004), "
             "fluxo de triagem PRISMA-ScR (REQ-SEL-004), meta-regressão e salvaguardas contextuais (REQ-ANA-002/009), "
             "bioatividades ChEMBL, Carga Global de Doença (Eixo C) com Desertos de Pesquisa, análise Kaplan–Meier (Eixo B), "
-            "monitor de retratações científicas (REQ-ANA-010), ingestão de microdados (REQ-ING-008), benchmark de extração com Bootstrap "
-            "(Eixo D - REQ-ANA-006/007) e salvaguardas científicas RC-01 a RC-07. Total de <b>51 requisitos SDD formalmente verificados</b>.",
+            "monitor de retratações científicas (REQ-ANA-010), benchmark com Bootstrap "
+            "(Eixo D - REQ-ANA-006/007) e salvaguardas científicas RC-01 a RC-07. Total de <b>53 requisitos SDD formalmente verificados</b>.",
             callout_style
         )
     ]]
@@ -434,11 +436,11 @@ def build_pdf(filename="DenguePharma_Relatorio_Consolidado_Execucao.pdf"):
         body_style
     ))
     story.append(Paragraph("• <b>Suíte Python Workers:</b> 55 testes pytest aprovados (`test_epidemiology`, `test_extractor`, `test_llm_adapter`, `test_chembl`, `test_pipeline`, `test_idempotency`).", bullet_style))
-    story.append(Paragraph("• <b>Suíte Python Analytics:</b> 207 testes coletados (incluindo <code>test_extraction_validation</code> com idempotência T7 e governança de priorização OE5, salvaguardas de tabelas/OCR T6 e metrologia P6, <code>test_discrepancies</code> com outcome switching e hash diff, <code>test_evidence_graph</code> com bloqueio de rascunhos, <code>test_trial_burden</code>, <code>test_selection_flow</code>, <code>test_meta_regression</code>, <code>test_benchmark</code>, <code>test_survival_reporting</code>, <code>test_retractions</code>, <code>test_shadow_screening</code>, <code>test_agreement</code>).", bullet_style))
-    story.append(Paragraph("• <b>Suíte Java Spring Boot:</b> Testes unitários e de integração aprovados (`ExtractionValidationUnitTest` com salvaguardas T5, T6, T7, T10, P6 e OE5, `DiscrepancyAuditControllerTest` com salvaguardas RC-01/RC-02, `EvidenceGraphControllerTest` com salvaguarda REQ-ANA-008, `TrialBurdenLinkControllerTest`, `PrismaFlowControllerTest`, `ExtractionBenchmarkControllerTest`, `BioactivityControllerTest`, `DiseaseBurdenControllerTest`).", bullet_style))
+    story.append(Paragraph("• <b>Suíte Python Analytics:</b> 211 testes coletados (incluindo <code>test_transactional_messaging</code> com outbox atômico e inbox idempotente REQ-OPS-001/002, <code>test_extraction_validation</code> com idempotência T7 e governança de priorização OE5, salvaguardas de tabelas/OCR T6 e metrologia P6, <code>test_discrepancies</code> com outcome switching e hash diff, <code>test_evidence_graph</code> com bloqueio de rascunhos, <code>test_trial_burden</code>, <code>test_selection_flow</code>, <code>test_meta_regression</code>, <code>test_benchmark</code>, <code>test_survival_reporting</code>, <code>test_retractions</code>, <code>test_shadow_screening</code>, <code>test_agreement</code>).", bullet_style))
+    story.append(Paragraph("• <b>Suíte Java Spring Boot:</b> Testes unitários e de integração aprovados (`TransactionalOutboxInboxUnitTest` com estabilidade de event_id e dedup do inbox, `ExtractionValidationUnitTest` com salvaguardas T5, T6, T7, T10, P6 e OE5, `DiscrepancyAuditControllerTest` com salvaguardas RC-01/RC-02, `EvidenceGraphControllerTest` com salvaguarda REQ-ANA-008, `TrialBurdenLinkControllerTest`, `PrismaFlowControllerTest`, `ExtractionBenchmarkControllerTest`, `BioactivityControllerTest`, `DiseaseBurdenControllerTest`).", bullet_style))
     story.append(Paragraph("• <b>Suíte Frontend TypeScript:</b> 31 testes Vitest aprovados em 7 suítes (`discrepancy-audit.test.tsx` com salvaguardas RC-01/RC-02, `evidence-graph.test.tsx`, `target-explorer.test.tsx`, `dashboard.test.tsx`, `curation-flows.test.tsx`).", bullet_style))
     story.append(Paragraph("• <b>Compilação Frontend:</b> Build de produção Vite gerado com sucesso sem erros ou pendências de tipos (60 módulos compilados).", bullet_style))
-    story.append(Paragraph("• <b>Matriz de Engenharia:</b> 96 requisitos formais catalogados em <code>spec/requirements.json</code> e <code>spec/rastreabilidade.csv</code>, com <b>51 requisitos formalmente verificados</b> (incluindo <code>REQ-EXT-001..010</code> [100% M05], <code>REQ-ANA-005</code>, <code>REQ-ING-006</code>, <code>REQ-ANA-008</code>, <code>REQ-ANA-004</code>, <code>REQ-SEL-004</code>, <code>REQ-ANA-002</code> e <code>REQ-ANA-009</code>) e validados pelo script <code>spec/check.py</code>.", bullet_style))
+    story.append(Paragraph("• <b>Matriz de Engenharia:</b> 96 requisitos formais catalogados em <code>spec/requirements.json</code> e <code>spec/rastreabilidade.csv</code>, com <b>53 requisitos formalmente verificados</b> (incluindo <code>REQ-OPS-001/002</code>, <code>REQ-EXT-001..010</code> [100% M05], <code>REQ-ANA-005</code>, <code>REQ-ING-006</code>, <code>REQ-ANA-008</code>, <code>REQ-ANA-004</code>, <code>REQ-SEL-004</code>, <code>REQ-ANA-002</code> e <code>REQ-ANA-009</code>) e validados pelo script <code>spec/check.py</code>.", bullet_style))
 
     story.append(Spacer(1, 9))
     story.append(HRFlowable(width="100%", thickness=1, color=colors.HexColor("#94a3b8"), spaceAfter=5))
