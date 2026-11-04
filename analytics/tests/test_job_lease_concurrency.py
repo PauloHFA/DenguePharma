@@ -156,3 +156,4 @@ def test_lease_renewal_and_quarantine(db_conn):
     # Job em quarentena não aceita mais claim
     l3 = manager.claim_lease(job_id)
     assert l3 is None
+

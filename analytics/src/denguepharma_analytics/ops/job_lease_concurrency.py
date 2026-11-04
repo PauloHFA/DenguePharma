@@ -261,3 +261,4 @@ class JobLeaseManager:
                 (status, error_code, now, job_id, lease_token),
             )
             return status
+

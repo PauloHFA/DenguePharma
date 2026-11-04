@@ -906,12 +906,16 @@
       "verification": "T",
       "priority": "S",
       "research": "RF-11",
-      "state": "planejado",
+      "state": "verificado",
       "task": "M07",
       "scenario": "ACC-OPS-005",
-      "tests": [],
+      "tests": [
+        "test_backoff_computation_with_exponential_growth_and_jitter",
+        "test_quarantine_transition_and_authorized_retry_audit",
+        "PipelineIntegrationTest::falhasTemBackoffQuarentenaERetomadaAuditada"
+      ],
       "source": "PDF Analytics 2.0, secao 8",
-      "coverage": "nao verificado na nova arquitetura"
+      "coverage": "verificado no pytest analytics e backend junit"
     },
     {
       "id": "REQ-OPS-006",
@@ -920,12 +924,15 @@
       "verification": "T",
       "priority": "M",
       "research": "RNF",
-      "state": "planejado",
+      "state": "verificado",
       "task": "M05",
       "scenario": "ACC-OPS-006",
-      "tests": [],
+      "tests": [
+        "test_ai_budget_cumulative_tracking_and_cost_calculation",
+        "test_ai_budget_suspends_and_alerts_upon_reaching_ceiling"
+      ],
       "source": "PDF Analytics 2.0, secao 8",
-      "coverage": "nao verificado na nova arquitetura"
+      "coverage": "verificado no pytest analytics e backend junit"
     },
     {
       "id": "REQ-OPS-007",

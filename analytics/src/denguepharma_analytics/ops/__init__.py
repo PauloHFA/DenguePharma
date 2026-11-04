@@ -1,5 +1,13 @@
-"""Módulo operacional de mensageria, resiliência transacional e controle de concorrência."""
+"""Módulo operacional de mensageria, resiliência transacional, concorrência e governança orçamentária."""
 
+from denguepharma_analytics.ops.backoff_and_budget import (
+    AIBudgetExceededError,
+    AIBudgetGuard,
+    AuditRecord,
+    BackoffPolicy,
+    BudgetAlert,
+    QuarantineManager,
+)
 from denguepharma_analytics.ops.job_lease_concurrency import (
     JobLease,
     JobLeaseManager,
@@ -22,4 +30,10 @@ __all__ = [
     "LeaseError",
     "LeaseExpiredError",
     "StaleWorkerRejectedError",
+    "BackoffPolicy",
+    "QuarantineManager",
+    "AuditRecord",
+    "AIBudgetGuard",
+    "AIBudgetExceededError",
+    "BudgetAlert",
 ]
