@@ -71,4 +71,50 @@ class ExtractionValidationUnitTest {
         assertFalse(ptWarnings.isEmpty());
         assertTrue(ptWarnings.get(0).contains("T10"));
     }
+
+    @Test
+    void testMisalignedTableAndOcrQuality() {
+        // T6 / ACC-EXT-007: Tabela com colunas desalinhadas é bloqueada
+        String misalignedProblem = ExtractionService.validateTableReadingQuality(true, 0.95);
+        assertNotNull(misalignedProblem);
+        assertTrue(misalignedProblem.contains("colunas desalinhadas"));
+
+        // Baixa qualidade de OCR é bloqueada
+        String ocrProblem = ExtractionService.validateTableReadingQuality(false, 0.55);
+        assertNotNull(ocrProblem);
+        assertTrue(ocrProblem.contains("baixa confianca de OCR"));
+
+        // Tabela alinhada com OCR alto é aprovada
+        assertNull(ExtractionService.validateTableReadingQuality(false, 0.98));
+    }
+
+    @Test
+    void testAuditedExtractionRunCompletion() {
+        // ACC-EXT-008 / P6: Todos os campos do ExtractionRun preenchidos
+        var run = ExtractionService.validateAuditedExtractionRun(
+                "run-audit-100",
+                "doc-ver-100",
+                "google",
+                "gemini-1.5-pro",
+                "v2.5",
+                java.util.Map.of("temperature", 0.0),
+                "sha256-prompt-hash-12345",
+                1200L,
+                800,
+                150,
+                new java.math.BigDecimal("0.0035")
+        );
+        assertNotNull(run);
+        assertEquals("google", run.provider());
+        assertEquals(950, run.totalTokens());
+        assertEquals(new java.math.BigDecimal("0.0035"), run.costUsd());
+
+        // Falta de prompt_hash ou provedor dispara exceção
+        assertThrows(IllegalArgumentException.class, () ->
+                ExtractionService.validateAuditedExtractionRun(
+                        "run-audit-100", "doc-ver-100", "", "gemini-1.5-pro", "v2.5",
+                        java.util.Map.of(), "sha256", 1000L, 100, 50, java.math.BigDecimal.ZERO
+                )
+        );
+    }
 }

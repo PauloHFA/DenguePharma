@@ -244,3 +244,135 @@ def test_req_ext_006_numeric_and_population_coherence_blocking():
     assert res_field.absence_status == "INCERTO"
     assert res_field.published is False
     assert any("maior que n randomizado" in r for r in res_field.rejection_reasons)
+
+
+@pytest.mark.requirement("REQ-EXT-007")
+def test_req_ext_007_misaligned_table_ocr_blocks_numerical_extraction():
+    """SE a leitura de tabela ou OCR tiver baixa qualidade ou relação célula-coluna incerta,
+
+    ENTÃO o sistema deve bloquear a extração numérica e sinalizar (ACC-EXT-007 / T6).
+    Dado uma tabela com colunas desalinhadas, quando extraída, então os números
+    ficam bloqueados e há alerta de leitura.
+    """
+    from denguepharma_analytics.clinical.extraction_validation import (
+        TableQualityMetrics,
+        validate_table_reading_quality,
+    )
+
+    # 1. Caso direto do aceite: colunas desalinhadas
+    eval_misaligned = validate_table_reading_quality(TableQualityMetrics(is_misaligned=True))
+    assert eval_misaligned["is_blocked"] is True
+    assert eval_misaligned["allows_numeric_extraction"] is False
+    assert eval_misaligned["status"] == "BLOQUEADO_OCR_TABELA_INCERTA"
+    assert any("colunas desalinhadas" in a for a in eval_misaligned["alerts"])
+    assert "Alerta de leitura" in (eval_misaligned["notice"] or "")
+
+    # 2. Caso de baixa qualidade de OCR (< 0.70)
+    eval_low_ocr = validate_table_reading_quality({"ocr_confidence": 0.52})
+    assert eval_low_ocr["is_blocked"] is True
+    assert any("Baixa confiança de OCR" in a for a in eval_low_ocr["alerts"])
+
+    # 3. Caso integrado em validate_extracted_field: tabela desalinhada bloqueia número
+    doc_table = "Table 1: Cohort distribution by dengue serotype (unaligned raw scan text)."
+    res = validate_extracted_field(
+        field_name="events",
+        original_value=24,
+        document_text=doc_table,
+        document_version_id="doc-scan-001",
+        quoted_text="Cohort distribution by dengue serotype",
+        locator="table-1-scan",
+        table_metrics={"is_misaligned": True, "ocr_confidence": 0.65},
+    )
+    assert res.is_valid is False
+    assert res.absence_status == "INCERTO"
+    assert res.normalized_value is None
+    assert res.published is False
+    assert any("colunas desalinhadas" in r for r in res.rejection_reasons)
+
+
+@pytest.mark.requirement("REQ-EXT-008")
+def test_req_ext_008_extraction_run_audit_fields_complete():
+    """O sistema deve registrar em cada ExtractionRun provedor, modelo, versão,
+
+    parâmetros, hash do prompt, tempo, tokens e custo (ACC-EXT-008 / P6).
+    Dado uma extração, quando concluída, então todos os campos do ExtractionRun estão preenchidos.
+    """
+    from denguepharma_analytics.clinical.extraction_validation import (
+        create_audited_extraction_run,
+    )
+
+    # 1. Execução concluída com todos os campos devidamente preenchidos
+    run = create_audited_extraction_run(
+        run_id="run-2026-audit-001",
+        document_version_id="doc-ver-100",
+        provider="google",
+        model="gemini-1.5-pro",
+        model_version="v2.5",
+        parameters={"temperature": 0.0, "top_p": 0.95, "max_tokens": 4096},
+        prompt_hash="sha256-7a8b9c0d1e2f3a4b",
+        execution_time_ms=1450,
+        prompt_tokens=1820,
+        completion_tokens=240,
+        cost_usd=0.0042,
+    )
+
+    assert run.run_id == "run-2026-audit-001"
+    assert run.document_version_id == "doc-ver-100"
+    assert run.provider == "google"
+    assert run.model == "gemini-1.5-pro"
+    assert run.model_version == "v2.5"
+    assert run.parameters["temperature"] == 0.0
+    assert run.prompt_hash == "sha256-7a8b9c0d1e2f3a4b"
+    assert run.execution_time_ms == 1450
+    assert run.prompt_tokens == 1820
+    assert run.completion_tokens == 240
+    assert run.total_tokens == 2060
+    assert run.cost_usd == 0.0042
+    assert run.status == "COMPLETED"
+
+    run_dict = run.to_dict()
+    for field_name in (
+        "provider",
+        "model",
+        "model_version",
+        "parameters",
+        "prompt_hash",
+        "execution_time_ms",
+        "prompt_tokens",
+        "completion_tokens",
+        "total_tokens",
+        "cost_usd",
+    ):
+        assert field_name in run_dict
+        assert run_dict[field_name] is not None
+
+    # 2. Rejeição compulsória se faltar qualquer campo obrigatório
+    with pytest.raises(ValueError, match="não pode ser nulo ou vazio"):
+        create_audited_extraction_run(
+            run_id="run-invalid",
+            document_version_id="doc-ver-100",
+            provider="",  # ausência de provedor
+            model="gemini-1.5-pro",
+            model_version="v2.5",
+            parameters={"temperature": 0.0},
+            prompt_hash="sha256-hash",
+            execution_time_ms=1000,
+            prompt_tokens=100,
+            completion_tokens=50,
+            cost_usd=0.001,
+        )
+
+    with pytest.raises(ValueError, match="prompt_hash"):
+        create_audited_extraction_run(
+            run_id="run-invalid",
+            document_version_id="doc-ver-100",
+            provider="google",
+            model="gemini-1.5-pro",
+            model_version="v2.5",
+            parameters={"temperature": 0.0},
+            prompt_hash="",  # ausência de hash do prompt
+            execution_time_ms=1000,
+            prompt_tokens=100,
+            completion_tokens=50,
+            cost_usd=0.001,
+        )

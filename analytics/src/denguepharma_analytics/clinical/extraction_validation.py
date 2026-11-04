@@ -43,6 +43,140 @@ PERCENT_PATTERN = re.compile(r"(-?\d+(?:[.,]\d+)?)\s*%")
 INCOMPATIBLE_COUNT_UNITS = {"mg", "mg/kg", "ml", "ug/ml", "ng/ml", "mmhg", "g/dl"}
 
 
+@dataclass(frozen=True)
+class TableQualityMetrics:
+    ocr_confidence: float = 1.0
+    is_misaligned: bool = False
+    cell_column_ambiguous: bool = False
+    header_overlap: bool = False
+
+
+def validate_table_reading_quality(
+    metrics: TableQualityMetrics | Mapping[str, Any] | None,
+) -> dict[str, Any]:
+    """SE a leitura de tabela ou OCR tiver baixa qualidade ou relação célula-coluna incerta,
+    ENTÃO o sistema deve bloquear a extração numérica e sinalizar (REQ-EXT-007 / ACC-EXT-007 / T6).
+    """
+    if metrics is None:
+        return {
+            "allows_numeric_extraction": True,
+            "is_blocked": False,
+            "alerts": [],
+            "status": "QUALIDADE_ADEQUADA",
+        }
+
+    if isinstance(metrics, Mapping):
+        ocr_conf = float(metrics.get("ocr_confidence", 1.0))
+        is_misaligned = bool(metrics.get("is_misaligned", False))
+        cell_ambiguous = bool(metrics.get("cell_column_ambiguous", False))
+        header_overlap = bool(metrics.get("header_overlap", False))
+    else:
+        ocr_conf = metrics.ocr_confidence
+        is_misaligned = metrics.is_misaligned
+        cell_ambiguous = metrics.cell_column_ambiguous
+        header_overlap = metrics.header_overlap
+
+    alerts: list[str] = []
+    if is_misaligned:
+        alerts.append("Tabela com colunas desalinhadas (ACC-EXT-007 / T6)")
+    if cell_ambiguous:
+        alerts.append("Relação célula-coluna incerta ou ambígua")
+    if header_overlap:
+        alerts.append("Sobreposição de cabeçalho detectada na estrutura tabular")
+    if ocr_conf < 0.70:
+        alerts.append(f"Baixa confiança de OCR ({ocr_conf:.2f} < 0.70)")
+
+    is_blocked = len(alerts) > 0
+    return {
+        "allows_numeric_extraction": not is_blocked,
+        "is_blocked": is_blocked,
+        "alerts": alerts,
+        "status": "BLOQUEADO_OCR_TABELA_INCERTA" if is_blocked else "QUALIDADE_ADEQUADA",
+        "notice": (
+            "Alerta de leitura: extração numérica bloqueada devido a desalinhamento de tabela ou baixa qualidade de OCR (REQ-EXT-007 / T6)."
+            if is_blocked
+            else None
+        ),
+    }
+
+
+@dataclass(frozen=True)
+class ExtractionRunAuditRecord:
+    run_id: str
+    document_version_id: str
+    provider: str
+    model: str
+    model_version: str
+    parameters: dict[str, Any]
+    prompt_hash: str
+    execution_time_ms: int
+    prompt_tokens: int
+    completion_tokens: int
+    total_tokens: int
+    cost_usd: float
+    status: str = "COMPLETED"
+
+    def to_dict(self) -> dict[str, Any]:
+        return asdict(self)
+
+
+def create_audited_extraction_run(
+    run_id: str,
+    document_version_id: str,
+    provider: str,
+    model: str,
+    model_version: str,
+    parameters: Mapping[str, Any],
+    prompt_hash: str,
+    execution_time_ms: int,
+    prompt_tokens: int,
+    completion_tokens: int,
+    cost_usd: float,
+    status: str = "COMPLETED",
+) -> ExtractionRunAuditRecord:
+    """Registra em cada ExtractionRun provedor, modelo, versão, parâmetros, hash do prompt,
+    tempo, tokens e custo, garantindo que todos os campos estejam preenchidos (REQ-EXT-008 / ACC-EXT-008).
+    """
+    required_strings = {
+        "run_id": run_id,
+        "document_version_id": document_version_id,
+        "provider": provider,
+        "model": model,
+        "model_version": model_version,
+        "prompt_hash": prompt_hash,
+    }
+    for name, val in required_strings.items():
+        if not val or not str(val).strip():
+            raise ValueError(f"Campo obrigatório '{name}' não pode ser nulo ou vazio no ExtractionRun (ACC-EXT-008)")
+
+    if parameters is None:
+        raise ValueError("Parâmetros do modelo são obrigatórios no ExtractionRun")
+
+    if execution_time_ms is None or execution_time_ms < 0:
+        raise ValueError("execution_time_ms deve ser informado e >= 0")
+
+    if prompt_tokens is None or prompt_tokens < 0 or completion_tokens is None or completion_tokens < 0:
+        raise ValueError("prompt_tokens e completion_tokens devem ser informados e >= 0")
+
+    if cost_usd is None or cost_usd < 0:
+        raise ValueError("cost_usd deve ser informado e >= 0")
+
+    return ExtractionRunAuditRecord(
+        run_id=run_id,
+        document_version_id=document_version_id,
+        provider=provider,
+        model=model,
+        model_version=model_version,
+        parameters=dict(parameters),
+        prompt_hash=prompt_hash,
+        execution_time_ms=int(execution_time_ms),
+        prompt_tokens=int(prompt_tokens),
+        completion_tokens=int(completion_tokens),
+        total_tokens=int(prompt_tokens + completion_tokens),
+        cost_usd=float(cost_usd),
+        status=status,
+    )
+
 def sanitize_document_data_only(text: str | None) -> dict[str, Any]:
     """Trata o texto do documento estritamente como dado passivo (REQ-EXT-005 / ACC-EXT-005).
 
@@ -212,6 +346,7 @@ def validate_extracted_field(
     denominator: int | float | None = None,
     n_randomized: int | float | None = None,
     unit: str | None = None,
+    table_metrics: TableQualityMetrics | Mapping[str, Any] | None = None,
 ) -> ExtractedFieldRecord:
     """Valida um campo extraído aplicando estritamente as regras REQ-EXT-001 a REQ-EXT-004."""
     rejection_reasons: list[str] = []
@@ -248,6 +383,22 @@ def validate_extracted_field(
             published=False,
             rejection_reasons=rejection_reasons,
         )
+
+    # Validação de qualidade de leitura de tabela e OCR (REQ-EXT-007 / ACC-EXT-007 / T6)
+    if table_metrics is not None:
+        table_eval = validate_table_reading_quality(table_metrics)
+        if table_eval["is_blocked"]:
+            rejection_reasons.extend(table_eval["alerts"])
+            return ExtractedFieldRecord(
+                field_name=field_name,
+                original_value=original_value,
+                normalized_value=None,
+                absence_status="INCERTO",
+                evidence_span=None,
+                is_valid=False,
+                published=False,
+                rejection_reasons=rejection_reasons,
+            )
 
     # Validação de coerência numérica, denominadores e população (REQ-EXT-006 / ACC-EXT-006 / T5)
     coherence = validate_numeric_and_population_coherence(

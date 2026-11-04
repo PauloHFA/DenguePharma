@@ -272,12 +272,14 @@
       "verification": "T",
       "priority": "M",
       "research": "RQ5",
-      "state": "planejado",
+      "state": "verificado",
       "task": "M05",
       "scenario": "ACC-EXT-007",
-      "tests": [],
+      "tests": [
+        "test_req_ext_007_misaligned_table_ocr_blocks_numerical_extraction"
+      ],
       "source": "PDF Analytics 2.0, secao 8",
-      "coverage": "nao verificado na nova arquitetura"
+      "coverage": "verificado no pytest analytics e backend junit"
     },
     {
       "id": "REQ-EXT-008",
@@ -286,12 +288,14 @@
       "verification": "T",
       "priority": "M",
       "research": "P6",
-      "state": "planejado",
+      "state": "verificado",
       "task": "M05",
       "scenario": "ACC-EXT-008",
-      "tests": [],
+      "tests": [
+        "test_req_ext_008_extraction_run_audit_fields_complete"
+      ],
       "source": "PDF Analytics 2.0, secao 8",
-      "coverage": "nao verificado na nova arquitetura"
+      "coverage": "verificado no pytest analytics e backend junit"
     },
     {
       "id": "REQ-EXT-009",

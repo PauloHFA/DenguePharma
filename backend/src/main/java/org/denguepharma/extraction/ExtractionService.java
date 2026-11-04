@@ -45,11 +45,42 @@ public class ExtractionService {
 
     public record ProposedField(String fieldName, String originalValue, String normalizedValue,
                                 String absenceStatus, String section, Integer page,
-                                String locator, String quotedText, Integer denominator) {}
+                                String locator, String quotedText, Integer denominator,
+                                Boolean isTableMisaligned, Double ocrConfidence) {
+        public ProposedField(String fieldName, String originalValue, String normalizedValue,
+                             String absenceStatus, String section, Integer page,
+                             String locator, String quotedText, Integer denominator) {
+            this(fieldName, originalValue, normalizedValue, absenceStatus, section, page, locator, quotedText, denominator, false, 1.0);
+        }
+    }
+
+    public record AuditedRunDTO(
+            String runId,
+            String documentVersionId,
+            String provider,
+            String model,
+            String modelVersion,
+            Map<String, Object> parameters,
+            String promptHash,
+            long executionTimeMs,
+            int promptTokens,
+            int completionTokens,
+            int totalTokens,
+            BigDecimal costUsd,
+            String status
+    ) {}
 
     public record RunInput(UUID documentVersionId, String pipelineVersion, String modelProvider,
                            String modelVersion, String promptHash, String executionVariant,
-                           String schemaVersion, List<ProposedField> fields) {}
+                           String schemaVersion, List<ProposedField> fields,
+                           Map<String, Object> parameters, Long durationMs,
+                           Integer promptTokens, Integer completionTokens, BigDecimal costUsd) {
+        public RunInput(UUID documentVersionId, String pipelineVersion, String modelProvider,
+                        String modelVersion, String promptHash, String executionVariant,
+                        String schemaVersion, List<ProposedField> fields) {
+            this(documentVersionId, pipelineVersion, modelProvider, modelVersion, promptHash, executionVariant, schemaVersion, fields, Map.of(), null, null, null, null);
+        }
+    }
 
     public record ReviewInput(UUID extractedFieldId, String decision, String correctedValue,
                               String correctedAbsenceStatus, String correctedQuotedText, String reason, boolean adjudication,
@@ -150,6 +181,16 @@ public class ExtractionService {
                     status = "INCERTO";
                     normVal = null;
                     validationWarnings.add(f.fieldName() + ": bloqueado por validacao numerica/unidade (" + numericProblem + ")");
+                }
+            }
+
+            // T6: Validação de qualidade de leitura de tabela e OCR (REQ-EXT-007).
+            if ("PRESENTE".equals(status)) {
+                String tableProblem = validateTableReadingQuality(f.isTableMisaligned(), f.ocrConfidence());
+                if (tableProblem != null) {
+                    status = "INCERTO";
+                    normVal = null;
+                    validationWarnings.add(f.fieldName() + ": bloqueado por leitura tabular/OCR (" + tableProblem + ")");
                 }
             }
 
@@ -493,6 +534,44 @@ public class ExtractionService {
             }
         }
         return null;
+    }
+
+    /**
+     * T6: Bloqueia extração se a tabela apresentar desalinhamento ou baixa confiança de OCR (REQ-EXT-007).
+     */
+    public static String validateTableReadingQuality(Boolean isMisaligned, Double ocrConfidence) {
+        if (Boolean.TRUE.equals(isMisaligned)) {
+            return "tabela com colunas desalinhadas (ACC-EXT-007 / T6)";
+        }
+        if (ocrConfidence != null && ocrConfidence < 0.70) {
+            return "baixa confianca de OCR (< 0.70)";
+        }
+        return null;
+    }
+
+    /**
+     * P6: Garante que todos os campos de auditoria do ExtractionRun estejam preenchidos (REQ-EXT-008 / ACC-EXT-008).
+     */
+    public static AuditedRunDTO validateAuditedExtractionRun(
+            String runId, String documentVersionId, String provider, String model,
+            String modelVersion, Map<String, Object> parameters, String promptHash,
+            long executionTimeMs, int promptTokens, int completionTokens, BigDecimal costUsd) {
+        if (runId == null || runId.isBlank() ||
+            documentVersionId == null || documentVersionId.isBlank() ||
+            provider == null || provider.isBlank() ||
+            model == null || model.isBlank() ||
+            modelVersion == null || modelVersion.isBlank() ||
+            promptHash == null || promptHash.isBlank()) {
+            throw new IllegalArgumentException("Campos de identificacao, provedor, modelo e hash sao obrigatorios (ACC-EXT-008)");
+        }
+        if (parameters == null) {
+            throw new IllegalArgumentException("Parametros do modelo sao obrigatorios");
+        }
+        if (executionTimeMs < 0 || promptTokens < 0 || completionTokens < 0 || costUsd == null || costUsd.compareTo(BigDecimal.ZERO) < 0) {
+            throw new IllegalArgumentException("Metricas de execucao (tempo, tokens, custo) devem ser nao-negativas");
+        }
+        return new AuditedRunDTO(runId, documentVersionId, provider, model, modelVersion, parameters,
+                promptHash, executionTimeMs, promptTokens, completionTokens, promptTokens + completionTokens, costUsd, "COMPLETED");
     }
 
     private String write(Object o) {
