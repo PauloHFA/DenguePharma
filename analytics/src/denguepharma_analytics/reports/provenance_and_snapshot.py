@@ -320,3 +320,4 @@ def reproduce_report_from_snapshot(
     report_bytes = render_report(snapshot, format)
     report_hash = sha256_digest(report_bytes)
     return report_bytes, report_hash
+

@@ -1052,12 +1052,14 @@
       "verification": "D",
       "priority": "S",
       "research": "OE4",
-      "state": "planejado",
+      "state": "verificado",
       "task": "M07",
       "scenario": "ACC-REL-003",
-      "tests": [],
+      "tests": [
+        "test_axis_panel_empty_state_and_full_text_policy"
+      ],
       "source": "PDF Analytics 2.0, secao 8",
-      "coverage": "nao verificado na nova arquitetura"
+      "coverage": "verificado via denguepharma_analytics.reports.executive_panels e test_executive_panels.py"
     },
     {
       "id": "REQ-REL-004",
@@ -1066,12 +1068,14 @@
       "verification": "I",
       "priority": "M",
       "research": "P8",
-      "state": "planejado",
+      "state": "verificado",
       "task": "M07",
       "scenario": "ACC-REL-004",
-      "tests": [],
+      "tests": [
+        "test_evaluation_report_highlights_unmet_goals_and_unfavorable_outcomes"
+      ],
       "source": "PDF Analytics 2.0, secao 8",
-      "coverage": "nao verificado na nova arquitetura"
+      "coverage": "verificado via denguepharma_analytics.reports.executive_panels e test_executive_panels.py"
     },
     {
       "id": "REQ-REL-005",
@@ -1080,12 +1084,14 @@
       "verification": "I",
       "priority": "S",
       "research": "RNF acessibilidade",
-      "state": "planejado",
+      "state": "verificado",
       "task": "M07",
       "scenario": "ACC-REL-005",
-      "tests": [],
+      "tests": [
+        "test_accessible_figure_spec_requires_denominator_period_and_non_color_markers"
+      ],
       "source": "PDF Analytics 2.0, secao 8",
-      "coverage": "nao verificado na nova arquitetura"
+      "coverage": "verificado via denguepharma_analytics.reports.executive_panels e test_executive_panels.py"
     },
     {
       "id": "REQ-REV-001",

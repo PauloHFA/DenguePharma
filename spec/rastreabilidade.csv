@@ -64,9 +64,9 @@ REQ-OPS-009,P6,M07,ACC-OPS-009,T,M,verificado,test_gold_layer_pipeline_reproduci
 REQ-OPS-010,RNF,M07,ACC-OPS-010,T,M,verificado,test_event_contract_accepts_valid_version_1_schema;test_event_contract_fails_build_on_incompatible_schema_change;TransactionalOutboxInboxUnitTest::claimDeliveryRejectsIncompatibleSchemaVersion;TransactionalOutboxInboxUnitTest::claimDeliveryRejectsUnknownEventTypeWithoutConsumer
 REQ-REL-001,P1,M07,ACC-REL-001,T,M,verificado,test_all_reports_must_include_full_provenance
 REQ-REL-002,P6,M07,ACC-REL-002,T,M,verificado,test_reproduce_report_from_snapshot_is_bit_identical
-REQ-REL-003,OE4,M07,ACC-REL-003,D,S,planejado,
-REQ-REL-004,P8,M07,ACC-REL-004,I,M,planejado,
-REQ-REL-005,RNF acessibilidade,M07,ACC-REL-005,I,S,planejado,
+REQ-REL-003,OE4,M07,ACC-REL-003,D,S,verificado,test_axis_panel_empty_state_and_full_text_policy
+REQ-REL-004,P8,M07,ACC-REL-004,I,M,verificado,test_evaluation_report_highlights_unmet_goals_and_unfavorable_outcomes
+REQ-REL-005,RNF acessibilidade,M07,ACC-REL-005,I,S,verificado,test_accessible_figure_spec_requires_denominator_period_and_non_color_markers
 REQ-REV-001,OE4,M02,ACC-REV-001,T,M,planejado,
 REQ-REV-002,P5,M02,ACC-REV-002,T,M,planejado,
 REQ-REV-003,P5,M02,ACC-REV-003,T,M,planejado,

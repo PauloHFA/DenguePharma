@@ -130,3 +130,4 @@ def test_reproduce_report_from_snapshot_is_bit_identical(valid_provenance, sampl
     snapshot_yesterday.raw_records.append({"trial_id": "ADULTERADO", "substance": "X"})
     with pytest.raises(SnapshotIntegrityError):
         render_report(snapshot_yesterday, format="json")
+
