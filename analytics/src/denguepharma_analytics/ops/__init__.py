@@ -1,4 +1,4 @@
-"""Módulo operacional de mensageria, resiliência transacional, concorrência e governança orçamentária."""
+"""Módulo operacional de mensageria, resiliência transacional, concorrência, governança e regenerabilidade."""
 
 from denguepharma_analytics.ops.backoff_and_budget import (
     AIBudgetExceededError,
@@ -14,6 +14,13 @@ from denguepharma_analytics.ops.job_lease_concurrency import (
     LeaseError,
     LeaseExpiredError,
     StaleWorkerRejectedError,
+)
+from denguepharma_analytics.ops.reproducibility_and_contracts import (
+    CANONICAL_V1_CONTRACT,
+    EventContractValidator,
+    EventSchemaContract,
+    GoldLayerPipelineRegenerator,
+    IncompatibleSchemaContractError,
 )
 from denguepharma_analytics.ops.transactional_messaging import (
     IdempotentInbox,
@@ -36,4 +43,9 @@ __all__ = [
     "AIBudgetGuard",
     "AIBudgetExceededError",
     "BudgetAlert",
+    "GoldLayerPipelineRegenerator",
+    "EventContractValidator",
+    "EventSchemaContract",
+    "CANONICAL_V1_CONTRACT",
+    "IncompatibleSchemaContractError",
 ]

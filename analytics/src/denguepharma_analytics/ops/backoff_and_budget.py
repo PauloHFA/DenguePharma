@@ -219,3 +219,4 @@ class AIBudgetGuard:
             "total_runs": len(self.execution_runs),
             "alerts_count": len(self.alerts),
         }
+

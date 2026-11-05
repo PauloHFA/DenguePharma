@@ -60,8 +60,8 @@ REQ-OPS-005,RF-11,M07,ACC-OPS-005,T,S,verificado,test_backoff_computation_with_e
 REQ-OPS-006,RNF,M05,ACC-OPS-006,T,M,verificado,test_ai_budget_cumulative_tracking_and_cost_calculation;test_ai_budget_suspends_and_alerts_upon_reaching_ceiling
 REQ-OPS-007,RNF-02,M07,ACC-OPS-007,T,M,planejado,
 REQ-OPS-008,RNF-06,M07,ACC-OPS-008,T,S,planejado,
-REQ-OPS-009,P6,M07,ACC-OPS-009,T,M,planejado,
-REQ-OPS-010,RNF,M07,ACC-OPS-010,T,M,planejado,
+REQ-OPS-009,P6,M07,ACC-OPS-009,T,M,verificado,test_gold_layer_pipeline_reproducibility_bit_a_bit;test_reproducible_marts;ReportAndOpsService::exportReproductionPackage
+REQ-OPS-010,RNF,M07,ACC-OPS-010,T,M,verificado,test_event_contract_accepts_valid_version_1_schema;test_event_contract_fails_build_on_incompatible_schema_change;TransactionalOutboxInboxUnitTest::claimDeliveryRejectsIncompatibleSchemaVersion;TransactionalOutboxInboxUnitTest::claimDeliveryRejectsUnknownEventTypeWithoutConsumer
 REQ-REL-001,P1,M07,ACC-REL-001,T,M,planejado,
 REQ-REL-002,P6,M07,ACC-REL-002,T,M,planejado,
 REQ-REL-003,OE4,M07,ACC-REL-003,D,S,planejado,

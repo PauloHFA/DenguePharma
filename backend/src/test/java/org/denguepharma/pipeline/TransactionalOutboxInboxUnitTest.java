@@ -225,6 +225,40 @@ class TransactionalOutboxInboxUnitTest {
         // Verifica que o update colocou status = 'QUARANTINED'
         verify(jdbc).update(anyString(), eq("QUARANTINED"), eq("AI_EXTRACTION_TIMEOUT"), eq(jobId));
     }
+
+    @Test
+    void claimDeliveryRejectsIncompatibleSchemaVersion() {
+        UUID eventId = UUID.randomUUID();
+
+        // REQ-OPS-010: Evento publicado com schema incompatível (ex: schema_version = 2)
+        when(jdbc.queryForList(eq("select event_type, aggregate_id, schema_version from outbox where event_id = ?"), eq(eventId)))
+                .thenReturn(List.of(Map.of(
+                        "event_type", "DocumentoImportado",
+                        "aggregate_id", UUID.randomUUID(),
+                        "schema_version", 2 // Versão incompatível que deve quebrar o contrato
+                )));
+
+        assertThatThrownBy(() -> pipelineService.claimDelivery(eventId))
+                .isInstanceOf(ResponseStatusException.class)
+                .hasMessageContaining("schema de evento nao suportado");
+    }
+
+    @Test
+    void claimDeliveryRejectsUnknownEventTypeWithoutConsumer() {
+        UUID eventId = UUID.randomUUID();
+
+        when(jdbc.queryForList(eq("select event_type, aggregate_id, schema_version from outbox where event_id = ?"), eq(eventId)))
+                .thenReturn(List.of(Map.of(
+                        "event_type", "TipoInexistenteOuInvalido",
+                        "aggregate_id", UUID.randomUUID(),
+                        "schema_version", 1
+                )));
+
+        assertThatThrownBy(() -> pipelineService.claimDelivery(eventId))
+                .isInstanceOf(ResponseStatusException.class)
+                .hasMessageContaining("evento sem consumidor nesta versao");
+    }
 }
+
 
 

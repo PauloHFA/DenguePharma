@@ -969,12 +969,16 @@
       "verification": "T",
       "priority": "M",
       "research": "P6",
-      "state": "planejado",
+      "state": "verificado",
       "task": "M07",
       "scenario": "ACC-OPS-009",
-      "tests": [],
+      "tests": [
+        "test_gold_layer_pipeline_reproducibility_bit_a_bit",
+        "test_reproducible_marts",
+        "ReportAndOpsService::exportReproductionPackage"
+      ],
       "source": "PDF Analytics 2.0, secao 8",
-      "coverage": "nao verificado na nova arquitetura"
+      "coverage": "verificado no pytest analytics e backend junit"
     },
     {
       "id": "REQ-OPS-010",
@@ -983,12 +987,17 @@
       "verification": "T",
       "priority": "M",
       "research": "RNF",
-      "state": "planejado",
+      "state": "verificado",
       "task": "M07",
       "scenario": "ACC-OPS-010",
-      "tests": [],
+      "tests": [
+        "test_event_contract_accepts_valid_version_1_schema",
+        "test_event_contract_fails_build_on_incompatible_schema_change",
+        "TransactionalOutboxInboxUnitTest::claimDeliveryRejectsIncompatibleSchemaVersion",
+        "TransactionalOutboxInboxUnitTest::claimDeliveryRejectsUnknownEventTypeWithoutConsumer"
+      ],
       "source": "PDF Analytics 2.0, secao 8",
-      "coverage": "nao verificado na nova arquitetura"
+      "coverage": "verificado no pytest analytics e backend junit"
     },
     {
       "id": "REQ-REL-001",
