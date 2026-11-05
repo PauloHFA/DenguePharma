@@ -531,12 +531,14 @@
       "verification": "T",
       "priority": "M",
       "research": "RQ1-RQ6, P6",
-      "state": "planejado",
+      "state": "verificado",
       "task": "M02",
       "scenario": "ACC-ING-001",
-      "tests": [],
+      "tests": [
+        "test_req_ing_001_search_run_registration_and_exact_sum"
+      ],
       "source": "PDF Analytics 2.0, secao 8",
-      "coverage": "nao verificado na nova arquitetura"
+      "coverage": "verificado via denguepharma_analytics.sources.ingestion_resilience e test_ingestion_resilience.py"
     },
     {
       "id": "REQ-ING-002",
@@ -545,12 +547,14 @@
       "verification": "T",
       "priority": "M",
       "research": "P10",
-      "state": "planejado",
+      "state": "verificado",
       "task": "M02",
       "scenario": "ACC-ING-002",
-      "tests": [],
+      "tests": [
+        "test_req_ing_002_idempotent_reimport_preserves_study_and_version_counts"
+      ],
       "source": "PDF Analytics 2.0, secao 8",
-      "coverage": "nao verificado na nova arquitetura"
+      "coverage": "verificado via denguepharma_analytics.sources.ingestion_resilience e test_ingestion_resilience.py"
     },
     {
       "id": "REQ-ING-003",
@@ -559,12 +563,14 @@
       "verification": "T",
       "priority": "M",
       "research": "P1, P6",
-      "state": "planejado",
+      "state": "verificado",
       "task": "M02",
       "scenario": "ACC-ING-003",
-      "tests": [],
+      "tests": [
+        "test_req_ing_003_bronze_immutable_snapshots_and_tamper_rejection"
+      ],
       "source": "PDF Analytics 2.0, secao 8",
-      "coverage": "nao verificado na nova arquitetura"
+      "coverage": "verificado via denguepharma_analytics.sources.ingestion_resilience e test_ingestion_resilience.py"
     },
     {
       "id": "REQ-ING-004",
@@ -573,12 +579,14 @@
       "verification": "T",
       "priority": "M",
       "research": "RNF, P10",
-      "state": "planejado",
+      "state": "verificado",
       "task": "M02",
       "scenario": "ACC-ING-004",
-      "tests": [],
+      "tests": [
+        "test_req_ing_004_rate_limit_resilience_and_deduplication"
+      ],
       "source": "PDF Analytics 2.0, secao 8",
-      "coverage": "nao verificado na nova arquitetura"
+      "coverage": "verificado via denguepharma_analytics.sources.ingestion_resilience e test_ingestion_resilience.py"
     },
     {
       "id": "REQ-ING-005",
@@ -587,12 +595,14 @@
       "verification": "T",
       "priority": "M",
       "research": "P10",
-      "state": "planejado",
+      "state": "verificado",
       "task": "M02",
       "scenario": "ACC-ING-005",
-      "tests": [],
+      "tests": [
+        "test_req_ing_005_checkpoint_resumption_from_interrupted_page"
+      ],
       "source": "PDF Analytics 2.0, secao 8",
-      "coverage": "nao verificado na nova arquitetura"
+      "coverage": "verificado via denguepharma_analytics.sources.ingestion_resilience e test_ingestion_resilience.py"
     },
     {
       "id": "REQ-ING-006",
@@ -617,12 +627,14 @@
       "verification": "T",
       "priority": "M",
       "research": "P7",
-      "state": "planejado",
+      "state": "verificado",
       "task": "M02",
       "scenario": "ACC-ING-007",
-      "tests": [],
+      "tests": [
+        "test_req_ing_007_license_enforcement_and_unobtained_text"
+      ],
       "source": "PDF Analytics 2.0, secao 8",
-      "coverage": "nao verificado na nova arquitetura"
+      "coverage": "verificado via denguepharma_analytics.sources.ingestion_resilience e test_ingestion_resilience.py"
     },
     {
       "id": "REQ-ING-008",
@@ -649,12 +661,14 @@
       "verification": "T",
       "priority": "M",
       "research": "P1, P6",
-      "state": "planejado",
+      "state": "verificado",
       "task": "M02",
       "scenario": "ACC-ING-009",
-      "tests": [],
+      "tests": [
+        "test_req_ing_009_source_data_manifest_with_verifiable_hashes"
+      ],
       "source": "PDF Analytics 2.0, secao 8",
-      "coverage": "nao verificado na nova arquitetura"
+      "coverage": "verificado via denguepharma_analytics.sources.ingestion_resilience e test_ingestion_resilience.py"
     },
     {
       "id": "REQ-MIG-001",

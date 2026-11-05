@@ -31,15 +31,15 @@ REQ-IDN-001,P1,M02,ACC-IDN-001,T,M,verificado,test_req_idn_001_complementary_ide
 REQ-IDN-002,OE2,M02,ACC-IDN-002,T,M,verificado,test_req_idn_002_link_confidence_threshold_and_audited_undo
 REQ-IDN-003,"RQ1, P2",M02,ACC-IDN-003,T,M,verificado,test_req_idn_003_substance_normalization_and_combination_isolation
 REQ-IDN-004,"RQ1, RQ3",M02,ACC-IDN-004,T,M,verificado,test_req_idn_004_participant_deduplication_under_study_id
-REQ-ING-001,"RQ1-RQ6, P6",M02,ACC-ING-001,T,M,planejado,
-REQ-ING-002,P10,M02,ACC-ING-002,T,M,planejado,
-REQ-ING-003,"P1, P6",M02,ACC-ING-003,T,M,planejado,
-REQ-ING-004,"RNF, P10",M02,ACC-ING-004,T,M,planejado,
-REQ-ING-005,P10,M02,ACC-ING-005,T,M,planejado,
+REQ-ING-001,"RQ1-RQ6, P6",M02,ACC-ING-001,T,M,verificado,test_req_ing_001_search_run_registration_and_exact_sum
+REQ-ING-002,P10,M02,ACC-ING-002,T,M,verificado,test_req_ing_002_idempotent_reimport_preserves_study_and_version_counts
+REQ-ING-003,"P1, P6",M02,ACC-ING-003,T,M,verificado,test_req_ing_003_bronze_immutable_snapshots_and_tamper_rejection
+REQ-ING-004,"RNF, P10",M02,ACC-ING-004,T,M,verificado,test_req_ing_004_rate_limit_resilience_and_deduplication
+REQ-ING-005,P10,M02,ACC-ING-005,T,M,verificado,test_req_ing_005_checkpoint_resumption_from_interrupted_page
 REQ-ING-006,"RQ4, RF original",M03,ACC-ING-006,T,S,verificado,test_registry_hash_change_generates_new_version_and_diff
-REQ-ING-007,P7,M02,ACC-ING-007,T,M,planejado,
+REQ-ING-007,P7,M02,ACC-ING-007,T,M,verificado,test_req_ing_007_license_enforcement_and_unobtained_text
 REQ-ING-008,RQ3,M04,ACC-ING-008,T,M,verificado,test_ingest_opendengue_csv_aggregates_totals_by_country_and_year;test_ingest_sinan_aggregated_records;test_validation_rejects_invalid_iso_or_out_of_bounds_year
-REQ-ING-009,"P1, P6",M02,ACC-ING-009,T,M,planejado,
+REQ-ING-009,"P1, P6",M02,ACC-ING-009,T,M,verificado,test_req_ing_009_source_data_manifest_with_verifiable_hashes
 REQ-MIG-001,"P1, P5, P6; fundacao da migracao",M01,ACC-MIG-001,T,M,verificado,test_postgres_read_only
 REQ-MIG-002,"P1, P5, P6; fundacao da migracao",M01,ACC-MIG-002,T,M,verificado,test_provenance_and_atomicity
 REQ-MIG-003,"P1, P5, P6; fundacao da migracao",M01,ACC-MIG-003,T,M,verificado,test_legacy_equivalence
