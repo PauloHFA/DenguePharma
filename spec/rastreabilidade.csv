@@ -27,10 +27,10 @@ REQ-GOV-003,P1,M02,ACC-GOV-003,T,M,verificado,test_audit_trail_records_author_ti
 REQ-GOV-004,P7,M02,ACC-GOV-004,T,M,verificado,test_public_package_sanitization_and_scanner_catches_secrets_and_unlicensed_content
 REQ-GOV-005,P4,M02,ACC-GOV-005,I,M,verificado,test_evidence_screen_and_reports_must_display_mandatory_clinical_notice
 REQ-GOV-006,P9,M02,ACC-GOV-006,I,M,verificado,test_protocol_and_statistical_plan_frozen_before_final_test
-REQ-IDN-001,P1,M02,ACC-IDN-001,T,M,planejado,
-REQ-IDN-002,OE2,M02,ACC-IDN-002,T,M,planejado,
-REQ-IDN-003,"RQ1, P2",M02,ACC-IDN-003,T,M,planejado,
-REQ-IDN-004,"RQ1, RQ3",M02,ACC-IDN-004,T,M,planejado,
+REQ-IDN-001,P1,M02,ACC-IDN-001,T,M,verificado,test_req_idn_001_complementary_identifiers_and_discrepancy_resolution
+REQ-IDN-002,OE2,M02,ACC-IDN-002,T,M,verificado,test_req_idn_002_link_confidence_threshold_and_audited_undo
+REQ-IDN-003,"RQ1, P2",M02,ACC-IDN-003,T,M,verificado,test_req_idn_003_substance_normalization_and_combination_isolation
+REQ-IDN-004,"RQ1, RQ3",M02,ACC-IDN-004,T,M,verificado,test_req_idn_004_participant_deduplication_under_study_id
 REQ-ING-001,"RQ1-RQ6, P6",M02,ACC-ING-001,T,M,planejado,
 REQ-ING-002,P10,M02,ACC-ING-002,T,M,planejado,
 REQ-ING-003,"P1, P6",M02,ACC-ING-003,T,M,planejado,

@@ -467,12 +467,14 @@
       "verification": "T",
       "priority": "M",
       "research": "P1",
-      "state": "planejado",
+      "state": "verificado",
       "task": "M02",
       "scenario": "ACC-IDN-001",
-      "tests": [],
+      "tests": [
+        "test_req_idn_001_complementary_identifiers_and_discrepancy_resolution"
+      ],
       "source": "PDF Analytics 2.0, secao 8",
-      "coverage": "nao verificado na nova arquitetura"
+      "coverage": "verificado via denguepharma_analytics.clinical.entity_identifiers e test_entity_identifiers.py"
     },
     {
       "id": "REQ-IDN-002",
@@ -481,12 +483,14 @@
       "verification": "T",
       "priority": "M",
       "research": "OE2",
-      "state": "planejado",
+      "state": "verificado",
       "task": "M02",
       "scenario": "ACC-IDN-002",
-      "tests": [],
+      "tests": [
+        "test_req_idn_002_link_confidence_threshold_and_audited_undo"
+      ],
       "source": "PDF Analytics 2.0, secao 8",
-      "coverage": "nao verificado na nova arquitetura"
+      "coverage": "verificado via denguepharma_analytics.clinical.entity_identifiers e test_entity_identifiers.py"
     },
     {
       "id": "REQ-IDN-003",
@@ -495,12 +499,14 @@
       "verification": "T",
       "priority": "M",
       "research": "RQ1, P2",
-      "state": "planejado",
+      "state": "verificado",
       "task": "M02",
       "scenario": "ACC-IDN-003",
-      "tests": [],
+      "tests": [
+        "test_req_idn_003_substance_normalization_and_combination_isolation"
+      ],
       "source": "PDF Analytics 2.0, secao 8",
-      "coverage": "nao verificado na nova arquitetura"
+      "coverage": "verificado via denguepharma_analytics.clinical.entity_identifiers e test_entity_identifiers.py"
     },
     {
       "id": "REQ-IDN-004",
@@ -509,12 +515,14 @@
       "verification": "T",
       "priority": "M",
       "research": "RQ1, RQ3",
-      "state": "planejado",
+      "state": "verificado",
       "task": "M02",
       "scenario": "ACC-IDN-004",
-      "tests": [],
+      "tests": [
+        "test_req_idn_004_participant_deduplication_under_study_id"
+      ],
       "source": "PDF Analytics 2.0, secao 8",
-      "coverage": "nao verificado na nova arquitetura"
+      "coverage": "verificado via denguepharma_analytics.clinical.entity_identifiers e test_entity_identifiers.py"
     },
     {
       "id": "REQ-ING-001",

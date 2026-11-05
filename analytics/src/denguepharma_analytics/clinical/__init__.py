@@ -40,6 +40,17 @@ from .governance_compliance import (
     FrozenProtocolSnapshot,
     ProtocolFreezeManager,
 )
+from .entity_identifiers import (
+    LinkStatus,
+    DocumentIdentifiers,
+    IdentifierDiscrepancyResolver,
+    LinkAuditRecord,
+    DocumentStudyLinkManager,
+    SubstanceEntity,
+    SubstanceNormalizer,
+    StudyDocumentReport,
+    StudyParticipantAggregator,
+)
 
 __all__ = [
     "ClinicalGovernanceError",
@@ -76,4 +87,13 @@ __all__ = [
     "EvidenceNoticeValidator",
     "FrozenProtocolSnapshot",
     "ProtocolFreezeManager",
+    "LinkStatus",
+    "DocumentIdentifiers",
+    "IdentifierDiscrepancyResolver",
+    "LinkAuditRecord",
+    "DocumentStudyLinkManager",
+    "SubstanceEntity",
+    "SubstanceNormalizer",
+    "StudyDocumentReport",
+    "StudyParticipantAggregator",
 ]
