@@ -370,12 +370,15 @@
       "verification": "T",
       "priority": "M",
       "research": "RNF-01",
-      "state": "planejado",
+      "state": "verificado",
       "task": "M02",
       "scenario": "ACC-GOV-001",
-      "tests": [],
+      "tests": [
+        "test_cross_profile_access_and_reader_receives_403_on_field_correction",
+        "test_user_principal_role_enforcement_and_matrix"
+      ],
       "source": "PDF Analytics 2.0, secao 8",
-      "coverage": "nao verificado na nova arquitetura"
+      "coverage": "verificado via denguepharma_analytics.clinical.governance e test_governance_rbac_and_audit.py"
     },
     {
       "id": "REQ-GOV-002",
@@ -400,12 +403,14 @@
       "verification": "T",
       "priority": "M",
       "research": "P1",
-      "state": "planejado",
+      "state": "verificado",
       "task": "M02",
       "scenario": "ACC-GOV-003",
-      "tests": [],
+      "tests": [
+        "test_audit_trail_records_author_timestamp_and_before_after_values"
+      ],
       "source": "PDF Analytics 2.0, secao 8",
-      "coverage": "nao verificado na nova arquitetura"
+      "coverage": "verificado via denguepharma_analytics.clinical.governance e test_governance_rbac_and_audit.py"
     },
     {
       "id": "REQ-GOV-004",

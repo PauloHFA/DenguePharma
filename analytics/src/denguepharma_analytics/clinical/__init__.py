@@ -1,4 +1,4 @@
-"""Sintese clinica com selecao independente e conclusoes humanas rastreaveis."""
+"""Sintese clinica com selecao independente, governança RBAC e auditoria rastreavel."""
 
 from .pilot_synthesis_and_calibration import (
     ClinicalGovernanceError,
@@ -14,6 +14,18 @@ from .pilot_synthesis_and_calibration import (
     FinalCorpusSelector,
     RealClinicalSynthesisPublisher,
 )
+from .governance import (
+    PermissionDeniedError,
+    Role,
+    Action,
+    ROLE_PERMISSIONS,
+    UserPrincipal,
+    AuditEntry,
+    AuditTrailLedger,
+    FieldCorrectionRequest,
+    AdjudicationRequest,
+    create_governance_router,
+)
 
 __all__ = [
     "ClinicalGovernanceError",
@@ -28,4 +40,14 @@ __all__ = [
     "PilotMethodologicalReviewer",
     "FinalCorpusSelector",
     "RealClinicalSynthesisPublisher",
+    "PermissionDeniedError",
+    "Role",
+    "Action",
+    "ROLE_PERMISSIONS",
+    "UserPrincipal",
+    "AuditEntry",
+    "AuditTrailLedger",
+    "FieldCorrectionRequest",
+    "AdjudicationRequest",
+    "create_governance_router",
 ]

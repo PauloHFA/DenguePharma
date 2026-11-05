@@ -21,9 +21,9 @@ REQ-EXT-009,P10,M05,ACC-EXT-009,T,M,verificado,test_req_ext_009_idempotency_comp
 REQ-EXT-010,OE5,M05,ACC-EXT-010,A,S,verificado,test_req_ext_010_disregards_self_reported_confidence_for_prioritization
 REQ-EXT-011,P7,M05,ACC-EXT-011,T,M,verificado,test_external_ai_license_compliance_blocking;ExtractionValidationUnitTest::testLicenseComplianceForExternalAiProvider
 REQ-EXT-012,H3,M05,ACC-EXT-012,T,C,verificado,test_ablation_mode_marks_experimental_and_prevents_publication;ExtractionValidationUnitTest::testAblationModeMarksExperimentalAndBlocksPublication
-REQ-GOV-001,RNF-01,M02,ACC-GOV-001,T,M,planejado,
+REQ-GOV-001,RNF-01,M02,ACC-GOV-001,T,M,verificado,test_cross_profile_access_and_reader_receives_403_on_field_correction;test_user_principal_role_enforcement_and_matrix
 REQ-GOV-002,Ética,M05,ACC-GOV-002,I,M,verificado,test_time_study_export_pseudonymizes_reviewers_and_requires_ethics_approval
-REQ-GOV-003,P1,M02,ACC-GOV-003,T,M,planejado,
+REQ-GOV-003,P1,M02,ACC-GOV-003,T,M,verificado,test_audit_trail_records_author_timestamp_and_before_after_values
 REQ-GOV-004,P7,M02,ACC-GOV-004,T,M,planejado,
 REQ-GOV-005,P4,M02,ACC-GOV-005,I,M,planejado,
 REQ-GOV-006,P9,M02,ACC-GOV-006,I,M,planejado,
