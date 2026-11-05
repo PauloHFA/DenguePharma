@@ -419,12 +419,14 @@
       "verification": "T",
       "priority": "M",
       "research": "P7",
-      "state": "planejado",
+      "state": "verificado",
       "task": "M02",
       "scenario": "ACC-GOV-004",
-      "tests": [],
+      "tests": [
+        "test_public_package_sanitization_and_scanner_catches_secrets_and_unlicensed_content"
+      ],
       "source": "PDF Analytics 2.0, secao 8",
-      "coverage": "nao verificado na nova arquitetura"
+      "coverage": "verificado via denguepharma_analytics.clinical.governance_compliance e test_governance_compliance.py"
     },
     {
       "id": "REQ-GOV-005",
@@ -433,12 +435,14 @@
       "verification": "I",
       "priority": "M",
       "research": "P4",
-      "state": "planejado",
+      "state": "verificado",
       "task": "M02",
       "scenario": "ACC-GOV-005",
-      "tests": [],
+      "tests": [
+        "test_evidence_screen_and_reports_must_display_mandatory_clinical_notice"
+      ],
       "source": "PDF Analytics 2.0, secao 8",
-      "coverage": "nao verificado na nova arquitetura"
+      "coverage": "verificado via denguepharma_analytics.clinical.governance_compliance e test_governance_compliance.py"
     },
     {
       "id": "REQ-GOV-006",
@@ -447,12 +451,14 @@
       "verification": "I",
       "priority": "M",
       "research": "P9",
-      "state": "planejado",
+      "state": "verificado",
       "task": "M02",
       "scenario": "ACC-GOV-006",
-      "tests": [],
+      "tests": [
+        "test_protocol_and_statistical_plan_frozen_before_final_test"
+      ],
       "source": "PDF Analytics 2.0, secao 8",
-      "coverage": "nao verificado na nova arquitetura"
+      "coverage": "verificado via denguepharma_analytics.clinical.governance_compliance e test_governance_compliance.py"
     },
     {
       "id": "REQ-IDN-001",

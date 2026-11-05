@@ -24,9 +24,9 @@ REQ-EXT-012,H3,M05,ACC-EXT-012,T,C,verificado,test_ablation_mode_marks_experimen
 REQ-GOV-001,RNF-01,M02,ACC-GOV-001,T,M,verificado,test_cross_profile_access_and_reader_receives_403_on_field_correction;test_user_principal_role_enforcement_and_matrix
 REQ-GOV-002,Ética,M05,ACC-GOV-002,I,M,verificado,test_time_study_export_pseudonymizes_reviewers_and_requires_ethics_approval
 REQ-GOV-003,P1,M02,ACC-GOV-003,T,M,verificado,test_audit_trail_records_author_timestamp_and_before_after_values
-REQ-GOV-004,P7,M02,ACC-GOV-004,T,M,planejado,
-REQ-GOV-005,P4,M02,ACC-GOV-005,I,M,planejado,
-REQ-GOV-006,P9,M02,ACC-GOV-006,I,M,planejado,
+REQ-GOV-004,P7,M02,ACC-GOV-004,T,M,verificado,test_public_package_sanitization_and_scanner_catches_secrets_and_unlicensed_content
+REQ-GOV-005,P4,M02,ACC-GOV-005,I,M,verificado,test_evidence_screen_and_reports_must_display_mandatory_clinical_notice
+REQ-GOV-006,P9,M02,ACC-GOV-006,I,M,verificado,test_protocol_and_statistical_plan_frozen_before_final_test
 REQ-IDN-001,P1,M02,ACC-IDN-001,T,M,planejado,
 REQ-IDN-002,OE2,M02,ACC-IDN-002,T,M,planejado,
 REQ-IDN-003,"RQ1, P2",M02,ACC-IDN-003,T,M,planejado,

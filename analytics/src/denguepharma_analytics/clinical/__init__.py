@@ -1,4 +1,4 @@
-"""Sintese clinica com selecao independente, governança RBAC e auditoria rastreavel."""
+"""Sintese clinica com selecao independente, governança RBAC, conformidade regulatória e auditoria rastreavel."""
 
 from .pilot_synthesis_and_calibration import (
     ClinicalGovernanceError,
@@ -26,6 +26,20 @@ from .governance import (
     AdjudicationRequest,
     create_governance_router,
 )
+from .governance_compliance import (
+    GovernanceComplianceError,
+    SecretLeakError,
+    PIILeakError,
+    UnlicensedContentLeakError,
+    MissingClinicalNoticeError,
+    UnfrozenProtocolExecutionError,
+    ComplianceScanResult,
+    scan_public_package,
+    PublicPackageSanitizer,
+    EvidenceNoticeValidator,
+    FrozenProtocolSnapshot,
+    ProtocolFreezeManager,
+)
 
 __all__ = [
     "ClinicalGovernanceError",
@@ -50,4 +64,16 @@ __all__ = [
     "FieldCorrectionRequest",
     "AdjudicationRequest",
     "create_governance_router",
+    "GovernanceComplianceError",
+    "SecretLeakError",
+    "PIILeakError",
+    "UnlicensedContentLeakError",
+    "MissingClinicalNoticeError",
+    "UnfrozenProtocolExecutionError",
+    "ComplianceScanResult",
+    "scan_public_package",
+    "PublicPackageSanitizer",
+    "EvidenceNoticeValidator",
+    "FrozenProtocolSnapshot",
+    "ProtocolFreezeManager",
 ]
