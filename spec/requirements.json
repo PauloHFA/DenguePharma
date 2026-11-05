@@ -1020,12 +1020,14 @@
       "verification": "T",
       "priority": "M",
       "research": "P1",
-      "state": "planejado",
+      "state": "verificado",
       "task": "M07",
       "scenario": "ACC-REL-001",
-      "tests": [],
+      "tests": [
+        "test_all_reports_must_include_full_provenance"
+      ],
       "source": "PDF Analytics 2.0, secao 8",
-      "coverage": "nao verificado na nova arquitetura"
+      "coverage": "verificado via denguepharma_analytics.reports.provenance_and_snapshot e test_report_provenance_and_snapshot.py"
     },
     {
       "id": "REQ-REL-002",
@@ -1034,12 +1036,14 @@
       "verification": "T",
       "priority": "M",
       "research": "P6",
-      "state": "planejado",
+      "state": "verificado",
       "task": "M07",
       "scenario": "ACC-REL-002",
-      "tests": [],
+      "tests": [
+        "test_reproduce_report_from_snapshot_is_bit_identical"
+      ],
       "source": "PDF Analytics 2.0, secao 8",
-      "coverage": "nao verificado na nova arquitetura"
+      "coverage": "verificado via denguepharma_analytics.reports.provenance_and_snapshot e test_report_provenance_and_snapshot.py"
     },
     {
       "id": "REQ-REL-003",
