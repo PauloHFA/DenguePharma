@@ -1,5 +1,5 @@
 requirement,research,task,scenario,verification,priority,state,tests
-REQ-ANA-001,RQ1,M02,ACC-ANA-001,T,M,planejado,
+REQ-ANA-001,RQ1,M02,ACC-ANA-001,T,M,verificado,test_req_ana_001_study_panorama_counts_studies_and_consistent_sum
 REQ-ANA-002,P2,M02,ACC-ANA-002,T,M,verificado,test_blocks_incompatible_biological_contexts_human_and_in_vitro;test_blocks_incompatible_clinical_purposes_prophylaxis_and_treatment;test_meta_regression_clean_estimation_and_no_ranking
 REQ-ANA-003,"RQ2, H4",M03,ACC-ANA-003,T,M,verificado,test_kaplan_meier_with_10_known_trials_matches_manual_reference;test_analyze_trials_survival_handles_cohort_and_stratification;test_kaplan_meier_empty_and_no_event_edge_cases
 REQ-ANA-004,"RQ3, H5",M04,ACC-ANA-004,T,M,verificado,test_trial_burden_link_and_missing_data_safeguard
@@ -67,16 +67,16 @@ REQ-REL-002,P6,M07,ACC-REL-002,T,M,verificado,test_reproduce_report_from_snapsho
 REQ-REL-003,OE4,M07,ACC-REL-003,D,S,verificado,test_axis_panel_empty_state_and_full_text_policy
 REQ-REL-004,P8,M07,ACC-REL-004,I,M,verificado,test_evaluation_report_highlights_unmet_goals_and_unfavorable_outcomes
 REQ-REL-005,RNF acessibilidade,M07,ACC-REL-005,I,S,verificado,test_accessible_figure_spec_requires_denominator_period_and_non_color_markers
-REQ-REV-001,OE4,M02,ACC-REV-001,T,M,planejado,
-REQ-REV-002,P5,M02,ACC-REV-002,T,M,planejado,
-REQ-REV-003,P5,M02,ACC-REV-003,T,M,planejado,
-REQ-REV-004,P5,M02,ACC-REV-004,T,S,planejado,
+REQ-REV-001,OE4,M02,ACC-REV-001,T,M,verificado,test_req_rev_001_side_by_side_curation_records_audit_trail
+REQ-REV-002,P5,M02,ACC-REV-002,T,M,verificado,test_req_rev_002_critical_fields_require_adjudicator_approval
+REQ-REV-003,P5,M02,ACC-REV-003,T,M,verificado,test_req_rev_003_approved_value_protected_against_ai_overwrite
+REQ-REV-004,P5,M02,ACC-REV-004,T,S,verificado,test_req_rev_004_drafts_sanitized_from_public_exports
 REQ-REV-005,"RQ5, H1",M05,ACC-REV-005,T,M,verificado,test_review_session_active_time_excludes_pauses
-REQ-SEL-001,OE1,M02,ACC-SEL-001,T,M,planejado,
-REQ-SEL-002,OE1,M02,ACC-SEL-002,T,M,planejado,
-REQ-SEL-003,P5,M02,ACC-SEL-003,T,M,planejado,
+REQ-SEL-001,OE1,M02,ACC-SEL-001,T,M,verificado,test_req_sel_001_and_002_dual_blind_screening_and_conflict_escalation
+REQ-SEL-002,OE1,M02,ACC-SEL-002,T,M,verificado,test_req_sel_001_and_002_dual_blind_screening_and_conflict_escalation
+REQ-SEL-003,P5,M02,ACC-SEL-003,T,M,verificado,test_req_sel_003_ai_model_cannot_autonomously_exclude_records
 REQ-SEL-004,OE1,M02,ACC-SEL-004,T,M,verificado,test_prisma_scr_flow_accounting_and_exclusion_categories
-REQ-SEL-005,P1,M02,ACC-SEL-005,T,S,planejado,
+REQ-SEL-005,P1,M02,ACC-SEL-005,T,S,verificado,test_req_sel_005_paywalled_articles_preserved_and_coverage_reported
 REQ-CLN-001,RQ-CLINICA,M08,ACC-CLN-001,T,M,verificado,test_independent_screening_and_stale_sources;test_observational_and_mixed_populations;test_screening_form_never_reuses_other_vote_or_infers_inclusion;test_structured_screening_form_submits_current_basis;test_selection_flow_preserves_units_pending_values_and_blinding;test_selection_flow_annotation_is_human_and_never_changes_screening;test_selection_flow_rejects_ineligible_annotation_actions;test_selection_flow_vote_and_source_changes_do_not_reactivate_annotations;test_selection_flow_adjudication_changes_invalidate_reason;test_selection_flow_identity_and_empty_corpus_do_not_invent_totals;test_selection_flow_export_permissions_totals_and_no_private_rationales;test_selection_flow_form_requires_explicit_category_and_confirmation
 REQ-CLN-002,RQ-CLINICA,M08,ACC-CLN-002,T,M,verificado,test_effects_known_values
 REQ-CLN-003,RQ-CLINICA,M08,ACC-CLN-003,T,M,verificado,test_result_review_provenance_deduplication_and_corrections;test_literal_evidence_is_required;test_literal_locator_preserves_unicode_whitespace_and_does_not_approve;test_integrity_preview_is_readonly_and_quantifies_current_impact;test_integrity_withdrawal_removes_current_results_but_preserves_history;test_integrity_regularization_never_reactivates_old_approvals;test_integrity_receipt_is_bound_to_actor_payload_sources_and_audit;test_integrity_alert_follows_document_when_identity_is_changed;test_integrity_permissions_api_errors_and_confirmation_cannot_be_bypassed;test_integrity_new_publication_omits_withdrawn_evidence_and_preserves_old_run;test_integrity_backup_restore_preserves_alert_and_immutable_input;test_integrity_ui_starts_blank_and_requires_explicit_confirmation;test_integrity_import_rejects_conflicting_or_private_frozen_notices

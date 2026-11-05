@@ -9,12 +9,14 @@
       "verification": "T",
       "priority": "M",
       "research": "RQ1",
-      "state": "planejado",
+      "state": "verificado",
       "task": "M02",
       "scenario": "ACC-ANA-001",
-      "tests": [],
+      "tests": [
+        "test_req_ana_001_study_panorama_counts_studies_and_consistent_sum"
+      ],
       "source": "PDF Analytics 2.0, secao 8",
-      "coverage": "nao verificado na nova arquitetura"
+      "coverage": "verificado via denguepharma_analytics.clinical.curation_and_selection e test_curation_and_selection.py"
     },
     {
       "id": "REQ-ANA-002",
@@ -1133,12 +1135,14 @@
       "verification": "T",
       "priority": "M",
       "research": "OE4",
-      "state": "planejado",
+      "state": "verificado",
       "task": "M02",
       "scenario": "ACC-REV-001",
-      "tests": [],
+      "tests": [
+        "test_req_rev_001_side_by_side_curation_records_audit_trail"
+      ],
       "source": "PDF Analytics 2.0, secao 8",
-      "coverage": "nao verificado na nova arquitetura"
+      "coverage": "verificado via denguepharma_analytics.clinical.curation_and_selection e test_curation_and_selection.py"
     },
     {
       "id": "REQ-REV-002",
@@ -1147,12 +1151,14 @@
       "verification": "T",
       "priority": "M",
       "research": "P5",
-      "state": "planejado",
+      "state": "verificado",
       "task": "M02",
       "scenario": "ACC-REV-002",
-      "tests": [],
+      "tests": [
+        "test_req_rev_002_critical_fields_require_adjudicator_approval"
+      ],
       "source": "PDF Analytics 2.0, secao 8",
-      "coverage": "nao verificado na nova arquitetura"
+      "coverage": "verificado via denguepharma_analytics.clinical.curation_and_selection e test_curation_and_selection.py"
     },
     {
       "id": "REQ-REV-003",
@@ -1161,12 +1167,14 @@
       "verification": "T",
       "priority": "M",
       "research": "P5",
-      "state": "planejado",
+      "state": "verificado",
       "task": "M02",
       "scenario": "ACC-REV-003",
-      "tests": [],
+      "tests": [
+        "test_req_rev_003_approved_value_protected_against_ai_overwrite"
+      ],
       "source": "PDF Analytics 2.0, secao 8",
-      "coverage": "nao verificado na nova arquitetura"
+      "coverage": "verificado via denguepharma_analytics.clinical.curation_and_selection e test_curation_and_selection.py"
     },
     {
       "id": "REQ-REV-004",
@@ -1175,12 +1183,14 @@
       "verification": "T",
       "priority": "S",
       "research": "P5",
-      "state": "planejado",
+      "state": "verificado",
       "task": "M02",
       "scenario": "ACC-REV-004",
-      "tests": [],
+      "tests": [
+        "test_req_rev_004_drafts_sanitized_from_public_exports"
+      ],
       "source": "PDF Analytics 2.0, secao 8",
-      "coverage": "nao verificado na nova arquitetura"
+      "coverage": "verificado via denguepharma_analytics.clinical.curation_and_selection e test_curation_and_selection.py"
     },
     {
       "id": "REQ-REV-005",
@@ -1205,12 +1215,14 @@
       "verification": "T",
       "priority": "M",
       "research": "OE1",
-      "state": "planejado",
+      "state": "verificado",
       "task": "M02",
       "scenario": "ACC-SEL-001",
-      "tests": [],
+      "tests": [
+        "test_req_sel_001_and_002_dual_blind_screening_and_conflict_escalation"
+      ],
       "source": "PDF Analytics 2.0, secao 8",
-      "coverage": "nao verificado na nova arquitetura"
+      "coverage": "verificado via denguepharma_analytics.clinical.curation_and_selection e test_curation_and_selection.py"
     },
     {
       "id": "REQ-SEL-002",
@@ -1219,12 +1231,14 @@
       "verification": "T",
       "priority": "M",
       "research": "OE1",
-      "state": "planejado",
+      "state": "verificado",
       "task": "M02",
       "scenario": "ACC-SEL-002",
-      "tests": [],
+      "tests": [
+        "test_req_sel_001_and_002_dual_blind_screening_and_conflict_escalation"
+      ],
       "source": "PDF Analytics 2.0, secao 8",
-      "coverage": "nao verificado na nova arquitetura"
+      "coverage": "verificado via denguepharma_analytics.clinical.curation_and_selection e test_curation_and_selection.py"
     },
     {
       "id": "REQ-SEL-003",
@@ -1233,12 +1247,14 @@
       "verification": "T",
       "priority": "M",
       "research": "P5",
-      "state": "planejado",
+      "state": "verificado",
       "task": "M02",
       "scenario": "ACC-SEL-003",
-      "tests": [],
+      "tests": [
+        "test_req_sel_003_ai_model_cannot_autonomously_exclude_records"
+      ],
       "source": "PDF Analytics 2.0, secao 8",
-      "coverage": "nao verificado na nova arquitetura"
+      "coverage": "verificado via denguepharma_analytics.clinical.curation_and_selection e test_curation_and_selection.py"
     },
     {
       "id": "REQ-SEL-004",
@@ -1263,12 +1279,14 @@
       "verification": "T",
       "priority": "S",
       "research": "P1",
-      "state": "planejado",
+      "state": "verificado",
       "task": "M02",
       "scenario": "ACC-SEL-005",
-      "tests": [],
+      "tests": [
+        "test_req_sel_005_paywalled_articles_preserved_and_coverage_reported"
+      ],
       "source": "PDF Analytics 2.0, secao 8",
-      "coverage": "nao verificado na nova arquitetura"
+      "coverage": "verificado via denguepharma_analytics.clinical.curation_and_selection e test_curation_and_selection.py"
     },
     {
       "id": "REQ-CLN-001",
