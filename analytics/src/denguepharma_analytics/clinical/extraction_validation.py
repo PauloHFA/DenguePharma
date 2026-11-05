@@ -670,3 +670,131 @@ def prioritize_for_human_review(
     # Ordena decrescente pelo score objetivo de prioridade
     prioritized.sort(key=lambda x: int(x["priority_score"]), reverse=True)
     return prioritized
+
+
+# ==============================================================================
+# REQ-EXT-011: Conformidade de Licencas para Provedores Externos de IA (P7)
+# REQ-EXT-012: Modo de Ablacao Cientifica e Marcacao Experimental (H3)
+# ==============================================================================
+
+PERMISSIVE_REDISTRIBUTABLE_LICENSES: set[str] = {
+    "CC-BY",
+    "CC-BY-4.0",
+    "CC-BY-3.0",
+    "CC0",
+    "PUBLIC_DOMAIN",
+    "OPEN_ACCESS_PERMISSIVE",
+}
+
+EXTERNAL_AI_PROVIDERS: set[str] = {
+    "openai",
+    "gpt-4",
+    "gpt-4o",
+    "gpt-4o-mini",
+    "gemini",
+    "gemini-1.5-pro",
+    "gemini-1.5-flash",
+    "anthropic",
+    "claude",
+    "external-cloud-llm",
+}
+
+
+class LicenseComplianceBlockError(Exception):
+    """Lancado quando o envio de texto a provedor externo de IA e bloqueado por restricao de licenca (REQ-EXT-011)."""
+
+
+class AblationOutputNotPublishableError(Exception):
+    """Lancado quando se tenta publicar uma saida gerada sob modo de ablacao experimental (REQ-EXT-012)."""
+
+
+def validate_external_ai_license_compliance(
+    license_str: str | None,
+    provider: str,
+    strict_raise: bool = False,
+) -> dict[str, Any]:
+    """Cobre REQ-EXT-011 (ACC-EXT-011 / P7):
+
+    ANTES de enviar texto a um provedor externo de IA, verifica a licenca do documento
+    e a politica do provedor. Se o documento nao tiver permissao, o texto nao e enviado
+    e o bloqueio e registrado formalmente.
+    """
+    prov_lower = (provider or "").lower().strip()
+    is_external = any(ext in prov_lower for ext in EXTERNAL_AI_PROVIDERS) or "external" in prov_lower
+
+    norm_license = (license_str or "").strip().upper()
+    is_permissive = norm_license in PERMISSIVE_REDISTRIBUTABLE_LICENSES
+
+    if is_external and not is_permissive:
+        reason = (
+            f"Envio de texto integral bloqueado: o documento possui licenca '{license_str or 'NAO_INFORMADA'}' "
+            f"incompativel com a transferencia a provedor externo de IA ('{provider}'). "
+            f"Exigida licenca permissiva ({sorted(PERMISSIVE_REDISTRIBUTABLE_LICENSES)})."
+        )
+        if strict_raise:
+            raise LicenseComplianceBlockError(reason)
+
+        return {
+            "allowed": False,
+            "text_transmitted": False,
+            "status": "BLOCKED_RESTRICTIVE_LICENSE",
+            "provider": provider,
+            "license": license_str,
+            "reason": reason,
+            "recorded_block": True,
+        }
+
+    return {
+        "allowed": True,
+        "text_transmitted": True,
+        "status": "PERMITTED",
+        "provider": provider,
+        "license": license_str,
+        "recorded_block": False,
+    }
+
+
+def apply_ablation_mode_safeguards(
+    extraction_fields: Sequence[Mapping[str, Any]],
+    ablation_mode: bool = False,
+) -> dict[str, Any]:
+    """Cobre REQ-EXT-012 (ACC-EXT-012 / H3):
+
+    ONDE o modo de ablacao (sem exigencia de trecho) estiver ativo, o sistema marca
+    as saidas compulsoriamente como experimentais e impede sua publicacao na sintese.
+    """
+    annotated_fields: list[dict[str, Any]] = []
+
+    for field in extraction_fields:
+        item = dict(field)
+        if ablation_mode:
+            item["is_experimental"] = True
+            item["publishable"] = False
+            item["ablation_label"] = "experimental"
+            item["ablation_notice"] = (
+                "Saida produzida em modo de ablacao sem validacao de trecho literal; "
+                "marcada como estritamente experimental e nao publicavel (REQ-EXT-012)."
+            )
+        else:
+            item.setdefault("is_experimental", False)
+            item.setdefault("ablation_label", "standard")
+
+        annotated_fields.append(item)
+
+    return {
+        "ablation_mode": ablation_mode,
+        "is_experimental": ablation_mode,
+        "is_publishable": not ablation_mode,
+        "fields": annotated_fields,
+        "governance_status": "EXPERIMENTAL_ABLATION" if ablation_mode else "STANDARD_EVIDENCE_ANCHORED",
+    }
+
+
+def enforce_publishability_check(field_record: Mapping[str, Any]) -> bool:
+    """Verifica e bloqueia compulsoriamente a publicacao de saidas experimentais de ablacao."""
+    if field_record.get("is_experimental") is True or field_record.get("ablation_label") == "experimental":
+        raise AblationOutputNotPublishableError(
+            f"Tentativa de publicacao bloqueada: o campo '{field_record.get('field_name')}' "
+            "foi gerado em modo de ablacao experimental e nao pode ser publicado na sintese (REQ-EXT-012)."
+        )
+    return True

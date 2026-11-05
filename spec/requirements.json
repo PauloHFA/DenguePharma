@@ -336,12 +336,15 @@
       "verification": "T",
       "priority": "M",
       "research": "P7",
-      "state": "planejado",
+      "state": "verificado",
       "task": "M05",
       "scenario": "ACC-EXT-011",
-      "tests": [],
+      "tests": [
+        "test_external_ai_license_compliance_blocking",
+        "ExtractionValidationUnitTest::testLicenseComplianceForExternalAiProvider"
+      ],
       "source": "PDF Analytics 2.0, secao 8",
-      "coverage": "nao verificado na nova arquitetura"
+      "coverage": "verificado no pytest analytics e backend junit"
     },
     {
       "id": "REQ-EXT-012",
@@ -350,12 +353,15 @@
       "verification": "T",
       "priority": "C",
       "research": "H3",
-      "state": "planejado",
+      "state": "verificado",
       "task": "M05",
       "scenario": "ACC-EXT-012",
-      "tests": [],
+      "tests": [
+        "test_ablation_mode_marks_experimental_and_prevents_publication",
+        "ExtractionValidationUnitTest::testAblationModeMarksExperimentalAndBlocksPublication"
+      ],
       "source": "PDF Analytics 2.0, secao 8",
-      "coverage": "nao verificado na nova arquitetura"
+      "coverage": "verificado no pytest analytics e backend junit"
     },
     {
       "id": "REQ-GOV-001",

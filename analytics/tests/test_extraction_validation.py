@@ -480,3 +480,95 @@ def test_req_ext_010_disregards_self_reported_confidence_for_prioritization():
     assert queue[0]["requires_human_adjudication"] is True
     assert queue[0]["priority_score"] > queue[1]["priority_score"]
     assert "confiança autorreportada pelo modelo foi expressamente desconsiderada" in queue[0]["governance_notice"]
+
+
+@pytest.mark.requirement("REQ-EXT-011")
+def test_external_ai_license_compliance_blocking():
+    """Cobre ACC-EXT-011 / P7: ANTES de enviar texto a um provedor externo de IA,
+
+    verifica a licença do documento. Dado um documento sem permissão, quando a
+    extração for solicitada, então o texto não é enviado e o bloqueio é registrado.
+    """
+    from denguepharma_analytics.clinical.extraction_validation import (
+        LicenseComplianceBlockError,
+        validate_external_ai_license_compliance,
+    )
+
+    # 1. Documento com licença permissiva (CC-BY, CC0, etc) para provedor externo (OpenAI/Gemini)
+    res_allowed = validate_external_ai_license_compliance(
+        license_str="CC-BY-4.0",
+        provider="gemini-1.5-flash",
+    )
+    assert res_allowed["allowed"] is True
+    assert res_allowed["text_transmitted"] is True
+    assert res_allowed["status"] == "PERMITTED"
+    assert res_allowed["recorded_block"] is False
+
+    # 2. Documento com licença restritiva (ALL_RIGHTS_RESERVED, indefinida ou nula)
+    # para provedor externo -> DEVE ser bloqueado e registrado
+    res_blocked = validate_external_ai_license_compliance(
+        license_str="ALL_RIGHTS_RESERVED",
+        provider="openai",
+    )
+    assert res_blocked["allowed"] is False
+    assert res_blocked["text_transmitted"] is False
+    assert res_blocked["status"] == "BLOCKED_RESTRICTIVE_LICENSE"
+    assert res_blocked["recorded_block"] is True
+    assert "incompativel com a transferencia a provedor externo" in res_blocked["reason"]
+
+    # Bloqueio estrito lançando exceção
+    with pytest.raises(LicenseComplianceBlockError):
+        validate_external_ai_license_compliance(
+            license_str=None,
+            provider="gpt-4o",
+            strict_raise=True,
+        )
+
+    # 3. Provedores locais ou determinísticos são permitidos mesmo com licenças restritas
+    res_local = validate_external_ai_license_compliance(
+        license_str="ALL_RIGHTS_RESERVED",
+        provider="local-deterministic-regex",
+    )
+    assert res_local["allowed"] is True
+    assert res_local["text_transmitted"] is True
+
+
+@pytest.mark.requirement("REQ-EXT-012")
+def test_ablation_mode_marks_experimental_and_prevents_publication():
+    """Cobre ACC-EXT-012 / H3: ONDE o modo de ablação (sem exigência de trecho) estiver ativo,
+
+    o sistema deve marcar as saídas como experimentais e impedir sua publicação.
+    """
+    from denguepharma_analytics.clinical.extraction_validation import (
+        AblationOutputNotPublishableError,
+        apply_ablation_mode_safeguards,
+        enforce_publishability_check,
+    )
+
+    fields = [
+        {"field_name": "sample_size", "value": "100", "quoted_text": None},
+        {"field_name": "intervention", "value": "Favipiravir", "quoted_text": None},
+    ]
+
+    # 1. Execução padrão (sem ablação)
+    standard_run = apply_ablation_mode_safeguards(fields, ablation_mode=False)
+    assert standard_run["is_experimental"] is False
+    assert standard_run["is_publishable"] is True
+    assert enforce_publishability_check(standard_run["fields"][0]) is True
+
+    # 2. Execução em modo de ablação experimental
+    ablation_run = apply_ablation_mode_safeguards(fields, ablation_mode=True)
+    assert ablation_run["is_experimental"] is True
+    assert ablation_run["is_publishable"] is False
+    assert ablation_run["governance_status"] == "EXPERIMENTAL_ABLATION"
+
+    # Todos os campos têm o rótulo "experimental"
+    for field in ablation_run["fields"]:
+        assert field["is_experimental"] is True
+        assert field["publishable"] is False
+        assert field["ablation_label"] == "experimental"
+
+    # Tentativa de publicar saída de ablação DEVE falhar compulsoriamente
+    with pytest.raises(AblationOutputNotPublishableError) as exc_info:
+        enforce_publishability_check(ablation_run["fields"][0])
+    assert "modo de ablacao experimental e nao pode ser publicado" in str(exc_info.value)

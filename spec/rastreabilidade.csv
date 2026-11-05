@@ -19,8 +19,8 @@ REQ-EXT-007,RQ5,M05,ACC-EXT-007,T,M,verificado,test_req_ext_007_misaligned_table
 REQ-EXT-008,P6,M05,ACC-EXT-008,T,M,verificado,test_req_ext_008_extraction_run_audit_fields_complete
 REQ-EXT-009,P10,M05,ACC-EXT-009,T,M,verificado,test_req_ext_009_idempotency_composite_key_single_logical_run
 REQ-EXT-010,OE5,M05,ACC-EXT-010,A,S,verificado,test_req_ext_010_disregards_self_reported_confidence_for_prioritization
-REQ-EXT-011,P7,M05,ACC-EXT-011,T,M,planejado,
-REQ-EXT-012,H3,M05,ACC-EXT-012,T,C,planejado,
+REQ-EXT-011,P7,M05,ACC-EXT-011,T,M,verificado,test_external_ai_license_compliance_blocking;ExtractionValidationUnitTest::testLicenseComplianceForExternalAiProvider
+REQ-EXT-012,H3,M05,ACC-EXT-012,T,C,verificado,test_ablation_mode_marks_experimental_and_prevents_publication;ExtractionValidationUnitTest::testAblationModeMarksExperimentalAndBlocksPublication
 REQ-GOV-001,RNF-01,M02,ACC-GOV-001,T,M,planejado,
 REQ-GOV-002,Ética,M05,ACC-GOV-002,I,M,planejado,
 REQ-GOV-003,P1,M02,ACC-GOV-003,T,M,planejado,

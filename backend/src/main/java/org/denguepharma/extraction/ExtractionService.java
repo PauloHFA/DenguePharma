@@ -604,6 +604,44 @@ public class ExtractionService {
         return "INCERTO".equalsIgnoreCase(absenceStatus);
     }
 
+    public static final Set<String> PERMISSIVE_AI_LICENSES = Set.of(
+            "CC-BY", "CC-BY-4.0", "CC-BY-3.0", "CC0", "PUBLIC_DOMAIN");
+
+    /**
+     * P7: ANTES de enviar texto a um provedor externo de IA, verifica a licença do documento
+     * e a política do provedor (REQ-EXT-011 / ACC-EXT-011).
+     */
+    public static boolean isLicensePermittedForExternalAi(String license, String provider) {
+        if (provider == null || !provider.toLowerCase().matches(".*(openai|gpt|gemini|anthropic|claude|external).*")) {
+            return true; // Provedores locais ou determinísticos não transferem dados externamente
+        }
+        if (license == null || license.isBlank()) {
+            return false;
+        }
+        return PERMISSIVE_AI_LICENSES.contains(license.trim().toUpperCase());
+    }
+
+    /**
+     * H3: Modo de ablação marca saídas como experimentais e impede sua publicação na síntese
+     * (REQ-EXT-012 / ACC-EXT-012).
+     */
+    public static boolean isAblationMode(String executionVariant, Map<String, Object> parameters) {
+        if (executionVariant != null && executionVariant.toLowerCase().contains("ablation")) {
+            return true;
+        }
+        if (parameters != null && Boolean.TRUE.equals(parameters.get("ablation_mode"))) {
+            return true;
+        }
+        return false;
+    }
+
+    public static boolean isOutputPublishable(boolean isAblationMode, String validationStatus) {
+        if (isAblationMode) {
+            return false; // REQ-EXT-012: Saídas em modo de ablação NUNCA são publicáveis
+        }
+        return "PRESENTE".equalsIgnoreCase(validationStatus);
+    }
+
     private String write(Object o) {
         try {
             return om.writeValueAsString(o);

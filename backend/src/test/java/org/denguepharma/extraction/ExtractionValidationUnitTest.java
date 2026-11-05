@@ -144,4 +144,37 @@ class ExtractionValidationUnitTest {
                 ExtractionService.isReviewPriorityDeterminedByObjectiveValidation("PRESENTE", 0.70);
         assertFalse(supportedWith70Claim, "Campo PRESENTE validado não deve ser forçado como incerto");
     }
+
+    @Test
+    void testLicenseComplianceForExternalAiProvider() {
+        // REQ-EXT-011 / P7: Licenças permissivas autorizadas para provedor externo
+        assertTrue(ExtractionService.isLicensePermittedForExternalAi("CC-BY", "openai"));
+        assertTrue(ExtractionService.isLicensePermittedForExternalAi("CC-BY-4.0", "gemini-1.5-flash"));
+        assertTrue(ExtractionService.isLicensePermittedForExternalAi("CC0", "anthropic-claude"));
+        assertTrue(ExtractionService.isLicensePermittedForExternalAi("PUBLIC_DOMAIN", "external-cloud-llm"));
+
+        // Licenças restritas ou ausentes BLOQUEIAM o envio a provedor externo
+        assertFalse(ExtractionService.isLicensePermittedForExternalAi("ALL_RIGHTS_RESERVED", "openai"));
+        assertFalse(ExtractionService.isLicensePermittedForExternalAi("UNSPECIFIED_RESTRICTED", "gemini"));
+        assertFalse(ExtractionService.isLicensePermittedForExternalAi(null, "openai"));
+        assertFalse(ExtractionService.isLicensePermittedForExternalAi("", "anthropic"));
+
+        // Provedor local (regras/on-premise) não transfere dados externamente
+        assertTrue(ExtractionService.isLicensePermittedForExternalAi("ALL_RIGHTS_RESERVED", "deterministic-rules"));
+        assertTrue(ExtractionService.isLicensePermittedForExternalAi(null, "in-house-ollama"));
+    }
+
+    @Test
+    void testAblationModeMarksExperimentalAndBlocksPublication() {
+        // REQ-EXT-012 / H3: Detecção de modo de ablação
+        assertTrue(ExtractionService.isAblationMode("ablation-no-quotes", null));
+        assertTrue(ExtractionService.isAblationMode(null, java.util.Map.of("ablation_mode", true)));
+        assertFalse(ExtractionService.isAblationMode("default", java.util.Map.of("ablation_mode", false)));
+
+        // Modo de ablação NUNCA é publicável, mesmo se status for PRESENTE
+        assertFalse(ExtractionService.isOutputPublishable(true, "PRESENTE"));
+        // Modo padrão ancorado é publicável se validado como PRESENTE
+        assertTrue(ExtractionService.isOutputPublishable(false, "PRESENTE"));
+        assertFalse(ExtractionService.isOutputPublishable(false, "INCERTO"));
+    }
 }
