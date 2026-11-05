@@ -1350,12 +1350,16 @@
       "verification": "I",
       "priority": "M",
       "research": "RQ-CLINICA",
-      "state": "planejado",
+      "state": "verificado",
       "task": "M08",
       "scenario": "ACC-CLN-006",
-      "tests": [],
+      "tests": [
+        "test_search_calibration_detects_noise_and_requires_adjudicator",
+        "test_pilot_methodological_review_and_final_corpus_selection",
+        "test_real_clinical_synthesis_publication_with_human_conclusions"
+      ],
       "source": "Emenda clinica aprovada pelo usuario em 2026-10-28",
-      "coverage": "Pendente de pesquisadores e calibracao"
+      "coverage": "verificado via denguepharma_analytics.clinical.pilot_synthesis_and_calibration e test_pilot_synthesis_and_calibration.py"
     },
     {
       "id": "REQ-CLN-007",

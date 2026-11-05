@@ -200,3 +200,4 @@ def test_accessible_figure_spec_requires_denominator_period_and_non_color_marker
                 SeriesSpec(label="Série 2", n_sample=100, color="#00ff00", marker_shape="circle", line_style="solid"),
             ],
         ).validate()
+

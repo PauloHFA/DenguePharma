@@ -258,3 +258,4 @@ class AccessibleFigureSpec:
             "accessible_markers_present": True,
             "series": [asdict(s) for s in self.series],
         }
+

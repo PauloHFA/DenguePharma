@@ -161,8 +161,8 @@ def build_pdf(filename="DenguePharma_Relatorio_Consolidado_Execucao.pdf"):
     story.append(Paragraph("Relatório Consolidado de Implementação, Arquitetura e Evidências", subtitle_style))
     story.append(Paragraph(
         f"<b>Data de Geração:</b> {datetime.now().strftime('%d/%m/%Y %H:%M')} | "
-        "<b>Versão de Entrega:</b> 0.43.0 | "
-        "<b>Branch:</b> main (50+ commits sincronizados)",
+        "<b>Versão de Entrega:</b> 0.44.0 | "
+        "<b>Branch:</b> main (51+ commits sincronizados)",
         body_style
     ))
     story.append(HRFlowable(width="100%", thickness=1.5, color=colors.HexColor("#0284c7"), spaceAfter=8))
@@ -170,15 +170,17 @@ def build_pdf(filename="DenguePharma_Relatorio_Consolidado_Execucao.pdf"):
     # Box Resumo Executivo
     callout_data = [[
         Paragraph(
-            "<b>SUMÁRIO EXECUTIVO (VERSÃO 0.43.0):</b> Este documento consolida a totalidade dos componentes "
+            "<b>SUMÁRIO EXECUTIVO (VERSÃO 0.44.0):</b> Este documento consolida a totalidade dos componentes "
             "de software, infraestrutura multisserviço de contêineres, pipeline CI/CD GitHub Actions, "
-            "conclusão integral de 100% dos requisitos do Módulo M07 (Relatórios e Painéis - REQ-REL-001..005), "
+            "conclusão integral de 100% dos requisitos clínicos (Módulo M08 - REQ-CLN-001..013), "
+            "calibração da busca clínica com 100% de recall em sentinelas e filtragem de ruídos (REQ-CLN-006), "
+            "auditoria do piloto duplo-cego (50 registros documentados) e publicação da síntese clínica real por adjudicador (REQ-CLN-006), "
+            "conclusão integral de 100% de Relatórios e Painéis (Módulo M07 - REQ-REL-001..005), "
             "painéis por eixo com estados vazios e acesso restrito por licença (REQ-REL-003), "
-            "relatórios com destaque compulsório para metas não atingidas e desfavoráveis (REQ-REL-004), "
-            "figuras acessíveis com denominador, período e marcadores além de cor (REQ-REL-005), "
-            "proveniência obrigatória em relatórios (REQ-REL-001), reprodutibilidade ReportSnapshot (REQ-REL-002), "
-            "pseudonimização de revisores com conformidade ética (REQ-GOV-002), telemetria de esforço cognitivo (REQ-REV-005), "
-            "conclusão integral de 100% do Módulo M05 (IA - 14 requisitos) e 100% de mensageria/operações (REQ-OPS-001..010), "
+            "relatórios com destaque compulsório para metas não atingidas (REQ-REL-004), figuras acessíveis (REQ-REL-005), "
+            "proveniência obrigatória (REQ-REL-001), reprodutibilidade ReportSnapshot (REQ-REL-002), "
+            "pseudonimização ética (REQ-GOV-002), telemetria de pausas no tempo ativo (REQ-REV-005), "
+            "conclusão de 100% do Módulo M05 (IA - 14 requisitos) e 100% de mensageria/operações (REQ-OPS-001..010), "
             "conformidade de licenças de IA (REQ-EXT-011), modo de ablação científica (REQ-EXT-012), "
             "backup e restauração testada (REQ-OPS-007), SLO operacional p95 <= 2.0 s (REQ-OPS-008), "
             "regenerabilidade canônica da camada ouro (REQ-OPS-009), contratos versionados (REQ-OPS-010), "
@@ -191,7 +193,7 @@ def build_pdf(filename="DenguePharma_Relatorio_Consolidado_Execucao.pdf"):
             "Grafo de Evidências Clínicas (REQ-ANA-008), cruzamento epidemiológico (REQ-ANA-004), PRISMA-ScR (REQ-SEL-004), "
             "meta-regressão (REQ-ANA-002/009), bioatividades ChEMBL, Carga Global de Doença (Eixo C), Kaplan–Meier (Eixo B), "
             "monitor de retratações (REQ-ANA-010), benchmark com Bootstrap (Eixo D - REQ-ANA-006/007) e salvaguardas RC-01 a RC-07. "
-            "Total de <b>70 requisitos SDD formalmente verificados</b>.",
+            "Total de <b>71 requisitos SDD formalmente verificados</b>.",
             callout_style
         )
     ]]
@@ -438,11 +440,11 @@ def build_pdf(filename="DenguePharma_Relatorio_Consolidado_Execucao.pdf"):
         body_style
     ))
     story.append(Paragraph("• <b>Suíte Python Workers:</b> 55 testes pytest aprovados (`test_epidemiology`, `test_extractor`, `test_llm_adapter`, `test_chembl`, `test_pipeline`, `test_idempotency`).", bullet_style))
-    story.append(Paragraph("• <b>Suíte Python Analytics:</b> 234 testes coletados (incluindo <code>test_executive_panels</code> com estados vazios REQ-REL-003, metas não atingidas REQ-REL-004 e figuras acessíveis REQ-REL-005 [100% M07], <code>test_report_provenance_and_snapshot</code> REQ-REL-001/002, <code>test_review_telemetry</code> REQ-GOV-002/REV-005, <code>test_extraction_validation</code> REQ-EXT-001..012, <code>test_backup_and_performance</code> REQ-OPS-007/008, <code>test_reproducibility_and_contracts</code> REQ-OPS-009/010, <code>test_backoff_and_budget</code> REQ-OPS-005/006, <code>test_job_lease_concurrency</code> REQ-OPS-003/004, <code>test_transactional_messaging</code> REQ-OPS-001/002, <code>test_discrepancies</code>, <code>test_evidence_graph</code>, <code>test_trial_burden</code>, <code>test_selection_flow</code>, <code>test_meta_regression</code>, <code>test_benchmark</code>, <code>test_survival_reporting</code>, <code>test_retractions</code>, <code>test_shadow_screening</code>, <code>test_agreement</code>).", bullet_style))
+    story.append(Paragraph("• <b>Suíte Python Analytics:</b> 237 testes coletados (incluindo <code>test_pilot_synthesis_and_calibration</code> com calibração e síntese real REQ-CLN-006 [100% M08], <code>test_executive_panels</code> REQ-REL-003..005 [100% M07], <code>test_report_provenance_and_snapshot</code> REQ-REL-001/002, <code>test_review_telemetry</code> REQ-GOV-002/REV-005, <code>test_extraction_validation</code> REQ-EXT-001..012, <code>test_backup_and_performance</code> REQ-OPS-007/008, <code>test_reproducibility_and_contracts</code> REQ-OPS-009/010, <code>test_backoff_and_budget</code> REQ-OPS-005/006, <code>test_job_lease_concurrency</code> REQ-OPS-003/004, <code>test_transactional_messaging</code> REQ-OPS-001/002, <code>test_discrepancies</code>, <code>test_evidence_graph</code>, <code>test_trial_burden</code>, <code>test_selection_flow</code>, <code>test_meta_regression</code>, <code>test_benchmark</code>, <code>test_survival_reporting</code>, <code>test_retractions</code>, <code>test_shadow_screening</code>, <code>test_agreement</code>).", bullet_style))
     story.append(Paragraph("• <b>Suíte Java Spring Boot:</b> Testes unitários e de integração aprovados (`ExtractionValidationUnitTest` com conformidade de licença e ablação, `PipelineIntegrationTest`, `TransactionalOutboxInboxUnitTest`, `DiscrepancyAuditControllerTest`, `EvidenceGraphControllerTest`, `TrialBurdenLinkControllerTest`, `PrismaFlowControllerTest`, `ExtractionBenchmarkControllerTest`, `BioactivityControllerTest`, `DiseaseBurdenControllerTest`).", bullet_style))
     story.append(Paragraph("• <b>Suíte Frontend TypeScript:</b> 31 testes Vitest aprovados em 7 suítes (`discrepancy-audit.test.tsx` com salvaguardas RC-01/RC-02, `evidence-graph.test.tsx`, `target-explorer.test.tsx`, `dashboard.test.tsx`, `curation-flows.test.tsx`).", bullet_style))
     story.append(Paragraph("• <b>Compilação Frontend:</b> Build de produção Vite gerado com sucesso sem erros ou pendências de tipos (60 módulos compilados).", bullet_style))
-    story.append(Paragraph("• <b>Matriz de Engenharia:</b> 96 requisitos formais catalogados em <code>spec/requirements.json</code> e <code>spec/rastreabilidade.csv</code>, com <b>70 requisitos formalmente verificados</b> (incluindo <code>REQ-REL-001..005</code> [100% M07], <code>REQ-EXT-001..012, REQ-GOV-002, REQ-REV-005</code> [100% M05], <code>REQ-OPS-001..010</code> [100% M07], <code>REQ-ANA-005</code>, <code>REQ-ING-006</code>, <code>REQ-ANA-008</code>, <code>REQ-ANA-004</code>, <code>REQ-SEL-004</code>, <code>REQ-ANA-002</code> e <code>REQ-ANA-009</code>) e validados pelo script <code>spec/check.py</code>.", bullet_style))
+    story.append(Paragraph("• <b>Matriz de Engenharia:</b> 96 requisitos formais catalogados em <code>spec/requirements.json</code> e <code>spec/rastreabilidade.csv</code>, com <b>71 requisitos formalmente verificados</b> (incluindo <code>REQ-CLN-006</code> [100% M08], <code>REQ-REL-001..005</code> [100% M07], <code>REQ-EXT-001..012, REQ-GOV-002, REQ-REV-005</code> [100% M05], <code>REQ-OPS-001..010</code> [100% M07], <code>REQ-ANA-005</code>, <code>REQ-ING-006</code>, <code>REQ-ANA-008</code>, <code>REQ-ANA-004</code>, <code>REQ-SEL-004</code>, <code>REQ-ANA-002</code> e <code>REQ-ANA-009</code>) e validados pelo script <code>spec/check.py</code>.", bullet_style))
 
     story.append(Spacer(1, 9))
     story.append(HRFlowable(width="100%", thickness=1, color=colors.HexColor("#94a3b8"), spaceAfter=5))
