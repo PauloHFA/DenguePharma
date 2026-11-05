@@ -161,8 +161,8 @@ def build_pdf(filename="DenguePharma_Relatorio_Consolidado_Execucao.pdf"):
     story.append(Paragraph("Relatório Consolidado de Implementação, Arquitetura e Evidências", subtitle_style))
     story.append(Paragraph(
         f"<b>Data de Geração:</b> {datetime.now().strftime('%d/%m/%Y %H:%M')} | "
-        "<b>Versão de Entrega:</b> 0.40.0 | "
-        "<b>Branch:</b> main (47+ commits sincronizados)",
+        "<b>Versão de Entrega:</b> 0.41.0 | "
+        "<b>Branch:</b> main (48+ commits sincronizados)",
         body_style
     ))
     story.append(HRFlowable(width="100%", thickness=1.5, color=colors.HexColor("#0284c7"), spaceAfter=8))
@@ -170,13 +170,16 @@ def build_pdf(filename="DenguePharma_Relatorio_Consolidado_Execucao.pdf"):
     # Box Resumo Executivo
     callout_data = [[
         Paragraph(
-            "<b>SUMÁRIO EXECUTIVO (VERSÃO 0.40.0):</b> Este documento consolida a totalidade dos componentes "
+            "<b>SUMÁRIO EXECUTIVO (VERSÃO 0.41.0):</b> Este documento consolida a totalidade dos componentes "
             "de software, infraestrutura multisserviço de contêineres, pipeline CI/CD GitHub Actions, "
+            "pseudonimização de revisores com conformidade ética prévia (REQ-GOV-002), "
+            "telemetria de esforço cognitivo com exclusão de pausas no tempo ativo (REQ-REV-005), "
+            "conclusão integral de 100% dos requisitos de extração e IA (Módulo M05 - 14 requisitos), "
+            "conclusão de 100% dos requisitos de operações e mensageria (REQ-OPS-001..010), "
             "conformidade mandatória de licenças para provedores externos de IA (REQ-EXT-011), "
-            "modo de ablação científica com marcação experimental e bloqueio de publicação (REQ-EXT-012), "
+            "modo de ablação científica com bloqueio de publicação (REQ-EXT-012), "
             "backup e restauração testada em ambiente limpo com validação por hash (REQ-OPS-007), "
             "SLO operacional com p95 <= 2.0 s em 10 mil registros e 10 usuários simultâneos (REQ-OPS-008), "
-            "conclusão integral de 100% dos requisitos operacionais (Módulo M07 - REQ-OPS-001..010), "
             "regenerabilidade canônica bit-a-bit da camada ouro (REQ-OPS-009), "
             "contratos de eventos versionados com quebra sob incompatibilidade (REQ-OPS-010), "
             "backoff com jitter, quarentena e retomada auditada (REQ-OPS-005), "
@@ -192,7 +195,7 @@ def build_pdf(filename="DenguePharma_Relatorio_Consolidado_Execucao.pdf"):
             "cruzamento epidemiológico (REQ-ANA-004), PRISMA-ScR (REQ-SEL-004), meta-regressão (REQ-ANA-002/009), "
             "bioatividades ChEMBL, Carga Global de Doença (Eixo C) com Desertos de Pesquisa, análise Kaplan–Meier (Eixo B), "
             "monitor de retratações científicas (REQ-ANA-010), benchmark com Bootstrap "
-            "(Eixo D - REQ-ANA-006/007) e salvaguardas científicas RC-01 a RC-07. Total de <b>63 requisitos SDD formalmente verificados</b>.",
+            "(Eixo D - REQ-ANA-006/007) e salvaguardas científicas RC-01 a RC-07. Total de <b>65 requisitos SDD formalmente verificados</b>.",
             callout_style
         )
     ]]
@@ -439,11 +442,11 @@ def build_pdf(filename="DenguePharma_Relatorio_Consolidado_Execucao.pdf"):
         body_style
     ))
     story.append(Paragraph("• <b>Suíte Python Workers:</b> 55 testes pytest aprovados (`test_epidemiology`, `test_extractor`, `test_llm_adapter`, `test_chembl`, `test_pipeline`, `test_idempotency`).", bullet_style))
-    story.append(Paragraph("• <b>Suíte Python Analytics:</b> 227 testes coletados (incluindo <code>test_extraction_validation</code> com conformidade de licença REQ-EXT-011 e modo de ablação REQ-EXT-012, <code>test_backup_and_performance</code> REQ-OPS-007/008, <code>test_reproducibility_and_contracts</code> REQ-OPS-009/010, <code>test_backoff_and_budget</code> REQ-OPS-005/006, <code>test_job_lease_concurrency</code> REQ-OPS-003/004, <code>test_transactional_messaging</code> REQ-OPS-001/002, <code>test_discrepancies</code>, <code>test_evidence_graph</code>, <code>test_trial_burden</code>, <code>test_selection_flow</code>, <code>test_meta_regression</code>, <code>test_benchmark</code>, <code>test_survival_reporting</code>, <code>test_retractions</code>, <code>test_shadow_screening</code>, <code>test_agreement</code>).", bullet_style))
+    story.append(Paragraph("• <b>Suíte Python Analytics:</b> 229 testes coletados (incluindo <code>test_review_telemetry</code> com pseudonimização ética REQ-GOV-002 e telemetria de pausas REQ-REV-005, <code>test_extraction_validation</code> REQ-EXT-001..012, <code>test_backup_and_performance</code> REQ-OPS-007/008, <code>test_reproducibility_and_contracts</code> REQ-OPS-009/010, <code>test_backoff_and_budget</code> REQ-OPS-005/006, <code>test_job_lease_concurrency</code> REQ-OPS-003/004, <code>test_transactional_messaging</code> REQ-OPS-001/002, <code>test_discrepancies</code>, <code>test_evidence_graph</code>, <code>test_trial_burden</code>, <code>test_selection_flow</code>, <code>test_meta_regression</code>, <code>test_benchmark</code>, <code>test_survival_reporting</code>, <code>test_retractions</code>, <code>test_shadow_screening</code>, <code>test_agreement</code>).", bullet_style))
     story.append(Paragraph("• <b>Suíte Java Spring Boot:</b> Testes unitários e de integração aprovados (`ExtractionValidationUnitTest` com conformidade de licença e ablação, `PipelineIntegrationTest`, `TransactionalOutboxInboxUnitTest`, `DiscrepancyAuditControllerTest`, `EvidenceGraphControllerTest`, `TrialBurdenLinkControllerTest`, `PrismaFlowControllerTest`, `ExtractionBenchmarkControllerTest`, `BioactivityControllerTest`, `DiseaseBurdenControllerTest`).", bullet_style))
     story.append(Paragraph("• <b>Suíte Frontend TypeScript:</b> 31 testes Vitest aprovados em 7 suítes (`discrepancy-audit.test.tsx` com salvaguardas RC-01/RC-02, `evidence-graph.test.tsx`, `target-explorer.test.tsx`, `dashboard.test.tsx`, `curation-flows.test.tsx`).", bullet_style))
     story.append(Paragraph("• <b>Compilação Frontend:</b> Build de produção Vite gerado com sucesso sem erros ou pendências de tipos (60 módulos compilados).", bullet_style))
-    story.append(Paragraph("• <b>Matriz de Engenharia:</b> 96 requisitos formais catalogados em <code>spec/requirements.json</code> e <code>spec/rastreabilidade.csv</code>, com <b>63 requisitos formalmente verificados</b> (incluindo <code>REQ-EXT-001..012</code> [M05], <code>REQ-OPS-001..010</code> [100% M07], <code>REQ-ANA-005</code>, <code>REQ-ING-006</code>, <code>REQ-ANA-008</code>, <code>REQ-ANA-004</code>, <code>REQ-SEL-004</code>, <code>REQ-ANA-002</code> e <code>REQ-ANA-009</code>) e validados pelo script <code>spec/check.py</code>.", bullet_style))
+    story.append(Paragraph("• <b>Matriz de Engenharia:</b> 96 requisitos formais catalogados em <code>spec/requirements.json</code> e <code>spec/rastreabilidade.csv</code>, com <b>65 requisitos formalmente verificados</b> (incluindo <code>REQ-EXT-001..012, REQ-GOV-002, REQ-REV-005</code> [100% M05], <code>REQ-OPS-001..010</code> [100% M07], <code>REQ-ANA-005</code>, <code>REQ-ING-006</code>, <code>REQ-ANA-008</code>, <code>REQ-ANA-004</code>, <code>REQ-SEL-004</code>, <code>REQ-ANA-002</code> e <code>REQ-ANA-009</code>) e validados pelo script <code>spec/check.py</code>.", bullet_style))
 
     story.append(Spacer(1, 9))
     story.append(HRFlowable(width="100%", thickness=1, color=colors.HexColor("#94a3b8"), spaceAfter=5))

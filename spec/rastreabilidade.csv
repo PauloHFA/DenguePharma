@@ -22,7 +22,7 @@ REQ-EXT-010,OE5,M05,ACC-EXT-010,A,S,verificado,test_req_ext_010_disregards_self_
 REQ-EXT-011,P7,M05,ACC-EXT-011,T,M,verificado,test_external_ai_license_compliance_blocking;ExtractionValidationUnitTest::testLicenseComplianceForExternalAiProvider
 REQ-EXT-012,H3,M05,ACC-EXT-012,T,C,verificado,test_ablation_mode_marks_experimental_and_prevents_publication;ExtractionValidationUnitTest::testAblationModeMarksExperimentalAndBlocksPublication
 REQ-GOV-001,RNF-01,M02,ACC-GOV-001,T,M,planejado,
-REQ-GOV-002,Ética,M05,ACC-GOV-002,I,M,planejado,
+REQ-GOV-002,Ética,M05,ACC-GOV-002,I,M,verificado,test_time_study_export_pseudonymizes_reviewers_and_requires_ethics_approval
 REQ-GOV-003,P1,M02,ACC-GOV-003,T,M,planejado,
 REQ-GOV-004,P7,M02,ACC-GOV-004,T,M,planejado,
 REQ-GOV-005,P4,M02,ACC-GOV-005,I,M,planejado,
@@ -71,7 +71,7 @@ REQ-REV-001,OE4,M02,ACC-REV-001,T,M,planejado,
 REQ-REV-002,P5,M02,ACC-REV-002,T,M,planejado,
 REQ-REV-003,P5,M02,ACC-REV-003,T,M,planejado,
 REQ-REV-004,P5,M02,ACC-REV-004,T,S,planejado,
-REQ-REV-005,"RQ5, H1",M05,ACC-REV-005,T,M,planejado,
+REQ-REV-005,"RQ5, H1",M05,ACC-REV-005,T,M,verificado,test_review_session_active_time_excludes_pauses
 REQ-SEL-001,OE1,M02,ACC-SEL-001,T,M,planejado,
 REQ-SEL-002,OE1,M02,ACC-SEL-002,T,M,planejado,
 REQ-SEL-003,P5,M02,ACC-SEL-003,T,M,planejado,

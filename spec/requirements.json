@@ -384,12 +384,14 @@
       "verification": "I",
       "priority": "M",
       "research": "Ética",
-      "state": "planejado",
+      "state": "verificado",
       "task": "M05",
       "scenario": "ACC-GOV-002",
-      "tests": [],
+      "tests": [
+        "test_time_study_export_pseudonymizes_reviewers_and_requires_ethics_approval"
+      ],
       "source": "PDF Analytics 2.0, secao 8",
-      "coverage": "nao verificado na nova arquitetura"
+      "coverage": "verificado no pytest analytics"
     },
     {
       "id": "REQ-GOV-003",
@@ -1144,12 +1146,14 @@
       "verification": "T",
       "priority": "M",
       "research": "RQ5, H1",
-      "state": "planejado",
+      "state": "verificado",
       "task": "M05",
       "scenario": "ACC-REV-005",
-      "tests": [],
+      "tests": [
+        "test_review_session_active_time_excludes_pauses"
+      ],
       "source": "PDF Analytics 2.0, secao 8",
-      "coverage": "nao verificado na nova arquitetura"
+      "coverage": "verificado no pytest analytics"
     },
     {
       "id": "REQ-SEL-001",
