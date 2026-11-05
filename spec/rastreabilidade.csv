@@ -58,8 +58,8 @@ REQ-OPS-003,RNF,M07,ACC-OPS-003,T,M,verificado,test_no_sql_transaction_open_duri
 REQ-OPS-004,P10,M07,ACC-OPS-004,T,M,verificado,test_stale_worker_result_is_discarded_and_recorded;test_lease_renewal_and_quarantine;TransactionalOutboxInboxUnitTest::staleWorkerDeliveryRejectedWhenLeaseExpired;TransactionalOutboxInboxUnitTest::renewLeaseThrowsWhenExpiredOrTokenInvalid
 REQ-OPS-005,RF-11,M07,ACC-OPS-005,T,S,verificado,test_backoff_computation_with_exponential_growth_and_jitter;test_quarantine_transition_and_authorized_retry_audit;PipelineIntegrationTest::falhasTemBackoffQuarentenaERetomadaAuditada
 REQ-OPS-006,RNF,M05,ACC-OPS-006,T,M,verificado,test_ai_budget_cumulative_tracking_and_cost_calculation;test_ai_budget_suspends_and_alerts_upon_reaching_ceiling
-REQ-OPS-007,RNF-02,M07,ACC-OPS-007,T,M,planejado,
-REQ-OPS-008,RNF-06,M07,ACC-OPS-008,T,S,planejado,
+REQ-OPS-007,RNF-02,M07,ACC-OPS-007,T,M,verificado,test_backup_and_restore_in_clean_environment_verifies_hashes;test_restore_rejects_corrupted_document_or_metadata;ReportAndOpsService::exportReproductionPackage
+REQ-OPS-008,RNF-06,M07,ACC-OPS-008,T,S,verificado,test_slo_workload_latency_p95_under_2_seconds
 REQ-OPS-009,P6,M07,ACC-OPS-009,T,M,verificado,test_gold_layer_pipeline_reproducibility_bit_a_bit;test_reproducible_marts;ReportAndOpsService::exportReproductionPackage
 REQ-OPS-010,RNF,M07,ACC-OPS-010,T,M,verificado,test_event_contract_accepts_valid_version_1_schema;test_event_contract_fails_build_on_incompatible_schema_change;TransactionalOutboxInboxUnitTest::claimDeliveryRejectsIncompatibleSchemaVersion;TransactionalOutboxInboxUnitTest::claimDeliveryRejectsUnknownEventTypeWithoutConsumer
 REQ-REL-001,P1,M07,ACC-REL-001,T,M,planejado,

@@ -1,4 +1,4 @@
-"""Módulo operacional de mensageria, resiliência transacional, concorrência, governança e regenerabilidade."""
+"""Módulo operacional de mensageria, resiliência, concorrência, governança, contratos e performance."""
 
 from denguepharma_analytics.ops.backoff_and_budget import (
     AIBudgetExceededError,
@@ -7,6 +7,11 @@ from denguepharma_analytics.ops.backoff_and_budget import (
     BackoffPolicy,
     BudgetAlert,
     QuarantineManager,
+)
+from denguepharma_analytics.ops.backup_and_performance import (
+    BackupIntegrityError,
+    BackupRestoreManager,
+    PerformanceBenchmarker,
 )
 from denguepharma_analytics.ops.job_lease_concurrency import (
     JobLease,
@@ -48,4 +53,7 @@ __all__ = [
     "EventSchemaContract",
     "CANONICAL_V1_CONTRACT",
     "IncompatibleSchemaContractError",
+    "BackupRestoreManager",
+    "BackupIntegrityError",
+    "PerformanceBenchmarker",
 ]

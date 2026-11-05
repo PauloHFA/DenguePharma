@@ -941,12 +941,16 @@
       "verification": "T",
       "priority": "M",
       "research": "RNF-02",
-      "state": "planejado",
+      "state": "verificado",
       "task": "M07",
       "scenario": "ACC-OPS-007",
-      "tests": [],
+      "tests": [
+        "test_backup_and_restore_in_clean_environment_verifies_hashes",
+        "test_restore_rejects_corrupted_document_or_metadata",
+        "ReportAndOpsService::exportReproductionPackage"
+      ],
       "source": "PDF Analytics 2.0, secao 8",
-      "coverage": "nao verificado na nova arquitetura"
+      "coverage": "verificado no pytest analytics e backend junit"
     },
     {
       "id": "REQ-OPS-008",
@@ -955,12 +959,14 @@
       "verification": "T",
       "priority": "S",
       "research": "RNF-06",
-      "state": "planejado",
+      "state": "verificado",
       "task": "M07",
       "scenario": "ACC-OPS-008",
-      "tests": [],
+      "tests": [
+        "test_slo_workload_latency_p95_under_2_seconds"
+      ],
       "source": "PDF Analytics 2.0, secao 8",
-      "coverage": "nao verificado na nova arquitetura"
+      "coverage": "verificado no pytest analytics"
     },
     {
       "id": "REQ-OPS-009",
