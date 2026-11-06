@@ -217,7 +217,7 @@ Os endpoints `/api/experiment/split`, `/allocate`, `/sessions` e `/metrics` fora
 - [Etapa 3: análises descritivas](docs/IMPLEMENTACAO_ETAPA_3.md) — contratos, uso, reprodução e limites.
 - [Etapa 2: pipeline](docs/IMPLEMENTACAO_ETAPA_2.md) — configuração de filas, armazenamento e worker.
 - [Etapa 1](docs/IMPLEMENTACAO_ETAPA_1.md) e [auditoria](docs/AUDITORIA_REQUISITOS.md) — registros históricos de achados e correções.
-- `DenguePharma_Proposta_Formal.pdf` — proposta original preservada.
+- Proposta original v1.0 — substituída pela especificação formal v2.0 (`DenguePharma Analytics - Estudo de Data Science sobre Evidências Farmacológicas.pdf`).
 
 A implementação das análises v2 não equivale a homologação de toda a plataforma. Pendências gerais de operação e curadoria permanecem descritas nos documentos, incluindo recuperação de backup, testes de carga e acessibilidade completa.
 
