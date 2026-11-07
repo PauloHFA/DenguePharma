@@ -3,7 +3,7 @@
 > **Plataforma Científica e Analítica de Evidências Farmacológicas para Dengue**  
 > *Uma infraestrutura aberta, auditável e matematicamente rigorosa para mapear, sintetizar e validar o que a ciência mundial já descobriu (e o que ainda não respondeu) sobre medicamentos contra a dengue.*
 
-[![Status SDD](https://img.shields.io/badge/SDD%20Requisitos-96%2F96%20(100%25)-brightgreen.svg)](#-matriz-de-engenharia-e-rastreabilidade-sdd-100-concluido)
+[![Status SDD](https://img.shields.io/badge/SDD%20Requisitos-96%2F96%20(100%25)-brightgreen.svg)](#-9-matriz-de-engenharia-e-rastreabilidade-sdd-100-concluido)
 [![Versão](https://img.shields.io/badge/Versão-0.49.0%20(Final)-blue.svg)](#)
 [![Java](https://img.shields.io/badge/Backend-Java%2021%20%7C%20Spring%20Boot%203.4-orange.svg)](#)
 [![Python](https://img.shields.io/badge/Analytics-Python%203.12%20%7C%20DuckDB-yellow.svg)](#)
@@ -17,13 +17,14 @@
 1. [O que é o DenguePharma? (Para Qualquer Pessoa Entender)](#-1-o-que-é-o-denguepharma-para-qualquer-pessoa-entender)
 2. [Por que este Projeto é Crucial? (O Problema Real)](#-2-por-que-este-projeto-é-crucial-o-problema-real)
 3. [Como o Software Funciona: O Pipeline de Evidências](#-3-como-o-software-funciona-o-pipeline-de-evidências)
-4. [Metodologias Científicas e Estatísticas Utilizadas](#-4-metodologias-científicas-e-estatísticas-utilizadas)
-5. [As 7 Salvaguardas Metodológicas Invioláveis (RC-01 a RC-07)](#-5-as-7-salvaguardas-metodológicas-invioláveis-rc-01-a-rc-07)
-6. [O que a Ciência Descobriu: Principais Resultados e Revelações](#-6-o-que-a-ciência-descobriu-principais-resultados-e-revelações)
-7. [Arquitetura de Engenharia e Tecnologias](#-7-arquitetura-de-engenharia-e-tecnologias)
-8. [Matriz de Engenharia e Rastreabilidade SDD (100% Concluído)](#-8-matriz-de-engenharia-e-rastreabilidade-sdd-100-concluído)
-9. [Como Executar o Projeto](#-9-como-executar-o-projeto)
-10. [Documentação e Relatório Consolidado](#-10-documentação-e-relatório-consolidado)
+4. [Todas as Bases de Dados e Fontes de Evidência Utilizadas](#-4-todas-as-bases-de-dados-e-fontes-de-evidência-utilizadas)
+5. [Metodologias Científicas e Estatísticas Utilizadas](#-5-metodologias-científicas-e-estatísticas-utilizadas)
+6. [As 7 Salvaguardas Metodológicas Invioláveis (RC-01 a RC-07)](#-6-as-7-salvaguardas-metodológicas-invioláveis-rc-01-a-rc-07)
+7. [O que a Ciência Descobriu: Principais Resultados e Revelações](#-7-o-que-a-ciência-descobriu-principais-resultados-e-revelações)
+8. [Arquitetura de Engenharia e Tecnologias](#-8-arquitetura-de-engenharia-e-tecnologias)
+9. [Matriz de Engenharia e Rastreabilidade SDD (100% Concluído)](#-9-matriz-de-engenharia-e-rastreabilidade-sdd-100-concluído)
+10. [Como Executar o Projeto](#-10-como-executar-o-projeto)
+11. [Documentação e Relatório Consolidado](#-11-documentação-e-relatório-consolidado)
 
 ---
 
@@ -79,7 +80,7 @@ O DenguePharma opera através de uma esteira analítica dividida em etapas rigor
 
 ```mermaid
 flowchart LR
-    A["Fontes Globais<br/>(ClinicalTrials, PubMed, ChEMBL)"] --> B["Camada Bronze<br/>(Snapshots Imutáveis SHA-256)"]
+    A["10 Bases Globais<br/>(Clínicas, Químicas, Epidemiológicas)"] --> B["Camada Bronze<br/>(Snapshots Imutáveis SHA-256)"]
     B --> C["Desambiguação e Deduplicação<br/>(NCT, PMID, DOI, study_id)"]
     C --> D["Triagem Duplo-Cega<br/>(Dois Revisores Independentes)"]
     D --> E["Extração Assistida por IA<br/>(Ancoragem Literal + Anti-Alucinação)"]
@@ -88,10 +89,10 @@ flowchart LR
 ```
 
 ### Passo 1: Ingestão Resiliente e Camada Bronze
-O sistema conecta-se via API ao *ClinicalTrials.gov* (registros de protocolos clínicos), *PubMed/MEDLINE* (publicações científicas mundiais) e *ChEMBL* (banco de bioatividades químicas). Cada resposta da internet é armazenada exatamente como foi recebida, gerando um código criptográfico (hash SHA-256) que garante que o documento nunca foi adulterado (*Camada Bronze*).
+O sistema conecta-se via API a múltiplas fontes globais. Cada resposta da internet é armazenada exatamente como foi recebida, gerando um código criptográfico (hash SHA-256) que garante que o documento nunca foi adulterado (*Camada Bronze*).
 
 ### Passo 2: Deduplicação de Participantes e Identificadores Clínicos
-Muitas vezes, um único ensaio clínico com 180 pacientes gera:
+Muitas vezes, um único ensaio clínico com 180 pacientes gera múltiplos documentos:
 - 1 registro de protocolo no ClinicalTrials (`NCT01614964`);
 - 1 artigo inicial com os primeiros resultados na revista médica (`PMID 24831813`);
 - 1 artigo de acompanhamento secundário no ano seguinte (`PMID 25987654`).
@@ -112,7 +113,90 @@ Apenas os dados formalmente aprovados e livres de rascunhos migram para as tabel
 
 ---
 
-## 🧪 4. Metodologias Científicas e Estatísticas Utilizadas
+## 🌐 4. Todas as Bases de Dados e Fontes de Evidência Utilizadas
+
+O DenguePharma unifica e cruza **10 grandes bases de dados mundiais**, cobrindo todas as dimensões da pesquisa biomédica: desde os protocolos clínicos e a literatura médica até a química de moléculas, a epidemiologia e a integridade editorial.
+
+```
+┌────────────────────────────────────────────────────────────────────────────────────────────────────────┐
+│                              MAPA DAS 10 BASES DE DADOS DO DENGUEPHARMA                                │
+├────────────────────────────────┬───────────────────────────────────────┬───────────────────────────────┤
+│ Domínio Científico             │ Bases de Dados Integradas             │ Identificadores Canônicos     │
+├────────────────────────────────┼───────────────────────────────────────┼───────────────────────────────┤
+│ 1. Ensaios Clínicos            │ ClinicalTrials.gov (NLM/NIH)          │ NCT (ex: NCT01614964)         │
+│ 2. Literatura e Artigos        │ PubMed/MEDLINE, PubMed Central (PMC)  │ PMID, PMCID                   │
+│ 3. Identificadores Digitais    │ Crossref (DOI Foundation)             │ DOI (Digital Object Ident.)   │
+│ 4. Integridade e Retratações   │ Retraction Watch Database             │ Notificação de Retratação     │
+│ 5. Química e Farmacologia      │ ChEMBL (EMBL-EBI), PubChem (NCBI/NLM) │ ChEMBL ID, PubChem CID        │
+│ 6. Epidemiologia e População   │ OpenDengue, SINAN/DATASUS, GBD/IHME   │ Código ISO-3, DALYs, Casos    │
+└────────────────────────────────┴───────────────────────────────────────┴───────────────────────────────┘
+```
+
+Abaixo está o detalhamento aprofundado de cada uma das 10 bases utilizadas pelo sistema:
+
+### 1. [ClinicalTrials.gov](https://clinicaltrials.gov/) (NLM / NIH — Estados Unidos)
+- **Tipo de Dado:** Registros oficiais de protocolos de ensaios clínicos intervencionais.
+- **Identificador Chave:** `NCT` (ex: `NCT01614964`, `NCT00875537`).
+- **Como o DenguePharma Utiliza:** Acessa a API v2 oficial para extrair os critérios originais de inclusão/exclusão, o desenho do estudo (randomizado, cego), a fase clínica (Fase 1 a 4), os patrocinadores declarados e, crucialmente, os **desfechos primários registrados antes do início dos testes**. Isso permite detectar se os pesquisadores mudaram de ideia durante o estudo (*outcome switching*).
+- **Requisitos Formais:** `REQ-ING-001`, `REQ-IDN-001`, `REQ-ANA-003`, `REQ-ANA-005`.
+
+### 2. [PubMed / MEDLINE](https://pubmed.ncbi.nlm.nih.gov/) (NCBI / NLM — Estados Unidos)
+- **Tipo de Dado:** Literatura biomédica internacional revisada por pares.
+- **Identificador Chave:** `PMID` (ex: `PMID 24831813`, `PMID 20042462`).
+- **Como o DenguePharma Utiliza:** Conecta-se às ferramentas *NCBI E-utilities* (Entrez ESearch/ESummary/EFetch) para recuperar resumos científicos, vocabulário médico estruturado (*MeSH Terms*), lista de autores e datas de publicação em revistas médicas mundiais (como *The Lancet*, *PLOS NTDs*, *Antiviral Research*).
+- **Requisitos Formais:** `REQ-ING-001`, `REQ-IDN-001`, `REQ-CLN-006`.
+
+### 3. [PubMed Central - PMC](https://www.ncbi.nlm.nih.gov/pmc/) (NCBI / NLM)
+- **Tipo de Dado:** Artigos de texto integral em acesso aberto (*Open Access*).
+- **Identificador Chave:** `PMCID` (ex: `PMC4038525`).
+- **Como o DenguePharma Utiliza:** Fornece o texto completo em formato estruturado (XML/JATS) exclusivamente para artigos sob licenças abertas (Creative Commons). É a base fundamental para a **ancoragem literal de evidências** do motor de IA, permitindo localizar frases, tabelas e valores numéricos exatos no corpo do artigo.
+- **Requisitos Formais:** `REQ-IDN-001`, `REQ-ING-007`, `REQ-EXT-001..004`.
+
+### 4. [Crossref](https://www.crossref.org/) (International DOI Foundation)
+- **Tipo de Dado:** Infraestrutura global de identificadores digitais de objetos acadêmicos.
+- **Identificador Chave:** `DOI` (ex: `10.1016/j.antiviral.2020.104763`).
+- **Como o DenguePharma Utiliza:** Resolve os metadados editoriais oficiais de artigos científicos, garantindo a proveniência dos periódicos, o histórico de versões publicadas (*Crossmark*) e permitindo o cruzamento seguro entre o DOI de um artigo e o código NCT do protocolo do ensaio.
+- **Requisitos Formais:** `REQ-IDN-001`, `REQ-ANA-005`, `REQ-ING-006`.
+
+### 5. [Retraction Watch Database](https://retractionwatch.com/) (Center for Open Science)
+- **Tipo de Dado:** Base internacional de artigos científicos retratados, corrigidos ou sob suspeita de fraude/erro.
+- **Identificador Chave:** Vínculo de retratação por DOI e PMID.
+- **Como o DenguePharma Utiliza:** Monitora continuamente se algum estudo incluído no corpus foi posteriormente retirado da literatura pela editora por erro metodológico grave ou má conduta. Quando uma retratação é identificada (`REQ-ANA-010`), o artigo é **compulsoriamente expurgado da síntese clínica ativa** e o motivo é registrado na trilha de auditoria forense.
+- **Requisitos Formais:** `REQ-ANA-010`.
+
+### 6. [ChEMBL](https://www.ebi.ac.uk/chembl/) (EMBL-EBI — Instituto Europeu de Bioinformática)
+- **Tipo de Dado:** Bioatividades químicas e farmacológicas curadas manualmente de ensaios laboratoriais.
+- **Identificador Chave:** `ChEMBL ID` (ex: `CHEMBL37072`, `CHEMBL465538`).
+- **Como o DenguePharma Utiliza:** Conecta-se à API REST do ChEMBL para resgatar os valores exatos de potência farmacológica (*IC50*, *EC50*, *Ki*) de substâncias candidatas testadas contra enzimas vitais do vírus da dengue (como a RNA-polimerase NS5 e a protease NS3) e contra células humanas hospedeiras.
+- **Requisitos Formais:** `REQ-IDN-003`, `REQ-ANA-002`, `REQ-ANA-008`.
+
+### 7. [PubChem](https://pubchem.ncbi.nlm.nih.gov/) (NCBI / NLM — Estados Unidos)
+- **Tipo de Dado:** Maior repositório aberto de substâncias químicas e estruturas moleculares do mundo.
+- **Identificador Chave:** `PubChem CID` (Compound ID, ex: `CID 6917864`, `CID 11314340`).
+- **Como o DenguePharma Utiliza:** Padroniza a nomenclatura canônica de cada fármaco e alimenta o visualizador interativo 2D/3D no frontend (*Target Explorer*), permitindo que os pesquisadores inspecionem a estrutura atômica, conformação tridimensional e propriedades físico-químicas de cada candidato antiviral.
+- **Requisitos Formais:** `REQ-IDN-003`, `REQ-ANA-008`.
+
+### 8. [OpenDengue Database](https://opendengue.org/) (Dengue Data Hub / Parceria Internacional)
+- **Tipo de Dado:** Repositório global aberto de dados epidemiológicos georreferenciados de dengue.
+- **Identificador Chave:** Código de país ISO-3 e níveis administrativos subnacionais (províncias/estados).
+- **Como o DenguePharma Utiliza:** Harmoniza relatórios epidemiológicos da Organização Mundial da Saúde (OMS), Organização Pan-Americana da Saúde (OPAS) e ministérios da saúde, fornecendo a série histórica anual de casos notificados e óbitos em dezenas de países endêmicos.
+- **Requisitos Formais:** `REQ-ING-008`, `REQ-ANA-004`.
+
+### 9. [SINAN / DATASUS](https://datasus.saude.gov.br/) (Ministério da Saúde do Brasil)
+- **Tipo de Dado:** Sistema de Informação de Agravos de Notificação do Sistema Único de Saúde (SUS).
+- **Identificador Chave:** Notificações compulsórias de dengue agregadas por município, estado e semana epidemiológica.
+- **Como o DenguePharma Utiliza:** Fornece os microdados da maior série histórica de dengue do Hemisfério Ocidental, incluindo casos confirmados laboratorialmente, hospitalizações, dengue com sinais de alarme e óbitos confirmados no Brasil, servindo de parâmetro de comparação com a produção científica nacional.
+- **Requisitos Formais:** `REQ-ING-008`, `REQ-ANA-004`.
+
+### 10. [Global Burden of Disease - GBD](https://www.healthdata.org/gbd) (IHME / Univ. de Washington)
+- **Tipo de Dado:** Estimativas mundiais de impacto epidemiológico e carga de doença padronizadas.
+- **Identificador Chave:** Taxas de incidência e DALYs (*Disability-Adjusted Life Years*) por 100.000 habitantes.
+- **Como o DenguePharma Utiliza:** Cruza a carga real de sofrimento e mortalidade populacional com os locais onde os ensaios clínicos com medicamentos são efetivamente conduzidos. Essa comparação estatística permite fundamentar matematicamente a identificação dos **"Desertos de Pesquisa"** (locais hiperendêmicos negligenciados pelos grandes patrocinadores farmacêuticos).
+- **Requisitos Formais:** `REQ-ANA-004`.
+
+---
+
+## 🧪 5. Metodologias Científicas e Estatísticas Utilizadas
 
 O DenguePharma não é apenas um software de engenharia; é uma tese metodológica de ciência de dados biomédica. Entre as formulações implementadas diretamente em código, destacam-se:
 
@@ -152,7 +236,7 @@ Cada substância é normalizada para seu identificador universal no *PubChem* (C
 
 ---
 
-## 🛡️ 5. As 7 Salvaguardas Metodológicas Invioláveis (RC-01 a RC-07)
+## 🛡️ 6. As 7 Salvaguardas Metodológicas Invioláveis (RC-01 a RC-07)
 
 Para impedir o uso indevido da plataforma ou conclusões biomédicas infundadas, o sistema possui **7 regras invioláveis** codificadas em testes e arquitetura:
 
@@ -168,7 +252,7 @@ Para impedir o uso indevido da plataforma ou conclusões biomédicas infundadas,
 
 ---
 
-## 📊 6. O que a Ciência Descobriu: Principais Resultados e Revelações
+## 📊 7. O que a Ciência Descobriu: Principais Resultados e Revelações
 
 Durante a execução e validação da plataforma sobre o corpus real de ensaios clínicos internacionais da dengue, os seguintes achados fundamentais foram consolidados:
 
@@ -205,7 +289,7 @@ Durante a execução e validação da plataforma sobre o corpus real de ensaios 
 
 ---
 
-## 💻 7. Arquitetura de Engenharia e Tecnologias
+## 💻 8. Arquitetura de Engenharia e Tecnologias
 
 O DenguePharma foi desenvolvido como um ecossistema moderno, distribuído e pronto para contêineres:
 
@@ -228,7 +312,7 @@ DenguePharma/
 
 ---
 
-## 🏆 8. Matriz de Engenharia e Rastreabilidade SDD (100% Concluído)
+## 🏆 9. Matriz de Engenharia e Rastreabilidade SDD (100% Concluído)
 
 O projeto adotou a metodologia **SDD (*Software Design Document*)**, onde cada funcionalidade nasce de um requisito formal com identificador estável, critérios de aceitação mensuráveis e testes automatizados dedicados.
 
@@ -258,7 +342,7 @@ python spec/check.py
 
 ---
 
-## 🚀 9. Como Executar o Projeto
+## 🚀 10. Como Executar o Projeto
 
 ### Pré-requisitos
 - [Docker](https://www.docker.com/) e Docker Compose instalados;
@@ -299,7 +383,7 @@ cd analytics
 
 ---
 
-## 📄 10. Documentação e Relatório Consolidado
+## 📄 11. Documentação e Relatório Consolidado
 
 - **[Relatório Executivo Consolidado (PDF)](DenguePharma_Relatorio_Consolidado_Execucao.pdf)**: Documento executivo oficial de **3 páginas** gerado com ReportLab, sintetizando todas as evidências, arquitetura, contêineres e validação das 7 salvaguardas.
 - **[Especificação Técnica Completa (PDF)](DenguePharma%20Analytics%20-%20Estudo%20de%20Data%20Science%20sobre%20Evidências%20Farmacológicas.pdf)**: Documento de 44 páginas que originou a especificação formal e arquitetura do software.
