@@ -26,7 +26,14 @@ jobs:
         with:
           python-version: '3.12'
 
+      - name: Instalar Dependências dos Workers (para testes de integração do backend)
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e workers/
+
       - name: Executar Testes do Backend Spring Boot
+        env:
+          PIPELINE_PYTHON: python
         run: mvn -f backend/pom.xml test
 
       - name: Validar Matriz de Requisitos e Rastreabilidade
@@ -53,7 +60,8 @@ jobs:
 
       - name: Instalar Dependências e Testar Analytics
         run: |
-          pip install -e analytics/
+          python -m pip install -r analytics/requirements.lock
+          pip install --no-deps -e analytics/
           pytest analytics/tests -m "not external"
 
   frontend:

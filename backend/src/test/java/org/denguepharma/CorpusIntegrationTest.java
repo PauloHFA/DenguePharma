@@ -46,7 +46,18 @@ class CorpusIntegrationTest extends AbstractIntegrationTest {
         mvc.perform(post("/api/analyses/"+id+"/publish").header("Authorization",tokenFor(Role.LEITOR))).andExpect(status().isForbidden());
         mvc.perform(post("/api/analyses/"+id+"/publish").header("Authorization",tokenFor(Role.PESQUISADOR))).andExpect(status().isConflict());
         // Executa exatamente o comando publico de analise, valida o ZIP no backend e conclui pelo lease.
-        String python=System.getenv().getOrDefault("PIPELINE_PYTHON",Path.of("..","workers",".venv","Scripts","python.exe").toAbsolutePath().toString());
+        String python = System.getenv("PIPELINE_PYTHON");
+        if (python == null || python.isBlank()) {
+            Path winVenv = Path.of("..", "workers", ".venv", "Scripts", "python.exe").toAbsolutePath();
+            Path unixVenv = Path.of("..", "workers", ".venv", "bin", "python").toAbsolutePath();
+            if (Files.exists(winVenv)) {
+                python = winVenv.toString();
+            } else if (Files.exists(unixVenv)) {
+                python = unixVenv.toString();
+            } else {
+                python = "python";
+            }
+        }
         Path folder=Files.createTempDirectory(Path.of("target"),"corpus-test-");
         Path input=folder.resolve("input.json"); Files.writeString(input,(String)analyses.input(id).get("content"),StandardCharsets.UTF_8);
         var process=new ProcessBuilder(python,"-m","denguepharma_workers.analysis","--input",input.toAbsolutePath().toString(),"--output",folder.resolve("output").toAbsolutePath().toString())

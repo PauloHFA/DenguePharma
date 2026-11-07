@@ -11,7 +11,8 @@ dependencies = [
   "fastapi>=0.115,<1", "uvicorn>=0.30,<1", "streamlit>=1.40,<2",
   "duckdb>=1.1,<2", "pyarrow>=18,<30", "pandas>=3,<4",
   "psycopg[binary]>=3.2,<4", "ipykernel>=6,<8", "nbclient>=0.10,<1",
-  "nbformat>=5,<6", "PyYAML>=6,<7", "scipy>=1.15,<2", "matplotlib>=3.10,<4"
+  "nbformat>=5,<6", "PyYAML>=6,<7", "scipy>=1.15,<2", "matplotlib>=3.10,<4",
+  "httpx>=0.27,<1"
 ]
 
 [project.optional-dependencies]
@@ -30,3 +31,6 @@ denguepharma_analytics = ["reports/*.qmd"]
 testpaths = ["tests"]
 pythonpath = ["src"]
 markers = ["requirement(*ids): requisitos SDD cobertos pelo teste"]
+filterwarnings = [
+  "ignore:.*httpx.*:DeprecationWarning"
+]
