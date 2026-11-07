@@ -19,3 +19,7 @@ analytics/.tools/
 analytics/build/
 .pytest_cache/
 .ruff_cache/
+.vite/
+.agents/
+scratch/*
+!scratch/generate_executive_pdf.py
