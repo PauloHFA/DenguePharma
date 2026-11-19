@@ -1,15 +1,15 @@
 """Coleta completa por etapas curtas, com aprovacao congelada e retomada conservadora."""
-from contextlib import contextmanager
-from datetime import datetime
 import json
 import os
 import tempfile
+from contextlib import contextmanager
+from datetime import datetime
 from pathlib import Path
 from uuid import UUID
 from zoneinfo import ZoneInfo
 
 from .. import __version__
-from ..domain import digest,json_bytes
+from ..domain import digest, json_bytes
 from ..sources.snapshot import from_file
 from .collection import Client
 from .models import Principal

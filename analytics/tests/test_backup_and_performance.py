@@ -11,6 +11,7 @@ from __future__ import annotations
 
 import hashlib
 import sqlite3
+
 import pytest
 from denguepharma_analytics.ops.backup_and_performance import (
     BackupIntegrityError,

@@ -2,12 +2,10 @@
 from __future__ import annotations
 
 import pytest
-
 from denguepharma_analytics.clinical.extraction_validation import (
     validate_extracted_field,
     validate_extraction_batch,
 )
-
 
 DOC_SAMPLE = (
     "A double-blind, randomized clinical trial evaluated celgosivir (alpha-glucosidase inhibitor) "

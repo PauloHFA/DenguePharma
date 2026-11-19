@@ -1,9 +1,12 @@
 """Preparacao v3 adaptada e validada por equivalencia; sem dependencia do worker legado."""
 from __future__ import annotations
-from collections import defaultdict
+
 import json
 import re
-from ..identity.identifiers import text, year, identifier, document_identifiers
+from collections import defaultdict
+
+from ..identity.identifiers import document_identifiers, identifier, text, year
+
 
 def prepare(snapshot):
     """Deduplica documentos por identificador exato; ambiguidades nunca fundem estudos."""

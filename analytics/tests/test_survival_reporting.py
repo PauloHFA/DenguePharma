@@ -1,7 +1,8 @@
 """Testes unitários e de conformidade do modelo Kaplan-Meier (Eixo B - REQ-ANA-003)."""
 import math
+
 import pytest
-from denguepharma_analytics.analyses.survival import calculate_kaplan_meier, analyze_trials_survival
+from denguepharma_analytics.analyses.survival import analyze_trials_survival, calculate_kaplan_meier
 
 
 @pytest.mark.requirement("REQ-ANA-003")

@@ -2,16 +2,16 @@ import copy
 from pathlib import Path
 
 import pytest
-from fastapi.testclient import TestClient
-from test_clinical import workspace,R1,R2,ADJ,screen,include,complete_calibration,approve,result
 from denguepharma_analytics.api import create_app
+from denguepharma_analytics.clinical.backup import backup, restore
+from denguepharma_analytics.clinical.identity import LinkConfirmation, confirm, preview, view
 from denguepharma_analytics.clinical.models import Principal
-from denguepharma_analytics.clinical.workspace import create,Workspace
-from denguepharma_analytics.clinical.identity import view,preview,confirm,LinkConfirmation
-from denguepharma_analytics.clinical.backup import backup,restore
 from denguepharma_analytics.clinical.review import progress
+from denguepharma_analytics.clinical.workspace import Workspace, create
 from denguepharma_analytics.domain import json_bytes
 from denguepharma_analytics.sources.snapshot import load_snapshot
+from fastapi.testclient import TestClient
+from test_clinical import ADJ, R1, R2, approve, complete_calibration, include, result, screen, workspace
 
 
 def link(document='t1',study='s1',reason='Synthetic source identity manually checked'):
@@ -136,8 +136,8 @@ def test_identity_endpoints_are_private_confirmed_and_do_not_publish(workspace,t
 
 
 def interface(workspace,monkeypatch,actor=ADJ):
-    from streamlit.testing.v1 import AppTest
     from denguepharma_analytics import client
+    from streamlit.testing.v1 import AppTest
     calls=[]
     def private(path,**kwargs):
         calls.append(path)

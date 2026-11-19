@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import sqlite3
 import uuid
+
 import pytest
 from denguepharma_analytics.ops.transactional_messaging import (
     IdempotentInbox,

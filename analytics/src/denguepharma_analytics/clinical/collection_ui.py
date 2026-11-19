@@ -1,5 +1,6 @@
 """Plano privado de coleta; nenhuma chamada de coleta a partir de um simples rerun."""
 import streamlit as st
+
 from .. import client
 
 

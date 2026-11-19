@@ -2,14 +2,14 @@ import copy
 import json
 
 import pytest
-from fastapi.testclient import TestClient
-from test_clinical import workspace,R1,R2,ADJ,include,screen,result,approve,complete_calibration
 from denguepharma_analytics.api import create_app
-from denguepharma_analytics.clinical.models import Principal
-from denguepharma_analytics.clinical.integrity import view,preview,confirm,IntegrityConfirmation
-from denguepharma_analytics.clinical.review import progress
 from denguepharma_analytics.clinical.dossier import view as dossier
-from denguepharma_analytics.storage import export,publish,require_published,public_summary
+from denguepharma_analytics.clinical.integrity import IntegrityConfirmation, confirm, preview, view
+from denguepharma_analytics.clinical.models import Principal
+from denguepharma_analytics.clinical.review import progress
+from denguepharma_analytics.storage import export, public_summary, publish, require_published
+from fastapi.testclient import TestClient
+from test_clinical import ADJ, R1, R2, approve, complete_calibration, include, result, screen, workspace
 
 
 def notice(**changes):
@@ -157,7 +157,7 @@ def test_integrity_new_publication_omits_withdrawn_evidence_and_preserves_old_ru
 
 @pytest.mark.requirement('REQ-CLN-003')
 def test_integrity_backup_restore_preserves_alert_and_immutable_input(workspace,tmp_path):
-    from denguepharma_analytics.clinical.backup import backup,restore
+    from denguepharma_analytics.clinical.backup import backup, restore
     send(workspace,notice())
     prepared=backup(workspace,tmp_path/'integrity-private.zip')
     restore(tmp_path/'integrity-private.zip',tmp_path/'restored',expected_hash=prepared['archive_hash'])
@@ -169,8 +169,8 @@ def test_integrity_backup_restore_preserves_alert_and_immutable_input(workspace,
 
 @pytest.mark.requirement('REQ-CLN-003')
 def test_integrity_ui_starts_blank_and_requires_explicit_confirmation(workspace,monkeypatch):
-    from streamlit.testing.v1 import AppTest
     from denguepharma_analytics import client
+    from streamlit.testing.v1 import AppTest
     calls=[]
     def private(path,**kwargs):
         if path.endswith('/integrity'):return view(workspace,ADJ)

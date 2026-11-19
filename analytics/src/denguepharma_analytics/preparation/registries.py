@@ -1,6 +1,6 @@
 """Unidades de registros: NCT valido, ou ID documental; sem identidade clinica inferida."""
-from collections import defaultdict
 import re
+from collections import defaultdict
 
 UNIT="registro_consolidado_por_NCT_ou_documento"
 

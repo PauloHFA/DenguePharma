@@ -1,6 +1,7 @@
 """Enriquecimento privado somente de versoes exatas ja coletadas no PostgreSQL."""
 import json
 from uuid import UUID
+
 from ..domain import digest
 from ..sources.postgres import connect_read_only
 from .workspace import clinical_text

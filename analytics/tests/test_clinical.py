@@ -6,12 +6,12 @@ from pathlib import Path
 from statistics import NormalDist
 
 import pytest
-from fastapi.testclient import TestClient
 from denguepharma_analytics.clinical.effects import estimate
 from denguepharma_analytics.clinical.models import Principal
 from denguepharma_analytics.clinical.workspace import create
 from denguepharma_analytics.domain import json_bytes
 from denguepharma_analytics.sources.snapshot import load_snapshot
+from fastapi.testclient import TestClient
 
 R1=Principal("reviewer-one",("PESQUISADOR",))
 R2=Principal("reviewer-two",("PESQUISADOR",))
@@ -113,7 +113,7 @@ def test_result_review_provenance_deduplication_and_corrections(workspace):
     draft=workspace.act("RESULT_DRAFTED",payload,R1)["event_id"]
     with pytest.raises(PermissionError): workspace.act("RESULT_REVIEWED",dict(result_id=draft,decision="ACEITAR",reason="Self review forbidden"),R1)
     with pytest.raises(ValueError,match="INDEPENDENT_REVIEW"): workspace.act("RESULT_ADJUDICATED",dict(result_id=draft,decision="ACEITAR",reason="No independent review yet"),ADJ)
-    first=approve(workspace,payload); second=approve(workspace,payload)
+    first=approve(workspace,payload); approve(workspace,payload)
     frozen=workspace.freeze()
     assert len(frozen["results"])==1 and len(frozen["results"][0]["document_result_ids"])==2
     assert frozen["groups"][0]["study_count"]==1
@@ -170,8 +170,8 @@ def test_no_automatic_absence(workspace):
 
 @pytest.mark.requirement("REQ-CLN-005")
 def test_clinical_export_api_and_permissions(workspace,tmp_path):
-    from denguepharma_analytics.storage import export,publish
     from denguepharma_analytics.api import create_app
+    from denguepharma_analytics.storage import export, publish
     include(workspace); approve(workspace,result(workspace))
     snapshot=workspace.snapshot(); manifest=export(snapshot,tmp_path)
     assert export(snapshot,tmp_path)["run_id"]==manifest["run_id"]
@@ -197,9 +197,13 @@ def test_clinical_export_api_and_permissions(workspace,tmp_path):
 
 @pytest.mark.requirement("REQ-CLN-005")
 def test_clinical_cli_equivalence_and_report(workspace,tmp_path):
-    import os,subprocess,sys,shutil
-    from denguepharma_analytics.storage import export
+    import os
+    import shutil
+    import subprocess
+    import sys
+
     from denguepharma_analytics.reports.render import render
+    from denguepharma_analytics.storage import export
     include(workspace); approve(workspace,result(workspace))
     expected=export(workspace.snapshot(),tmp_path)
     completed=subprocess.run([sys.executable,"-m","denguepharma_analytics.cli","--data-dir",str(tmp_path),"clinical-freeze","--workspace",workspace.key],capture_output=True,text=True,timeout=45)

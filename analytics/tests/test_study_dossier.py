@@ -3,14 +3,14 @@ import json
 import sqlite3
 
 import pytest
-from fastapi.testclient import TestClient
-from test_clinical import workspace, R1, R2, ADJ, screen
 from denguepharma_analytics.api import create_app
 from denguepharma_analytics.clinical.dossier import view
 from denguepharma_analytics.clinical.models import Principal
 from denguepharma_analytics.clinical.workspace import create
 from denguepharma_analytics.domain import json_bytes
 from denguepharma_analytics.sources.snapshot import load_snapshot
+from fastapi.testclient import TestClient
+from test_clinical import ADJ, R1, R2, screen, workspace
 
 
 def audit(workspace):

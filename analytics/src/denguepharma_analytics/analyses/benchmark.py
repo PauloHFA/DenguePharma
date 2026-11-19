@@ -15,7 +15,6 @@ from collections import defaultdict
 from dataclasses import dataclass
 from typing import Any, Mapping, Sequence
 
-
 # Dicionário congelado de sinônimos farmacológicos e metodológicos
 SYNONYM_GROUPS: list[set[str]] = [
     {"balapiravir", "r1626", "rg1626", "ro4588161"},

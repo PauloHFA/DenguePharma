@@ -1,18 +1,18 @@
 import copy
-from io import BytesIO
 import json
-from pathlib import Path
 import subprocess
 import sys
+from io import BytesIO
+from pathlib import Path
 from urllib.error import HTTPError
 
 import pyarrow as pa
 import pytest
-from fastapi.testclient import TestClient
+from denguepharma_analytics import comparison, marts, storage
 from denguepharma_analytics.api import create_app
-from denguepharma_analytics import comparison,storage,marts
-from denguepharma_analytics.domain import digest,json_bytes
+from denguepharma_analytics.domain import digest, json_bytes
 from denguepharma_analytics.sources.snapshot import load_snapshot
+from fastapi.testclient import TestClient
 
 
 def published(root,data,*,publish=True):
@@ -118,8 +118,8 @@ def test_comparison_same_input_separates_schema_changes_from_new_evidence(snapsh
 
 
 def interface(monkeypatch,*,error=False,other=False):
-    from streamlit.testing.v1 import AppTest
     from denguepharma_analytics import client
+    from streamlit.testing.v1 import AppTest
     calls=[]
     def get(path):
         calls.append(path)

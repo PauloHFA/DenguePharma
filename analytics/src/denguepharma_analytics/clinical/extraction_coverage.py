@@ -1,11 +1,11 @@
 """Operational coverage of reviewed outcomes, never inferred outcome availability."""
 from io import BytesIO
-from zipfile import ZipFile,ZipInfo,ZIP_DEFLATED
+from zipfile import ZIP_DEFLATED, ZipFile, ZipInfo
 
 from .. import __version__
-from ..domain import digest,json_bytes
-from .workspace import REVIEW_ROLES
+from ..domain import digest, json_bytes
 from .review import csv_bytes
+from .workspace import REVIEW_ROLES
 
 
 def view(workspace,actor):

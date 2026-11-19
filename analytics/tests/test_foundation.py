@@ -1,23 +1,22 @@
 import copy
 import importlib.util
 import json
-from pathlib import Path
 import os
 import subprocess
 import sys
+from pathlib import Path
 
 import duckdb
-from fastapi.testclient import TestClient
 import psycopg
 import pytest
-
+from conftest import legacy_imports
+from denguepharma_analytics.analyses.diagnostics import analyze
 from denguepharma_analytics.api import create_app
 from denguepharma_analytics.domain import digest
-from denguepharma_analytics.sources.snapshot import load_snapshot
 from denguepharma_analytics.preparation.documents import prepare
-from denguepharma_analytics.analyses.diagnostics import analyze
+from denguepharma_analytics.sources.snapshot import load_snapshot
 from denguepharma_analytics.storage import export, publish, query_table, verify_run
-from conftest import legacy_imports
+from fastapi.testclient import TestClient
 
 
 @pytest.mark.requirement("REQ-MIG-001")
@@ -186,8 +185,8 @@ def test_spec_traceability(tmp_path):
 
 @pytest.mark.requirement("REQ-MIG-006")
 def test_streamlit_dashboard(monkeypatch, prepared):
-    from streamlit.testing.v1 import AppTest
     from denguepharma_analytics import client as dashboard_client
+    from streamlit.testing.v1 import AppTest
     root, _ = prepared; api = TestClient(create_app(root))
     def get(path):
         response = api.get(path); response.raise_for_status(); return response.json()

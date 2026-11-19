@@ -11,6 +11,7 @@ from __future__ import annotations
 
 import sqlite3
 import time
+
 import pytest
 from denguepharma_analytics.ops.job_lease_concurrency import (
     JobLease,

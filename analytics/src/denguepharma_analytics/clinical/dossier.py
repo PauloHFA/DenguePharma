@@ -1,7 +1,7 @@
 """Read-only documentary context for independent screening; no votes or suggestions."""
 from ..domain import digest
-from .workspace import REVIEW_ROLES
 from .integrity import blocked_documents
+from .workspace import REVIEW_ROLES
 
 
 def view(workspace, study_id, actor, *, expected_basis=None):

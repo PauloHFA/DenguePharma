@@ -1,8 +1,12 @@
 """Agregacoes de campos revisados; a unidade e study_id."""
 from __future__ import annotations
+
 import json
+
 import pandas as pd
-from ..domain import FIELDS, STATES, CONTEXTS, OUTCOMES, DICTIONARY_VERSION, SCRIPT_VERSION, NOTICE, ratio, layer
+
+from ..domain import CONTEXTS, DICTIONARY_VERSION, FIELDS, NOTICE, OUTCOMES, SCRIPT_VERSION, STATES, layer, ratio
+
 
 def cell(study, field):
     if field in {"context", "purpose"}:

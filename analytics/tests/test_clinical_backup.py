@@ -1,17 +1,17 @@
 import json
-from contextlib import nullcontext
-from pathlib import Path
 import sqlite3
 import subprocess
 import sys
-from zipfile import ZipFile,ZipInfo,ZIP_DEFLATED
+from contextlib import nullcontext
+from pathlib import Path
+from zipfile import ZIP_DEFLATED, ZipFile, ZipInfo
 
 import pytest
-from test_clinical import workspace,include,complete_calibration,approve,result,R1,ADJ
 from denguepharma_analytics.clinical import backup as module
-from denguepharma_analytics.clinical.backup import backup,restore,inspect,file_hash
+from denguepharma_analytics.clinical.backup import backup, file_hash, inspect, restore
 from denguepharma_analytics.clinical.workspace import Workspace
-from denguepharma_analytics.domain import digest,json_bytes
+from denguepharma_analytics.domain import digest, json_bytes
+from test_clinical import ADJ, R1, approve, complete_calibration, include, result, workspace
 
 
 def populated(workspace):

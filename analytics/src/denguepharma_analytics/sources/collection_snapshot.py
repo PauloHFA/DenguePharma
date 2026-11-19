@@ -1,11 +1,12 @@
 """Snapshot de metadados via PostgreSQL somente leitura, sem limite HTTP de 8 MiB."""
-from datetime import datetime,timezone
 import json
-from uuid import UUID,uuid4
-from ..domain import digest,json_bytes
+from datetime import datetime, timezone
+from uuid import UUID, uuid4
+
+from ..analyses.sponsors import lead_sponsor
+from ..domain import digest, json_bytes
 from .postgres import connect_read_only
 from .snapshot import load_snapshot
-from ..analyses.sponsors import lead_sponsor
 
 
 def safe_metadata(raw):

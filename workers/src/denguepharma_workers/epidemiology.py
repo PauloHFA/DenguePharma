@@ -16,7 +16,6 @@ import re
 from dataclasses import asdict, dataclass
 from typing import Any, Mapping, Sequence
 
-
 ISO3_PATTERN = re.compile(r"^[A-Z]{3}$")
 
 

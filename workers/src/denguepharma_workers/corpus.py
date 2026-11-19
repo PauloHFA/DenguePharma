@@ -1,24 +1,25 @@
 """Preparacao e analise do corpus v3. Nao infere classificacoes ou eficacia."""
 from __future__ import annotations
 
-from collections import Counter, defaultdict
 import base64
-import hashlib
 import html
 import io
 import json
-from pathlib import Path
 import platform
 import re
 import zipfile
+from collections import Counter, defaultdict
 from importlib.metadata import version
+from pathlib import Path
 
 import matplotlib
+import pandas as pd
 from matplotlib.figure import Figure
 from matplotlib.patches import Polygon
-import pandas as pd
 
-from .analysis import Artifacts, FIELDS, analyze as reviewed_analysis, bundle as reviewed_bundle, csv_bytes, digest, json_bytes, ratio
+from .analysis import FIELDS, Artifacts, csv_bytes, digest, json_bytes, ratio
+from .analysis import analyze as reviewed_analysis
+from .analysis import bundle as reviewed_bundle
 
 SCRIPT_VERSION = "corpus-3.0.2"
 NOTICE = ("Panorama descritivo de registros coletados: a elegibilidade pode estar pendente. "

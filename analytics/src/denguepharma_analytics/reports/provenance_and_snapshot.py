@@ -4,12 +4,12 @@ Módulo M07: Proveniência de Relatórios e Reprodutibilidade via ReportSnapshot
 from __future__ import annotations
 
 import csv
-from dataclasses import asdict, dataclass
 import hashlib
 import io
 import json
 import re
-from typing import Any, Dict, List, Literal, Optional, Tuple
+from dataclasses import asdict, dataclass
+from typing import Any, Dict, List, Literal, Tuple
 
 
 class MissingProvenanceError(ValueError):
@@ -248,7 +248,6 @@ def inspect_report_provenance(
     Lança MissingProvenanceError se qualquer item faltar.
     """
     fmt = format.lower().strip()
-    result: Dict[str, Any] = {}
 
     if fmt == "json":
         parsed = json.loads(content.decode("utf-8"))

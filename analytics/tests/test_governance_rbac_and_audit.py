@@ -3,20 +3,19 @@ Testes de verificação formal para REQ-GOV-001 e REQ-GOV-003.
 - REQ-GOV-001 (ACC-GOV-001): Perfis Leitor, Revisor, Adjudicador, Pesquisador, Administrador e teste de acesso cruzado (403 para Leitor).
 - REQ-GOV-003 (ACC-GOV-003): Trilha de auditoria completa com autor, instante e valores (before/after).
 """
-from fastapi import HTTPException
 import pytest
-
 from denguepharma_analytics.clinical.governance import (
-    PermissionDeniedError,
-    Role,
-    Action,
     ROLE_PERMISSIONS,
-    UserPrincipal,
+    Action,
+    AdjudicationRequest,
     AuditTrailLedger,
     FieldCorrectionRequest,
-    AdjudicationRequest,
+    PermissionDeniedError,
+    Role,
+    UserPrincipal,
     create_governance_router,
 )
+from fastapi import HTTPException
 
 
 @pytest.fixture

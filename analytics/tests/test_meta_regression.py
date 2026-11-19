@@ -6,12 +6,12 @@ Atende aos requisitos do SDD:
 """
 import pytest
 from denguepharma_analytics.analyses.meta_regression import (
-    IncompatibleContextError,
     ForbiddenRankingError,
-    validate_compatible_contexts,
+    IncompatibleContextError,
     assert_no_efficacy_ranking,
     fit_random_effects_meta_regression,
     subgroup_meta_analysis,
+    validate_compatible_contexts,
 )
 
 

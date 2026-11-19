@@ -20,8 +20,8 @@ def test_curation_refresh_uses_legal_runtime_scope(monkeypatch,context,expected)
 
 @pytest.mark.requirement('REQ-MIG-006','REQ-CLN-008')
 def test_curation_fragment_login_logout_uses_current_session_without_cache(monkeypatch):
-    from streamlit.testing.v1 import AppTest
     from denguepharma_analytics import client
+    from streamlit.testing.v1 import AppTest
     calls=[]
     def private(path,**kwargs):
         if path=='/login':return {'token':'synthetic-session-'+kwargs['data']['email']}

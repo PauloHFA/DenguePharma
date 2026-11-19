@@ -1,19 +1,30 @@
 """Curadoria clinica privada, transacional e append-only; nunca escreve no legado."""
 from __future__ import annotations
 
+import json
+import re
+import sqlite3
 from collections import defaultdict
 from contextlib import contextmanager, nullcontext
 from datetime import datetime, timezone
-import json
 from pathlib import Path
-import re
-import sqlite3
 from uuid import uuid4
 
 from ..domain import digest, json_bytes
 from ..sources.snapshot import load_snapshot
-from .effects import estimate, denominator
-from .models import Principal, Screen, Result, Review, Conclusion, DocumentLink, Calibration, Absence, scope_for, scope_id, result_set_hash
+from .effects import denominator, estimate
+from .models import (
+    Absence,
+    Calibration,
+    Conclusion,
+    DocumentLink,
+    Result,
+    Review,
+    Screen,
+    result_set_hash,
+    scope_for,
+    scope_id,
+)
 
 REVIEW_ROLES = ("REVISOR", "ADJUDICADOR", "PESQUISADOR", "ADMINISTRADOR")
 ADJUDICATORS = ("ADJUDICADOR", "ADMINISTRADOR")

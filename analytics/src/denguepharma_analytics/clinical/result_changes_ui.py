@@ -1,5 +1,6 @@
 """Correction review displays explicit JSON values instead of mixed-type table cells."""
 import json
+
 import streamlit as st
 
 

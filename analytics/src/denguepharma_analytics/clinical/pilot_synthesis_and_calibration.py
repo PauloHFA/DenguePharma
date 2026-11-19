@@ -4,11 +4,11 @@ Módulo M08: Calibração de Busca Clínica, Revisão do Piloto, Seleção de Co
 from __future__ import annotations
 
 import csv
-from dataclasses import asdict, dataclass, field
 import hashlib
 import json
+from dataclasses import asdict, dataclass
 from pathlib import Path
-from typing import Any, Dict, List, Literal, Optional, Set, Tuple
+from typing import Any, Dict, List, Literal, Optional, Set
 
 
 class ClinicalGovernanceError(ValueError):

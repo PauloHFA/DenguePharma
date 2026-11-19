@@ -6,7 +6,6 @@ from denguepharma_workers.epidemiology import (
     validate_case_record,
 )
 
-
 SAMPLE_OPENDENGUE_CSV = """adm0_iso3,epi_year,adm1_iso,dengue_cases,severe_cases,deaths
 BRA,2023,SP,120000,450,30
 BRA,2023,RJ,80000,200,15

@@ -1,20 +1,20 @@
 """Backup privado da curadoria e restauracao isolada; sem publicacao ou escrita no legado."""
-from contextlib import closing
-from datetime import datetime,timezone
 import hashlib
 import json
 import os
-from pathlib import Path
 import re
 import sqlite3
 import stat
+from contextlib import closing
+from datetime import datetime, timezone
+from pathlib import Path
 from tempfile import TemporaryDirectory
-from zipfile import ZipFile,ZIP_DEFLATED,ZIP_STORED,BadZipFile
+from zipfile import ZIP_DEFLATED, ZIP_STORED, BadZipFile, ZipFile
 
 from .. import __version__
-from ..domain import digest,json_bytes
-from .workspace import Workspace,SCHEMA_SQL
+from ..domain import digest, json_bytes
 from .full_collection import lock
+from .workspace import SCHEMA_SQL, Workspace
 
 FILES=("input.json","protocol.json","curation.sqlite3")
 MAX_MEMBER=256*1024*1024

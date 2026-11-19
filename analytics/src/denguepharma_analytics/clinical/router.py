@@ -2,22 +2,25 @@
 import json
 import os
 from pathlib import Path
-from urllib.request import Request, urlopen
 from urllib.error import HTTPError, URLError
+from urllib.request import Request, urlopen
 
 from fastapi import APIRouter, Body, Depends, HTTPException
 from fastapi.responses import Response
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from pydantic import BaseModel, SecretStr, ValidationError
 
-from .models import Principal,DocumentLink
-from .workspace import Workspace, REVIEW_ROLES
-from .review import progress,package,import_csv,preview_csv,locator,LocatorRequest
-from .extraction import workflow,preview
-from .synthesis import view as synthesis_view
+from .extraction import preview, workflow
 from .full_collection import plan as collection_plan
-from .identity import view as identity_view,preview as identity_preview,confirm as identity_confirm,LinkConfirmation
+from .identity import LinkConfirmation
+from .identity import confirm as identity_confirm
+from .identity import preview as identity_preview
+from .identity import view as identity_view
 from .integrity import IntegrityConfirmation
+from .models import DocumentLink, Principal
+from .review import LocatorRequest, import_csv, locator, package, preview_csv, progress
+from .synthesis import view as synthesis_view
+from .workspace import REVIEW_ROLES, Workspace
 
 
 def legacy_auth(path, token=None, payload=None):
@@ -70,9 +73,9 @@ def router(root: Path, authenticate=None):
     @routes.get("/contracts")
     def contracts(actor: Principal=Depends(principal)):
         actor.require(*REVIEW_ROLES)
-        from .models import Screen,Result,Review,Conclusion,DocumentLink,Calibration,Absence
+        from .integrity import IntegrityConfirmation, IntegrityNotice
+        from .models import Absence, Calibration, Conclusion, DocumentLink, Result, Review, Screen
         from .selection_flow import ExclusionReason
-        from .integrity import IntegrityNotice,IntegrityConfirmation
         return {model.__name__:model.model_json_schema() for model in (Screen,Result,Review,Conclusion,DocumentLink,Calibration,Absence,ExclusionReason,IntegrityNotice,IntegrityConfirmation)}
 
     @routes.get("/{key}/state")

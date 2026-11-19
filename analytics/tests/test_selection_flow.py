@@ -2,14 +2,14 @@ import copy
 import json
 
 import pytest
-from fastapi.testclient import TestClient
-from test_clinical import workspace, R1, R2, ADJ, screen
 from denguepharma_analytics.api import create_app
 from denguepharma_analytics.clinical.models import Principal
-from denguepharma_analytics.clinical.selection_flow import view, export_summary, CATEGORIES
+from denguepharma_analytics.clinical.selection_flow import CATEGORIES, export_summary, view
 from denguepharma_analytics.clinical.workspace import create
 from denguepharma_analytics.domain import json_bytes
 from denguepharma_analytics.sources.snapshot import load_snapshot
+from fastapi.testclient import TestClient
+from test_clinical import ADJ, R1, R2, screen, workspace
 
 
 def exclude(workspace, study='s1'):
@@ -170,8 +170,8 @@ def test_selection_flow_export_permissions_totals_and_no_private_rationales(work
 
 @pytest.mark.requirement('REQ-CLN-001')
 def test_selection_flow_form_requires_explicit_category_and_confirmation(workspace, monkeypatch):
-    from streamlit.testing.v1 import AppTest
     from denguepharma_analytics import client
+    from streamlit.testing.v1 import AppTest
     exclude(workspace)
     state = view(workspace, ADJ)
     writes = []

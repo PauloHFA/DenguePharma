@@ -1,6 +1,6 @@
 """Estado da calibracao e dos julgamentos; nenhum rotulo clinico e calculado."""
-from .workspace import REVIEW_ROLES, ADJUDICATORS
 from .retractions import filter_synthesis_retractions
+from .workspace import ADJUDICATORS, REVIEW_ROLES
 
 
 def view(workspace, actor):

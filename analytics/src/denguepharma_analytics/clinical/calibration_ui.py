@@ -1,5 +1,6 @@
 """Apresentacao publica de resultados descritivos; curadoria permanece independente."""
 import streamlit as st
+
 from .. import client
 
 

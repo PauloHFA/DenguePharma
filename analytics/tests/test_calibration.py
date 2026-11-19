@@ -1,16 +1,16 @@
 import copy
 import json
 import os
-from pathlib import Path
 import shutil
+from pathlib import Path
 
 import pytest
-from fastapi.testclient import TestClient
-from denguepharma_analytics.clinical.calibration import analyze,RULES
-from denguepharma_analytics.clinical.screening_ui import payload,DEFAULTS
-from denguepharma_analytics.preparation.documents import prepare
+from denguepharma_analytics.clinical.calibration import RULES, analyze
+from denguepharma_analytics.clinical.screening_ui import DEFAULTS, payload
 from denguepharma_analytics.domain import json_bytes
+from denguepharma_analytics.preparation.documents import prepare
 from denguepharma_analytics.sources.snapshot import load_snapshot
+from fastapi.testclient import TestClient
 
 
 @pytest.mark.requirement("REQ-CLN-007")
@@ -58,9 +58,9 @@ def test_empty_calibration_does_not_create_perfect_metrics():
 
 @pytest.mark.requirement("REQ-CLN-007")
 def test_calibration_export_public_report_and_older_run_compatibility(snapshot,tmp_path):
-    from denguepharma_analytics.storage import export,publish,query_table
     from denguepharma_analytics.api import create_app
     from denguepharma_analytics.reports.render import render
+    from denguepharma_analytics.storage import export, publish, query_table
     first=export(snapshot,tmp_path); publish(tmp_path,first["run_id"])
     app=TestClient(create_app(tmp_path)); base=f'/api/public/analyses/{first["run_id"]}'
     result=app.get(base+"/tables/calibration_documents").json()
@@ -96,8 +96,8 @@ def test_screening_form_never_reuses_other_vote_or_infers_inclusion():
 
 @pytest.mark.requirement("REQ-CLN-001")
 def test_structured_screening_form_submits_current_basis(monkeypatch):
-    from streamlit.testing.v1 import AppTest
     from denguepharma_analytics import client
+    from streamlit.testing.v1 import AppTest
     row=dict(study_id="s1",basis_hash="a"*64,title="Synthetic study",status="PENDENTE",document_ids=["doc1"],own_decision=None,adjudication=None)
     calls=[]
     reads=[]

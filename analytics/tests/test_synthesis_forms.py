@@ -1,10 +1,23 @@
 import copy
+
 import pytest
-from fastapi.testclient import TestClient
-from test_clinical import workspace,R1,R2,ADJ,CLASSIFICATION,include,result,approve,screen,selection_hash,complete_calibration
 from denguepharma_analytics.api import create_app
 from denguepharma_analytics.clinical.models import Principal
 from denguepharma_analytics.clinical.synthesis import view
+from fastapi.testclient import TestClient
+from test_clinical import (
+    ADJ,
+    CLASSIFICATION,
+    R1,
+    R2,
+    approve,
+    complete_calibration,
+    include,
+    result,
+    screen,
+    selection_hash,
+    workspace,
+)
 
 
 def conclusion(workspace,category="EVIDENCIA_INCONCLUSIVA"):
@@ -78,8 +91,8 @@ def test_calibration_rejects_duplicate_sentinels_and_missing_hash(workspace):
     with pytest.raises(ValueError):workspace.act("CALIBRATION_APPROVED",{k:v for k,v in data.items() if k!="selection_hash"},ADJ)
     assert not view(workspace,ADJ)["calibration_approved"]
     from denguepharma_analytics.clinical.workspace import create
-    from denguepharma_analytics.sources.snapshot import load_snapshot
     from denguepharma_analytics.domain import json_bytes
+    from denguepharma_analytics.sources.snapshot import load_snapshot
     empty_data=copy.deepcopy(workspace.input.data);empty_data["documents"]=[]
     empty=create(workspace.root/"empty",load_snapshot(json_bytes(empty_data)),workspace.protocol)
     assert not view(empty,ADJ)["selection_complete"] and not view(empty,ADJ)["can_approve_calibration"]
@@ -100,8 +113,8 @@ def test_synthesis_state_is_private_and_empty_groups_are_not_inconclusive(worksp
 
 @pytest.mark.requirement("REQ-CLN-010")
 def test_calibration_and_conclusion_forms_submit_explicit_human_decisions(workspace,monkeypatch):
-    from streamlit.testing.v1 import AppTest
     from denguepharma_analytics import client
+    from streamlit.testing.v1 import AppTest
     include(workspace);approve(workspace,result(workspace))
     for actor in (R1,R2):screen(workspace,actor,"s2",decision="EXCLUIR")
     calls=[]
@@ -129,8 +142,8 @@ def test_calibration_and_conclusion_forms_submit_explicit_human_decisions(worksp
 
 @pytest.mark.requirement("REQ-CLN-010")
 def test_pending_pilot_forms_cannot_approve_or_conclude(workspace,monkeypatch):
-    from streamlit.testing.v1 import AppTest
     from denguepharma_analytics import client
+    from streamlit.testing.v1 import AppTest
     calls=[]
     monkeypatch.setattr(client,"private",lambda path,**kwargs:calls.append(path) or view(workspace,ADJ))
     app=AppTest.from_string("from denguepharma_analytics.clinical.synthesis_ui import render\nrender('workspace','token')",default_timeout=30).run()

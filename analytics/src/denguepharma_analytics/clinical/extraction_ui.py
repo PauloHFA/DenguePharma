@@ -4,8 +4,9 @@ import re
 from copy import deepcopy
 from typing import get_args
 
-from pydantic import ValidationError
 import streamlit as st
+from pydantic import ValidationError
+
 from .. import client
 from .models import Result
 from .refresh import rerun_curation

@@ -1,10 +1,9 @@
 import pytest
-
 from denguepharma_analytics.clinical.agreement import (
     cohen_kappa,
+    compute_inter_rater_agreement,
     gwet_ac1,
     interpret_agreement,
-    compute_inter_rater_agreement,
 )
 
 

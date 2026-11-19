@@ -2,19 +2,17 @@
 Testes de verificação formal para REQ-REL-003, REQ-REL-004 e REQ-REL-005.
 """
 import pytest
-
 from denguepharma_analytics.reports.executive_panels import (
+    AccessibleFigureSpec,
     AxisPanelState,
-    InvalidAxisError,
-    get_axis_panel,
     EvaluationGoal,
     EvaluationReport,
-    build_evaluation_report,
-    SeriesSpec,
-    AccessibleFigureSpec,
     InaccessibleFigureError,
+    InvalidAxisError,
+    SeriesSpec,
+    build_evaluation_report,
+    get_axis_panel,
 )
-
 
 # ============================================================================
 # REQ-REL-003: Painéis por Eixo e Estados Vazios

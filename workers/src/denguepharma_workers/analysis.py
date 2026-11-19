@@ -8,15 +8,16 @@ import html
 import io
 import json
 import platform
-from importlib.metadata import version
 import zipfile
+from importlib.metadata import version
 from pathlib import Path
 
 import matplotlib
+
 matplotlib.use("Agg")
+import pandas as pd
 from matplotlib.figure import Figure
 from matplotlib.ticker import MaxNLocator
-import pandas as pd
 
 SCRIPT_VERSION = "descriptive-2.0.0"
 DICTIONARY_VERSION = "descriptive-v2.0"

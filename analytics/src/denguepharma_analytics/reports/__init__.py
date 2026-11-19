@@ -1,25 +1,25 @@
 """Relatorios Quarto, snapshots determinísticos e painéis acessíveis."""
 
-from .provenance_and_snapshot import (
-    ReportProvenance,
-    ReportSnapshot,
-    MissingProvenanceError,
-    SnapshotIntegrityError,
-    render_report,
-    inspect_report_provenance,
-    reproduce_report_from_snapshot,
-)
 from .executive_panels import (
+    AccessibleFigureSpec,
     AxisPanelState,
-    InvalidAxisError,
-    get_axis_panel,
     EvaluationGoal,
     EvaluationReport,
+    InaccessibleFigureError,
+    InvalidAxisError,
+    SeriesSpec,
     UnfavorableResultOmissionError,
     build_evaluation_report,
-    SeriesSpec,
-    AccessibleFigureSpec,
-    InaccessibleFigureError,
+    get_axis_panel,
+)
+from .provenance_and_snapshot import (
+    MissingProvenanceError,
+    ReportProvenance,
+    ReportSnapshot,
+    SnapshotIntegrityError,
+    inspect_report_provenance,
+    render_report,
+    reproduce_report_from_snapshot,
 )
 
 __all__ = [

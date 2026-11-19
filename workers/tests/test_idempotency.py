@@ -1,5 +1,4 @@
 import pytest
-
 from denguepharma_workers.idempotency import extraction_key
 
 

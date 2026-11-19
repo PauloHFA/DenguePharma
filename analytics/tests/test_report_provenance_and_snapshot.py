@@ -2,15 +2,15 @@
 Testes de verificação formal para REQ-REL-001 e REQ-REL-002.
 """
 from datetime import datetime, timezone
-import pytest
 
+import pytest
 from denguepharma_analytics.reports.provenance_and_snapshot import (
+    MissingProvenanceError,
     ReportProvenance,
     ReportSnapshot,
-    MissingProvenanceError,
     SnapshotIntegrityError,
-    render_report,
     inspect_report_provenance,
+    render_report,
     reproduce_report_from_snapshot,
 )
 
@@ -116,7 +116,7 @@ def test_reproduce_report_from_snapshot_is_bit_identical(valid_provenance, sampl
         bytes_yesterday, hash_yesterday = reproduce_report_from_snapshot(snapshot_yesterday, format=fmt)
 
         # Simula passagem de tempo ("hoje") e fontes upstream modificadas com novos registros
-        live_database = sample_records + [
+        _live_database = sample_records + [
             {"trial_id": "NCT99999999", "substance": "NovoComposto", "phase": "PHASE1", "enrolled": 10}
         ]
 

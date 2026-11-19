@@ -17,16 +17,12 @@ import os
 import re
 from dataclasses import dataclass, field
 from typing import Any, Callable
-from urllib.error import HTTPError, URLError
-from urllib.parse import urlencode
 from urllib.request import Request, urlopen
 
 from .extractor import (
-    BudgetExceededError,
     BudgetGuard,
     CandidateField,
     ValidatedField,
-    sanitize_data_only,
     validate_and_abstain,
 )
 from .idempotency import extraction_key

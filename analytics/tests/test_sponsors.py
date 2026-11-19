@@ -1,18 +1,18 @@
 import copy
 import json
 import os
-from pathlib import Path
 import subprocess
 import sys
+from pathlib import Path
 
 import pytest
-from fastapi.testclient import TestClient
+from denguepharma_analytics.analyses.sponsors import CONFLICT, MISSING, analyze, figures
 from denguepharma_analytics.api import create_app
-from denguepharma_analytics.analyses.sponsors import analyze,figures,MISSING,CONFLICT
+from denguepharma_analytics.domain import digest, json_bytes
 from denguepharma_analytics.sources.collection_snapshot import safe_metadata
 from denguepharma_analytics.sources.snapshot import load_snapshot
-from denguepharma_analytics.domain import json_bytes,digest
-from denguepharma_analytics.storage import export,publish
+from denguepharma_analytics.storage import export, publish
+from fastapi.testclient import TestClient
 
 
 def trial(snapshot,key,nct='NCT00000001',name='Org A',kind='INDUSTRY'):
@@ -112,8 +112,8 @@ def test_sponsors_metadata_addition_preserves_other_twenty_nine_tables(snapshot)
 
 @pytest.mark.requirement('REQ-MIG-015')
 def test_sponsors_form_supports_old_and_empty_runs_and_public_tables(snapshot,monkeypatch):
-    from streamlit.testing.v1 import AppTest
     from denguepharma_analytics import client
+    from streamlit.testing.v1 import AppTest
     summary,tables=analyze(snapshot.data);calls=[]
     monkeypatch.setattr(client,'table',lambda run,name,**kwargs:calls.append(name) or dict(rows=tables[name],total=len(tables[name])))
     script='from denguepharma_analytics.sponsors_ui import render\nrender("run",'+repr({'tables':dict.fromkeys(tables),'figures':{}})+','+repr({'sponsors':summary})+')'

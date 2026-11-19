@@ -1,20 +1,20 @@
 import copy
 import json
 import os
-from pathlib import Path
 import subprocess
 import sys
+from pathlib import Path
 from uuid import uuid4
 
 import pytest
-from fastapi.testclient import TestClient
-from test_clinical import workspace,R1,ADJ,include,complete_calibration,screen
 from denguepharma_analytics.api import create_app
-from denguepharma_analytics.clinical.full_collection import plan,advance,lock,immutable_write
+from denguepharma_analytics.clinical.full_collection import advance, immutable_write, lock, plan
 from denguepharma_analytics.clinical.models import Principal
-from denguepharma_analytics.sources.collection_snapshot import safe_metadata,snapshot_from_runs
-from denguepharma_analytics.sources.snapshot import load_snapshot
 from denguepharma_analytics.domain import json_bytes
+from denguepharma_analytics.sources.collection_snapshot import safe_metadata, snapshot_from_runs
+from denguepharma_analytics.sources.snapshot import load_snapshot
+from fastapi.testclient import TestClient
+from test_clinical import ADJ, R1, complete_calibration, include, screen, workspace
 
 
 class Remote:
@@ -160,8 +160,8 @@ def test_metadata_snapshot_rejects_transferred_reviews_and_sanitizes(workspace,s
 
 @pytest.mark.requirement("REQ-CLN-011")
 def test_plan_api_and_ui_are_readonly_and_pending_cli_is_blocked(workspace,tmp_path,monkeypatch):
-    from streamlit.testing.v1 import AppTest
     from denguepharma_analytics import client
+    from streamlit.testing.v1 import AppTest
     app=TestClient(create_app(tmp_path,authenticate=lambda token:ADJ));path=f'/api/clinical/{workspace.key}/collection-plan'
     assert app.get(path).status_code==401
     state=app.get(path,headers={'Authorization':'Bearer token'}).json();assert not state['ready']
@@ -175,8 +175,8 @@ def test_plan_api_and_ui_are_readonly_and_pending_cli_is_blocked(workspace,tmp_p
 @pytest.mark.requirement("REQ-CLN-011")
 def test_live_collection_snapshot_readonly_preserves_pilot_versions():
     if os.getenv('ANALYTICS_LIVE_POSTGRES')!='true':pytest.skip('Local PostgreSQL verification disabled')
-    from denguepharma_analytics.sources.postgres import load_env
     from denguepharma_analytics.preparation.documents import prepare
+    from denguepharma_analytics.sources.postgres import load_env
     load_env(Path(__file__).resolve().parents[2]/'.env')
     snapshot=snapshot_from_runs('c59fc9c6-32e4-4988-965e-5483692c1137',['ce7786e8-1758-46df-8fa6-c086cd4f2ffe','5d50c7f2-0218-441f-870a-089c83f40238'])
     old=json.loads((Path(__file__).resolve().parents[2]/'analytics/data/calibration/clinical-001/dataset.json').read_bytes())

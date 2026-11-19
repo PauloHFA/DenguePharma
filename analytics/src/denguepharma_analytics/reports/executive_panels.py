@@ -4,10 +4,7 @@ Módulo M07: Painéis por Eixo, Metas Não Atingidas e Figuras Acessíveis (REQ-
 from __future__ import annotations
 
 from dataclasses import asdict, dataclass, field
-import json
-from pathlib import Path
-from typing import Any, Dict, List, Literal, Optional, Set
-
+from typing import Any, Dict, List, Literal, Optional
 
 # ============================================================================
 # REQ-REL-003: Painéis por Eixo com Estados Vazios e Acesso Limitado

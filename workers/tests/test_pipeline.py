@@ -4,10 +4,9 @@ from types import SimpleNamespace
 from unittest.mock import Mock
 
 import pytest
-from minio.error import S3Error
-
 from denguepharma_workers.pipeline import extraction_payload, source_text, verify_document
 from denguepharma_workers.runtime import ApiError, ObjectStore, Worker
+from minio.error import S3Error
 
 
 def test_pipeline_preserva_ausencias_e_posicoes_sem_publicar():

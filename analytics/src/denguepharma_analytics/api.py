@@ -2,8 +2,8 @@
 from __future__ import annotations
 
 import csv
-from io import StringIO
 import json
+from io import StringIO
 from pathlib import Path
 
 from fastapi import FastAPI, HTTPException, Query

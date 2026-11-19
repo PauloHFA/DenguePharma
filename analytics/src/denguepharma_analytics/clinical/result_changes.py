@@ -1,5 +1,5 @@
 """Read-only correction differences; no conclusions and no literal evidence quotes."""
-from ..domain import digest,json_bytes
+from ..domain import digest, json_bytes
 from .workspace import REVIEW_ROLES
 
 WORKFLOW_FIELDS={'study_id','basis_hash','supersedes','correction_reason'}

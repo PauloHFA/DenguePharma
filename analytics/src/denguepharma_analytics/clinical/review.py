@@ -1,13 +1,14 @@
 """Material de revisao independente, importacao atomica e localizadores privados."""
-from collections import Counter
 import csv
-from io import BytesIO, StringIO
 import json
-from zipfile import ZipFile,ZipInfo,ZIP_DEFLATED
+from collections import Counter
+from io import BytesIO, StringIO
+from zipfile import ZIP_DEFLATED, ZipFile, ZipInfo
 
 from pydantic import Field
-from ..domain import digest,json_bytes
-from .models import Classification,Screen,Result,EvidenceRef,Strict
+
+from ..domain import digest, json_bytes
+from .models import Classification, EvidenceRef, Result, Screen, Strict
 from .workspace import REVIEW_ROLES
 
 CLASS_FIELDS=[key for key in Classification.model_fields if key!="interventions"]
@@ -27,7 +28,8 @@ def csv_bytes(rows,columns):
 
 
 def progress(workspace,actor):
-    from .personal_review import assignment,summary as personal_summary
+    from .personal_review import assignment
+    from .personal_review import summary as personal_summary
     actor.require(*REVIEW_ROLES)
     with workspace.transaction() as db:
         events=workspace.events(db); catalog=workspace.catalog(events)

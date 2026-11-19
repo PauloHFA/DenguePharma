@@ -1,6 +1,6 @@
 """Diagnostico de metadados para calibracao. Nao decide elegibilidade nem beneficio."""
-from collections import Counter
 import re
+from collections import Counter
 from pathlib import Path
 
 RULE_VERSION="metadata-calibration-1"

@@ -2,10 +2,11 @@
 from typing import Literal
 from urllib.parse import urlsplit
 
-from pydantic import Field,model_validator
-from ..domain import digest,json_bytes
+from pydantic import Field, model_validator
+
+from ..domain import digest, json_bytes
 from .models import Strict
-from .workspace import REVIEW_ROLES,ADJUDICATORS
+from .workspace import ADJUDICATORS, REVIEW_ROLES
 
 EVENT='DOCUMENT_INTEGRITY_RECORDED'
 BLOCKED={'EM_REAVALIACAO','RETIRADO'}

@@ -2,7 +2,6 @@
 from __future__ import annotations
 
 import pytest
-
 from denguepharma_analytics.analyses.trial_burden import (
     BurdenRecord,
     TrialSiteRecord,

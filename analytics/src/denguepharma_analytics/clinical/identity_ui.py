@@ -1,5 +1,6 @@
 """Conferencia manual da identidade, com previa e confirmacao independentes da triagem."""
 import streamlit as st
+
 from .. import client
 from ..domain import digest
 from .refresh import rerun_curation

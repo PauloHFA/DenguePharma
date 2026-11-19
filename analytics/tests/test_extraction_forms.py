@@ -1,12 +1,12 @@
 import copy
-import pytest
-from fastapi.testclient import TestClient
 
-from test_clinical import workspace,R1,R2,ADJ,CLASSIFICATION,include,result,approve,screen
+import pytest
 from denguepharma_analytics.api import create_app
-from denguepharma_analytics.clinical.extraction import preview,workflow
-from denguepharma_analytics.clinical.extraction_ui import numeric,build_payload,occurrences
+from denguepharma_analytics.clinical.extraction import preview, workflow
+from denguepharma_analytics.clinical.extraction_ui import build_payload, numeric, occurrences
 from denguepharma_analytics.clinical.models import Principal
+from fastapi.testclient import TestClient
+from test_clinical import ADJ, CLASSIFICATION, R1, R2, approve, include, result, screen, workspace
 
 
 def event_count(workspace):
@@ -98,8 +98,8 @@ def test_extraction_endpoints_are_private_and_pending_studies_are_blocked(worksp
 
 @pytest.mark.requirement("REQ-CLN-009")
 def test_extraction_form_shows_pending_block_without_save_controls(monkeypatch):
-    from streamlit.testing.v1 import AppTest
     from denguepharma_analytics import client
+    from streamlit.testing.v1 import AppTest
     calls=[]
     flow=dict(included_studies=[],candidates=[],outcomes={},conflicts=[])
     monkeypatch.setattr(client,"private",lambda path,**kwargs:calls.append(path) or flow)
@@ -110,8 +110,8 @@ def test_extraction_form_shows_pending_block_without_save_controls(monkeypatch):
 
 @pytest.mark.requirement("REQ-CLN-009")
 def test_field_form_previews_and_saves_only_a_draft(workspace,monkeypatch):
-    from streamlit.testing.v1 import AppTest
     from denguepharma_analytics import client
+    from streamlit.testing.v1 import AppTest
     include(workspace); state=workspace.private_state(R1); calls=[]
     def private(path,**kwargs):
         calls.append(path)
@@ -143,9 +143,9 @@ def test_field_form_previews_and_saves_only_a_draft(workspace,monkeypatch):
 
 @pytest.mark.requirement("REQ-CLN-009")
 def test_review_and_adjudication_forms_require_explicit_decisions(workspace,monkeypatch):
-    from streamlit.testing.v1 import AppTest
     from denguepharma_analytics import client
     from denguepharma_analytics.clinical.extraction_ui import decisions
+    from streamlit.testing.v1 import AppTest
     payload=result_after_include(workspace)
     workspace.act("RESULT_DRAFTED",payload,R1)
     def run(actor,action,label):

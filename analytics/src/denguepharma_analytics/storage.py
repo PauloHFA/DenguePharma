@@ -1,23 +1,23 @@
 """Runs imutaveis, bronze privado e publicacao local explicita. Sem escrita na base legada."""
 from __future__ import annotations
 
-from importlib.metadata import version
 import json
 import os
 import platform
-from pathlib import Path
 import re
 import shutil
 import tempfile
+from importlib.metadata import version
+from pathlib import Path
 
 import duckdb
 import pyarrow.parquet as pq
 
 from . import __version__
-from .domain import digest, json_bytes
-from .sources.snapshot import Snapshot
 from .analyses.diagnostics import analyze
-from .marts import build_tables, PUBLIC_TABLES, SCHEMAS
+from .domain import digest, json_bytes
+from .marts import PUBLIC_TABLES, SCHEMAS, build_tables
+from .sources.snapshot import Snapshot
 
 
 def default_root():
@@ -68,15 +68,21 @@ def export(snapshot: Snapshot, root: Path):
     except FileExistsError:
         if (bronze / "snapshot.json").read_bytes() != snapshot.content: raise ValueError("BRONZE_HASH_MISMATCH")
     summary, records = analyze(snapshot.content)
-    from .clinical.analysis import summary as clinical_summary, figures
+    from .clinical.analysis import figures
+    from .clinical.analysis import summary as clinical_summary
     summary["clinical"] = clinical_summary(snapshot.data.get("clinical"))
-    from .clinical.calibration import analyze as calibration_analysis, report as calibration_report, figures as calibration_figures
+    from .clinical.calibration import analyze as calibration_analysis
+    from .clinical.calibration import figures as calibration_figures
+    from .clinical.calibration import report as calibration_report
     summary["calibration"],_=calibration_analysis(snapshot.data,records)
-    from .analyses.sponsors import analyze as sponsor_analysis,figures as sponsor_figures
+    from .analyses.sponsors import analyze as sponsor_analysis
+    from .analyses.sponsors import figures as sponsor_figures
     summary["sponsors"],_=sponsor_analysis(snapshot.data)
-    from .analyses.reporting import analyze as reporting_analysis,figures as reporting_figures
+    from .analyses.reporting import analyze as reporting_analysis
+    from .analyses.reporting import figures as reporting_figures
     summary["reporting"],_=reporting_analysis(snapshot.data)
-    from .analyses.publication_refs import analyze as publication_analysis,figures as publication_figures
+    from .analyses.publication_refs import analyze as publication_analysis
+    from .analyses.publication_refs import figures as publication_figures
     summary["publication_references"],_=publication_analysis(snapshot.data)
     tables = build_tables(snapshot.data, summary, records)
     stage = Path(tempfile.mkdtemp(prefix="analytics-", dir=root))

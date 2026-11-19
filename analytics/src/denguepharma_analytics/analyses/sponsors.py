@@ -1,6 +1,8 @@
 """Patrocinador responsavel declarado em registros coletados; sem julgamento clinico."""
 import pandas as pd
-from ..preparation.registries import groups as registry_groups,UNIT
+
+from ..preparation.registries import UNIT
+from ..preparation.registries import groups as registry_groups
 
 MISSING="[NAO_INFORMADO]"
 CONFLICT="[CONFLITO]"

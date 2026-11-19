@@ -13,9 +13,9 @@ Métodos implementados:
 from __future__ import annotations
 
 import math
+from collections import defaultdict
 from datetime import date
 from typing import Any, Mapping, Sequence
-from collections import defaultdict
 
 
 def parse_iso_date(val: Any) -> date | None:

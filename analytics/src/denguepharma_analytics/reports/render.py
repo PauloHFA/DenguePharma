@@ -1,13 +1,13 @@
 from __future__ import annotations
 
 import html
-from importlib.resources import files
 import json
 import os
-from pathlib import Path
 import shutil
 import subprocess
 import tempfile
+from importlib.resources import files
+from pathlib import Path
 
 import duckdb
 

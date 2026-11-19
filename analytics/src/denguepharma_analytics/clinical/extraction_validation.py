@@ -12,7 +12,6 @@ import re
 from dataclasses import asdict, dataclass, field
 from typing import Any, Mapping, Sequence
 
-
 VALID_ABSENCE_STATUSES = {
     "PRESENTE",
     "NAO_INFORMADO",
@@ -765,8 +764,8 @@ def apply_ablation_mode_safeguards(
     """
     annotated_fields: list[dict[str, Any]] = []
 
-    for field in extraction_fields:
-        item = dict(field)
+    for raw_field in extraction_fields:
+        item = dict(raw_field)
         if ablation_mode:
             item["is_experimental"] = True
             item["publishable"] = False

@@ -1,7 +1,9 @@
 """Efeitos por estudo. Sem combinacao, continuidade automatica ou classificacao clinica."""
 from __future__ import annotations
+
 import math
 from statistics import NormalDist
+
 from scipy.stats import t as student_t
 
 

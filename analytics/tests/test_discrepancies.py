@@ -2,7 +2,6 @@
 from __future__ import annotations
 
 import pytest
-
 from denguepharma_analytics.analyses.discrepancies import (
     PublicationRecord,
     RegistryRecord,

@@ -12,18 +12,15 @@ Implementa requisitos da família REQ-ING:
 
 from __future__ import annotations
 
-import copy
 import hashlib
 import json
-import math
 import random
 import time
-from dataclasses import asdict, dataclass, field
+from dataclasses import asdict, dataclass
 from datetime import datetime, timezone
-from enum import Enum
 from pathlib import Path
 from typing import Any, Callable, Dict, List, Optional, Set, Tuple
-from uuid import UUID, uuid4
+from uuid import uuid4
 
 
 class ImmutableSnapshotError(Exception):

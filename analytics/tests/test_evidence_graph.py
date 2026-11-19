@@ -2,7 +2,6 @@
 from __future__ import annotations
 
 import pytest
-
 from denguepharma_analytics.analyses.evidence_graph import build_evidence_network
 
 

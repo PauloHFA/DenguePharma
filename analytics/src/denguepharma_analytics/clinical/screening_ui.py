@@ -1,8 +1,10 @@
 """Formulario de triagem sem sugestoes preselecionadas nem votos alheios."""
 from typing import get_args
+
 import streamlit as st
+
 from .. import client
-from .models import Classification,Screen
+from .models import Classification, Screen
 from .refresh import rerun_curation
 
 LABELS={"established_dengue":"Pacientes com dengue estabelecida?","context":"Contexto do estudo","population":"População","severity":"Gravidade","disease_phase":"Fase da doença","purpose":"Finalidade","design":"Desenho","pharmacological_intervention":"Intervenção farmacológica?"}
@@ -19,7 +21,8 @@ def payload(row,decision,classification,reason,*,adjudicate=False):
 
 def render(state,key,token):
     with st.expander("Triagem por campos — revisão humana",expanded=True):
-        from .personal_review import visible_rows,LABELS as PERSONAL_LABELS
+        from .personal_review import LABELS as PERSONAL_LABELS
+        from .personal_review import visible_rows
         notice_key="screen_notice_"+key
         if notice_key in st.session_state:st.success(st.session_state.pop(notice_key))
         rows=state["queue"]

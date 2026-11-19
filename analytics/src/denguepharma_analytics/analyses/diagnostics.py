@@ -1,12 +1,17 @@
 """Diagnostico do corpus coletado, distinto do panorama cientifico por estudo."""
 from __future__ import annotations
-from collections import Counter
+
 import json
+from collections import Counter
+
 import pandas as pd
-from ..domain import FIELDS, MISSING, CORPUS_NOTICE as NOTICE, json_bytes, ratio
-from ..identity.identifiers import year, text
+
+from ..domain import CORPUS_NOTICE as NOTICE
+from ..domain import FIELDS, MISSING, json_bytes, ratio
+from ..identity.identifiers import text, year
 from ..preparation.documents import prepare
 from .reviewed import analyze as reviewed_analysis
+
 
 def frequencies(records, field, unit, multi=False, population=None):
     """Categorias ausentes explicitas. Multivalor conta cada unidade uma vez por categoria."""

@@ -1,11 +1,11 @@
 """Testes de conformidade e salvaguardas para o Shadow Screening consultivo por IA (Melhoria 5)."""
 import copy
 import json
-import pytest
 
+import pytest
 from denguepharma_analytics.clinical.models import Principal
 from denguepharma_analytics.clinical.shadow_screening import evaluate_study_shadow, get_shadow_recommendation
-from test_clinical import workspace, R1, R2, ADJ, screen, CLASSIFICATION
+from test_clinical import ADJ, CLASSIFICATION, R1, R2, screen, workspace
 
 
 @pytest.mark.requirement("REQ-SEL-002")

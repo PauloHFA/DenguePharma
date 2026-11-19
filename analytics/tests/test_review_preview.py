@@ -1,13 +1,13 @@
 import json
 from io import BytesIO
-from urllib.parse import parse_qs,urlsplit
+from urllib.parse import parse_qs, urlsplit
 
 import pytest
-from fastapi.testclient import TestClient
-from test_review_workflow import workspace,template,complete,content,events,R1,R2,ADMIN
 from denguepharma_analytics.api import create_app
 from denguepharma_analytics.clinical.models import Principal
-from denguepharma_analytics.clinical.review import preview_csv,import_csv,progress
+from denguepharma_analytics.clinical.review import import_csv, preview_csv, progress
+from fastapi.testclient import TestClient
+from test_review_workflow import ADMIN, R1, R2, complete, content, events, template, workspace
 
 
 @pytest.mark.requirement("REQ-CLN-012")
@@ -103,8 +103,8 @@ def test_csv_preview_api_permissions_stale_confirmation_and_no_foreign_votes(wor
 
 def interface(workspace,monkeypatch):
     import streamlit as st
-    from streamlit.testing.v1 import AppTest
     from denguepharma_analytics import client
+    from streamlit.testing.v1 import AppTest
     upload=[content([complete(template(workspace)[0])])];calls=[]
     monkeypatch.setattr(st,'file_uploader',lambda *args,**kwargs:BytesIO(upload[0]))
     def private(path,**kwargs):

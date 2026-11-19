@@ -1,10 +1,9 @@
 """Tabelas e figuras por estudo; nenhuma combinacao estatistica ou classificacao automatica."""
-import json
 from collections import Counter
 from pathlib import Path
 
 from ..domain import digest, json_bytes
-from .models import scope_for, result_set_hash
+from .models import result_set_hash, scope_for
 
 NOTICE="Sem meta-analise, ranking ou recomendacao terapeutica. Ausencia de resultado revisado nao significa ausencia de beneficio. Categorias clinicas dependem de julgamento humano documentado."
 

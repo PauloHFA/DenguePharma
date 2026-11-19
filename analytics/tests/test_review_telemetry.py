@@ -12,8 +12,8 @@ from __future__ import annotations
 import pytest
 from denguepharma_analytics.clinical.review_telemetry import (
     EthicalGovernanceError,
-    ReviewSessionTelemetry,
     ReviewerPseudonymizer,
+    ReviewSessionTelemetry,
     TimeStudyDatasetExporter,
 )
 

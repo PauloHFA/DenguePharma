@@ -4,12 +4,12 @@ Módulo M02: Conformidade de Governança, Sanitização do Pacote Público, Avis
 """
 from __future__ import annotations
 
-from dataclasses import asdict, dataclass, field
-from datetime import datetime, timezone
 import hashlib
 import json
 import re
-from typing import Any, Dict, List, Literal, Optional, Set, Tuple
+from dataclasses import asdict, dataclass, field
+from datetime import datetime, timezone
+from typing import Any, Dict, List, Literal
 
 
 class GovernanceComplianceError(ValueError):

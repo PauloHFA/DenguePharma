@@ -10,10 +10,9 @@ Regras e salvaguardas:
 from __future__ import annotations
 
 import hashlib
-import json
 import re
-from dataclasses import asdict, dataclass, field
-from typing import Any, Mapping, Sequence
+from dataclasses import asdict, dataclass
+from typing import Any
 
 
 @dataclass(frozen=True)

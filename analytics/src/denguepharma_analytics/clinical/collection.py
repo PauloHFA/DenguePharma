@@ -1,13 +1,13 @@
 """Ponte temporaria para coletores duraveis existentes. Piloto clinico novo, ate 20 registros."""
-from datetime import date
 import json
 import os
-from pathlib import Path
 import time
-from urllib.request import Request,urlopen
+from datetime import date
+from pathlib import Path
+from urllib.request import Request, urlopen
 from uuid import uuid4
 
-from ..domain import digest,json_bytes
+from ..domain import digest, json_bytes
 
 
 class Client:

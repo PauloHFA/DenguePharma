@@ -1,8 +1,10 @@
 """Cobertura bibliografica por PMID, sem confirmar identidade de estudo ou resultados."""
-from collections import defaultdict
 import re
+from collections import defaultdict
+
 import pandas as pd
-from ..domain import digest,json_bytes
+
+from ..domain import digest, json_bytes
 from ..preparation.registries import groups
 
 METHOD="registry-publication-reference-audit-1"

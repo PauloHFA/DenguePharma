@@ -4,17 +4,16 @@ import hashlib
 import importlib.metadata
 import json
 import os
-from pathlib import Path
 import subprocess
 import sys
 import tempfile
+from pathlib import Path
 
 import nbformat
-from nbclient import NotebookClient
+from denguepharma_analytics.storage import require_published
 from jupyter_client import KernelManager
 from jupyter_client.kernelspec import KernelSpecManager
-
-from denguepharma_analytics.storage import require_published
+from nbclient import NotebookClient
 
 
 def sha(path):

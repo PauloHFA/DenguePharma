@@ -6,7 +6,6 @@ import json
 import zipfile
 
 import pytest
-
 from denguepharma_workers.analysis import bundle as shared_bundle
 from denguepharma_workers.corpus import analyze, bundle, prepare
 from denguepharma_workers.research import validate_pilot

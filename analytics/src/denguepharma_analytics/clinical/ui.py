@@ -1,7 +1,9 @@
 """Interface explicita para pesquisa; votos independentes e formularios orientados pelo contrato."""
 import json
 from urllib.error import HTTPError, URLError
+
 import streamlit as st
+
 from .. import client
 from .refresh import rerun_curation
 
@@ -68,7 +70,8 @@ def curation():
             spaces={w["id"]:w for w in workspaces}
             key=st.selectbox("Espaço privado",list(spaces),format_func=lambda value:str(spaces[value].get("source_protocol",{}).get("code") or "Protocolo")+" · "+str(spaces[value].get("document_count","?"))+" documentos · "+value[:12])
             state=client.private(f"/{key}/state",token=token)
-            from .review_ui import render as review_tools,source_tools
+            from .review_ui import render as review_tools
+            from .review_ui import source_tools
             review_tools(key,token)
             from .integrity_ui import render as integrity_form
             integrity_form(key,token)

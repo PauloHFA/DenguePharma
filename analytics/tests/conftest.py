@@ -1,7 +1,7 @@
 import hashlib
 import json
-from pathlib import Path
 import sys
+from pathlib import Path
 
 import pytest
 from denguepharma_analytics.sources.snapshot import load_snapshot
@@ -44,5 +44,5 @@ def prepared(tmp_path, snapshot):
 def legacy_imports():
     root = Path(__file__).resolve().parents[2]
     sys.path.insert(0, str(root / "workers" / "src"))
-    from denguepharma_workers.corpus import prepare, analyze
+    from denguepharma_workers.corpus import analyze, prepare
     return prepare, analyze

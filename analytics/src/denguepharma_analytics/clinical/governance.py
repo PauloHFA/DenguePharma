@@ -3,12 +3,12 @@ Módulo M02: Governança, Controle de Acesso Baseado em Perfis (RBAC) e Trilha d
 """
 from __future__ import annotations
 
-from dataclasses import asdict, dataclass, field
-from datetime import datetime, timezone
-from enum import Enum
 import hashlib
 import json
-from typing import Any, Dict, List, Literal, Optional, Set, Tuple
+from dataclasses import asdict, dataclass
+from datetime import datetime, timezone
+from enum import Enum
+from typing import Any, Dict, List, Optional, Set, Tuple
 from uuid import uuid4
 
 from fastapi import APIRouter, Header, HTTPException, status

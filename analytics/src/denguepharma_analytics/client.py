@@ -2,7 +2,7 @@
 import json
 import os
 from urllib.parse import urlencode
-from urllib.request import urlopen, Request
+from urllib.request import Request, urlopen
 
 
 def base_url(): return os.getenv("ANALYTICS_API_URL", "http://127.0.0.1:18081").rstrip("/")

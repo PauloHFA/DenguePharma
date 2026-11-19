@@ -5,20 +5,19 @@ Testes de verificação formal para REQ-GOV-004, REQ-GOV-005 e REQ-GOV-006.
 - REQ-GOV-006 (ACC-GOV-006): Congelamento de protocolo e plano estatístico por commit prévio ao teste final.
 """
 from datetime import datetime, timezone
+
 import pytest
-
 from denguepharma_analytics.clinical.governance_compliance import (
-    SecretLeakError,
-    PIILeakError,
-    UnlicensedContentLeakError,
-    MissingClinicalNoticeError,
-    UnfrozenProtocolExecutionError,
-    scan_public_package,
-    PublicPackageSanitizer,
     EvidenceNoticeValidator,
+    MissingClinicalNoticeError,
+    PIILeakError,
     ProtocolFreezeManager,
+    PublicPackageSanitizer,
+    SecretLeakError,
+    UnfrozenProtocolExecutionError,
+    UnlicensedContentLeakError,
+    scan_public_package,
 )
-
 
 # ============================================================================
 # REQ-GOV-004: Sanitização e Varredura do Pacote Público (ACC-GOV-004 / T9)

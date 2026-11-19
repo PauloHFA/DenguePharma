@@ -1,5 +1,6 @@
 """Panorama publico de patrocinadores declarados, separado da sintese clinica."""
 import streamlit as st
+
 from . import client
 
 

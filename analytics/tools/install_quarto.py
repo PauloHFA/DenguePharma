@@ -1,9 +1,9 @@
 """Quarto portatil Windows, sem alterar PATH ou instalacao global; verifica SHA-256."""
 import hashlib
 import json
-from pathlib import Path
 import urllib.request
 import zipfile
+from pathlib import Path
 
 root = Path(__file__).resolve().parents[1]
 lock = json.loads(Path(__file__).with_name("quarto.lock.json").read_bytes())

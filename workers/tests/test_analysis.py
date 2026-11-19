@@ -2,13 +2,12 @@ import copy
 import io
 import json
 import os
-from pathlib import Path
 import subprocess
 import sys
 import zipfile
+from pathlib import Path
 
 import pytest
-
 from denguepharma_workers.analysis import FIELDS, STATES, analyze, bundle, digest
 
 

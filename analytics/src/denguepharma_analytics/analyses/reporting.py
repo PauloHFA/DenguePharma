@@ -1,10 +1,11 @@
 """Auditoria descritiva de datas declaradas. Nao estima sobrevivencia ou efeito clinico."""
-from datetime import date
-import json
 import re
+from datetime import date
+
 import pandas as pd
+
 from ..domain import json_bytes
-from ..preparation.registries import groups,UNIT
+from ..preparation.registries import UNIT, groups
 
 METHOD="registry-reporting-audit-1"
 NOTICE="Disponibilidade e datas declaradas nos registros coletados, com elegibilidade pendente. Indicadores refletem a versao armazenada, sem reconstituir o estado historico no corte. Intervalos sao dias de calendario entre campos do registro, nao sobrevida de pacientes. Sem censura, Kaplan-Meier, meta-analise ou inferencia de eficacia. Deposito no registro e publicacao vinculada sao eventos distintos."

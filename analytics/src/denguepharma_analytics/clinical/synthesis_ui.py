@@ -1,8 +1,9 @@
 """Calibracao e conclusoes humanas por campos, sem assumir eficacia."""
 import streamlit as st
 from pydantic import ValidationError
+
 from .. import client
-from .models import Calibration,Conclusion,Absence
+from .models import Absence, Calibration, Conclusion
 
 
 def submit(key,token,kind,model,data):

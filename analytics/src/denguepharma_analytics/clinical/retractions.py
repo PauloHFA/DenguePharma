@@ -6,7 +6,6 @@ registrando data da retratação, motivo e fonte do aviso (ex.: Retraction Watch
 """
 from __future__ import annotations
 
-import json
 from dataclasses import asdict, dataclass
 from typing import Any, Mapping
 

@@ -2,8 +2,10 @@
 import json
 from urllib.error import HTTPError
 from urllib.parse import urlencode
+
 import pandas as pd
 import streamlit as st
+
 from . import client
 
 

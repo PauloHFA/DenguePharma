@@ -1,17 +1,17 @@
 import copy
 import json
 import os
-from pathlib import Path
 import subprocess
 import sys
+from pathlib import Path
 
 import pytest
-from fastapi.testclient import TestClient
+from denguepharma_analytics.analyses.publication_refs import analyze, figures, pmid
 from denguepharma_analytics.api import create_app
-from denguepharma_analytics.analyses.publication_refs import analyze,pmid,figures
-from denguepharma_analytics.domain import digest,json_bytes
+from denguepharma_analytics.domain import digest, json_bytes
 from denguepharma_analytics.sources.snapshot import load_snapshot
-from denguepharma_analytics.storage import export,publish
+from denguepharma_analytics.storage import export, publish
+from fastapi.testclient import TestClient
 
 
 def source(snapshot,references):
@@ -110,9 +110,9 @@ def test_publication_refs_derived_metadata_preserves_previous_thirty_six_tables(
 
 @pytest.mark.requirement('REQ-MIG-017')
 def test_publication_refs_form_preserves_warning_and_supports_old_empty_runs(snapshot,monkeypatch):
-    from streamlit.testing.v1 import AppTest
     from denguepharma_analytics import client
-    from denguepharma_analytics.marts import normalize_rows,SCHEMAS
+    from denguepharma_analytics.marts import SCHEMAS, normalize_rows
+    from streamlit.testing.v1 import AppTest
     summary,tables=analyze(source(snapshot,[{'type':'DERIVED','pmid':'123'}]));calls=[]
     monkeypatch.setattr(client,'table',lambda run,name,**kwargs:calls.append(name) or dict(rows=normalize_rows(tables[name],SCHEMAS[name]),total=len(tables[name])))
     script='from denguepharma_analytics.publication_refs_ui import render\nrender("run",'+repr({'tables':dict.fromkeys(tables),'figures':{}})+','+repr({'publication_references':summary})+')'

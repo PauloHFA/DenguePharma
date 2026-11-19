@@ -1,16 +1,16 @@
 import copy
 import csv
-from io import BytesIO,StringIO
 import json
+from io import BytesIO, StringIO
 from zipfile import ZipFile
 
 import pytest
-from fastapi.testclient import TestClient
-from test_clinical import workspace,R1,R2,include,result,approve
 from denguepharma_analytics.api import create_app
+from denguepharma_analytics.clinical.extraction_coverage import package, view
 from denguepharma_analytics.clinical.models import Principal
-from denguepharma_analytics.clinical.extraction_coverage import view,package
 from denguepharma_analytics.domain import digest
+from fastapi.testclient import TestClient
+from test_clinical import R1, R2, approve, include, result, workspace
 
 
 def history(workspace):
@@ -97,8 +97,8 @@ def test_coverage_export_is_reproducible_private_and_requires_permissions(worksp
 
 @pytest.mark.requirement('REQ-CLN-009')
 def test_coverage_ui_explains_empty_state_and_export_does_not_create_decisions(workspace,monkeypatch):
-    from streamlit.testing.v1 import AppTest
     from denguepharma_analytics import client
+    from streamlit.testing.v1 import AppTest
     def private(path,**kwargs):
         return package(workspace,R1) if path.endswith('/export') else view(workspace,R1)
     monkeypatch.setattr(client,'private',private)

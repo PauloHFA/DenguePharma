@@ -1,18 +1,18 @@
 import copy
 import json
-from urllib.parse import urlsplit,parse_qs,unquote
+from urllib.parse import parse_qs, unquote, urlsplit
 
 import pytest
-from fastapi.testclient import TestClient
-from test_clinical import workspace,R1,R2,ADJ,screen
 from denguepharma_analytics.api import create_app
-from denguepharma_analytics.clinical.models import Principal
-from denguepharma_analytics.clinical.workspace import create
-from denguepharma_analytics.clinical.review import progress
-from denguepharma_analytics.clinical.personal_review import visible_rows
 from denguepharma_analytics.clinical.dossier import view as dossier
+from denguepharma_analytics.clinical.models import Principal
+from denguepharma_analytics.clinical.personal_review import visible_rows
+from denguepharma_analytics.clinical.review import progress
+from denguepharma_analytics.clinical.workspace import create
 from denguepharma_analytics.domain import json_bytes
 from denguepharma_analytics.sources.snapshot import load_snapshot
+from fastapi.testclient import TestClient
+from test_clinical import ADJ, R1, R2, screen, workspace
 
 
 def history(workspace):

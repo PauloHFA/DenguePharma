@@ -1,10 +1,10 @@
 """Interface publica da fundacao; formularios de curadoria ainda estao no legado."""
 import os
-import json
 from urllib.error import HTTPError, URLError
 
 import pandas as pd
 import streamlit as st
+
 from denguepharma_analytics import client
 
 st.set_page_config(page_title="DenguePharma Analytics", page_icon="📊", layout="wide")
@@ -89,7 +89,7 @@ try:
             capabilities = client.get("/api/capabilities")
             for axis, info in capabilities["axes"].items(): st.write(f'Eixo {axis}: {info["state"]} — {info.get("description", "Panorama descritivo parcial; inferência ainda planejada")}')
             st.info("A avaliação de IA exige referência adjudicada e protocolo próprio. Dados de carga e análise de sobrevivência ainda não foram implementados.")
-except (HTTPError, URLError, TimeoutError, ValueError, KeyError) as error:
+except (HTTPError, URLError, TimeoutError, ValueError, KeyError):
     st.error("Não foi possível consultar a API de análises. Verifique a execução do serviço e a integridade dos dados.")
 
 st.divider()
@@ -97,4 +97,5 @@ st.caption("Migração em paralelo: coletores e autenticação permanecem no leg
 st.link_button("Área de curadoria legada", os.getenv("LEGACY_CURATOR_URL", "http://127.0.0.1:5173/curadoria"))
 
 from denguepharma_analytics.clinical.ui import curation
+
 curation()

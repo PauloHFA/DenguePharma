@@ -3,12 +3,12 @@ from __future__ import annotations
 
 import argparse
 import csv
-from datetime import datetime
 import hashlib
 import json
 import os
-from pathlib import Path
 import time
+from datetime import datetime
+from pathlib import Path
 from urllib.error import HTTPError
 from urllib.request import Request, urlopen
 from zoneinfo import ZoneInfo

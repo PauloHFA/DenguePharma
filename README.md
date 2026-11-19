@@ -4,7 +4,10 @@
 > *Uma infraestrutura aberta, auditável e matematicamente rigorosa para mapear, sintetizar e validar o que a ciência mundial já descobriu (e o que ainda não respondeu) sobre medicamentos contra a dengue.*
 
 [![Status SDD](https://img.shields.io/badge/SDD%20Requisitos-96%2F96%20(100%25)-brightgreen.svg)](#-13-matriz-de-engenharia-e-rastreabilidade-sdd-100-concluido)
+[![CI](https://github.com/PauloHFA/DenguePharma/actions/workflows/ci.yml/badge.svg)](https://github.com/PauloHFA/DenguePharma/actions/workflows/ci.yml)
 [![Versão](https://img.shields.io/badge/Versão-0.49.0%20(Final)-blue.svg)](#)
+
+> Acompanhamento de pendências e backlog operacional em [`PENDENCIAS.md`](PENDENCIAS.md) e auditoria completa em [`PROJECT.md`](PROJECT.md).
 [![Java](https://img.shields.io/badge/Backend-Java%2021%20%7C%20Spring%20Boot%203.4-orange.svg)](#)
 [![Python](https://img.shields.io/badge/Analytics-Python%203.12%20%7C%20DuckDB-yellow.svg)](#)
 [![Frontend](https://img.shields.io/badge/Frontend-React%2018%20%7C%20TypeScript%20%7C%20Vite-blue.svg)](#)

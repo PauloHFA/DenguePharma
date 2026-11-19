@@ -1,17 +1,17 @@
 import copy
 import json
 import os
-from pathlib import Path
 import subprocess
 import sys
+from pathlib import Path
 
 import pytest
-from fastapi.testclient import TestClient
+from denguepharma_analytics.analyses.reporting import RESULT_STATES, analyze, figures, parse_date
 from denguepharma_analytics.api import create_app
-from denguepharma_analytics.analyses.reporting import analyze,parse_date,figures,RESULT_STATES
-from denguepharma_analytics.domain import json_bytes,digest
+from denguepharma_analytics.domain import digest, json_bytes
 from denguepharma_analytics.sources.snapshot import load_snapshot
-from denguepharma_analytics.storage import export,publish
+from denguepharma_analytics.storage import export, publish
+from fastapi.testclient import TestClient
 
 
 def trial(snapshot,key,*,primary='2020-01-01',results='2020-01-11',has=True):
@@ -120,9 +120,9 @@ def test_reporting_metadata_addition_preserves_previous_thirty_two_tables(snapsh
 
 @pytest.mark.requirement('REQ-MIG-016')
 def test_reporting_form_supports_current_old_and_empty_runs(snapshot,monkeypatch):
-    from streamlit.testing.v1 import AppTest
     from denguepharma_analytics import client
-    from denguepharma_analytics.marts import normalize_rows,SCHEMAS
+    from denguepharma_analytics.marts import SCHEMAS, normalize_rows
+    from streamlit.testing.v1 import AppTest
     summary,tables=analyze(data(snapshot,[trial(snapshot,'t1')]));calls=[]
     monkeypatch.setattr(client,'table',lambda run,name,**kwargs:calls.append(name) or dict(rows=normalize_rows(tables[name],SCHEMAS[name]),total=len(tables[name])))
     script='from denguepharma_analytics.reporting_ui import render\nrender("run",'+repr({'tables':dict.fromkeys(tables),'figures':{}})+','+repr({'reporting':summary})+')'

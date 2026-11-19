@@ -1,9 +1,10 @@
 """Identidade documental conferida por pessoas; sem fusao ou elegibilidade automaticas."""
 from pydantic import Field
-from ..domain import digest,json_bytes
+
+from ..domain import digest, json_bytes
 from ..identity.identifiers import document_identifiers
-from .models import DocumentLink,Strict
-from .workspace import REVIEW_ROLES,ADJUDICATORS
+from .models import DocumentLink, Strict
+from .workspace import ADJUDICATORS, REVIEW_ROLES
 
 
 class LinkConfirmation(Strict):

@@ -1,19 +1,28 @@
 import csv
-from io import BytesIO,StringIO
 import json
-from pathlib import Path
 import subprocess
 import sys
+from io import BytesIO, StringIO
+from pathlib import Path
 from zipfile import ZipFile
 
 import pytest
-from fastapi.testclient import TestClient
 from denguepharma_analytics.api import create_app
 from denguepharma_analytics.clinical.models import Principal
-from denguepharma_analytics.clinical.review import package,parse,import_csv,progress,locator,LocatorRequest,COLUMNS,HUMAN_COLUMNS
+from denguepharma_analytics.clinical.review import (
+    COLUMNS,
+    HUMAN_COLUMNS,
+    LocatorRequest,
+    import_csv,
+    locator,
+    package,
+    parse,
+    progress,
+)
 from denguepharma_analytics.clinical.screening_ui import DEFAULTS
 from denguepharma_analytics.clinical.workspace import create
 from denguepharma_analytics.domain import digest
+from fastapi.testclient import TestClient
 
 R1=Principal("independent-one",("PESQUISADOR",))
 R2=Principal("independent-two",("PESQUISADOR",))

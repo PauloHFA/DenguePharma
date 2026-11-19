@@ -1,0 +1,16 @@
+target-version = "py312"
+line-length = 120
+
+[lint]
+select = ["E", "F", "I"]
+ignore = [
+  "E402", # imports apos configuracao matplotlib.use('Agg') / scripts
+  "E501", # linhas longas em testes e fixtures
+  "E701", # statements compactos existentes em modulos clinicos e testes
+  "E702", # statements com ';' existentes em modulos clinicos e testes
+  "E731", # lambdas nomeadas em helpers locais
+  "E741", # variavel curta 'l' em comprehensions existentes
+]
+
+[lint.per-file-ignores]
+"**/tests/**" = ["F401", "F811"] # reimportacao intencional de fixtures pytest (ex.: workspace)

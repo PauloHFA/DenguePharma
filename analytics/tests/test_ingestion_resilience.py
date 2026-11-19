@@ -31,7 +31,6 @@ def test_req_ing_001_search_run_registration_and_exact_sum():
     """
     source = "ClinicalTrials.gov"
     query = "dengue AND intervention"
-    params = {"condition": "dengue", "type": "Interventional"}
     pages_data = [
         [{"id": f"NCT0000000{i}", "title": f"Study {i}"} for i in range(1, 6)],   # 5 registros
         [{"id": f"NCT0000000{i}", "title": f"Study {i}"} for i in range(6, 11)],  # 5 registros

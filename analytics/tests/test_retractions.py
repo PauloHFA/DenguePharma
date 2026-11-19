@@ -1,14 +1,14 @@
 """Testes de monitoramento e exclusão de estudos retratados na síntese (REQ-ANA-010)."""
 import copy
-import pytest
 
-from test_clinical import workspace, R1, R2, ADJ, screen, CLASSIFICATION
+import pytest
 from denguepharma_analytics.clinical.retractions import (
     RetractionNotice,
     check_document_retraction,
     filter_synthesis_retractions,
 )
 from denguepharma_analytics.clinical.synthesis import view
+from test_clinical import ADJ, CLASSIFICATION, R1, R2, screen, workspace
 
 
 @pytest.mark.requirement("REQ-ANA-010")

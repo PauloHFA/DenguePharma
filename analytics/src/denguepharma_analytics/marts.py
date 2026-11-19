@@ -2,10 +2,11 @@
 from __future__ import annotations
 
 import json
+
 import pyarrow as pa
-from .domain import FIELDS
+
 from .analyses.reviewed import analyze as reviewed_analysis
-from .domain import json_bytes
+from .domain import FIELDS, json_bytes
 
 TYPES = {"s": pa.string(), "i": pa.int64(), "f": pa.float64(), "b": pa.bool_()}
 
@@ -43,6 +44,7 @@ SCHEMAS = {
     "scientific_field_availability": schema([("context", "s"), ("field", "s")] + [(n, "i") for n in ("present", "applicable", "total")] + [("proportion", "f"), ("states_json", "s")]),
 }
 from .clinical.models import GROUP_FIELDS
+
 SCHEMAS.update({
     "publication_reference_links": schema([(n,"s") for n in ("link_id","trial_id","nct_id","reference_type","pmid","pmid_state","status","source_url","publication_document_ids_json","publication_references_json","trial_references_json","observations_json")]+[("automatically_confirmed","b")]),
     "publication_reference_coverage": schema([("reference_type","s")]+[(n,"i") for n in ("total_registry_units","registry_units_with_references","registry_units_with_valid_pmid","registry_units_with_candidate","distinct_valid_pmids","valid_pmids_in_corpus","not_retrieved_pmids","missing_or_invalid_entries")]+[(n,"f") for n in ("registry_reference_proportion","pmid_coverage_proportion")]),

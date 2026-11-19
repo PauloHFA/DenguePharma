@@ -1,16 +1,15 @@
 """Comparacao reproduzivel de execucoes publicadas, sem inferencia clinica."""
 import csv
-from io import StringIO
-import json
 import os
+from io import StringIO
 from pathlib import Path
 from tempfile import TemporaryDirectory
 
 from . import __version__
-from .domain import digest,json_bytes
+from .domain import digest, json_bytes
 from .marts import PUBLIC_TABLES
 from .sources.snapshot import from_file
-from .storage import require_published,code_hash
+from .storage import code_hash, require_published
 
 VERSION="published-comparison-1"
 KINDS=("NOVO","NAO_OBSERVADO","CONTEUDO_ALTERADO","REFERENCIA_ALTERADA","REPRESENTACAO_ALTERADA","DATA_RECUPERACAO_ALTERADA","INALTERADO")

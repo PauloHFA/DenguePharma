@@ -2,9 +2,9 @@
 import pytest
 from denguepharma_analytics.analyses.benchmark import (
     FieldEvaluation,
+    calculate_metrics_summary,
     cluster_bootstrap_ci,
     evaluate_benchmark,
-    calculate_metrics_summary,
     values_match,
 )
 

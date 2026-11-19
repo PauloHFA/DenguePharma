@@ -4,19 +4,19 @@ Calibração da busca clínica, revisão independente do piloto metodológico,
 seleção do corpus final e publicação da síntese clínica real.
 """
 from pathlib import Path
-import pytest
 
+import pytest
 from denguepharma_analytics.clinical.pilot_synthesis_and_calibration import (
     ClinicalGovernanceError,
-    UnreviewedStudyError,
-    UnapprovedCalibrationError,
-    SearchCalibrator,
-    PilotMethodologicalReviewer,
     FinalCorpusSelector,
+    PilotMethodologicalReviewer,
     RealClinicalSynthesisPublisher,
+    SearchCalibrator,
+    UnapprovedCalibrationError,
+    UnreviewedStudyError,
 )
 
-PILOT_CSV = Path(__file__).resolve().parents[2] / "backend" / "target" / "runtime" / "piloto-ds3" / "pilot_review.csv"
+PILOT_CSV = Path(__file__).resolve().parent / "fixtures" / "pilot_review.csv"
 
 
 @pytest.fixture

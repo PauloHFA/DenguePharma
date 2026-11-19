@@ -2,12 +2,12 @@ import copy
 import json
 
 import pytest
-from fastapi.testclient import TestClient
-from test_clinical import workspace,R1,R2,include,result,approve
 from denguepharma_analytics.api import create_app
-from denguepharma_analytics.clinical.models import Principal
 from denguepharma_analytics.clinical.extraction import preview
-from denguepharma_analytics.clinical.result_changes import compare,differences,view
+from denguepharma_analytics.clinical.models import Principal
+from denguepharma_analytics.clinical.result_changes import compare, differences, view
+from fastapi.testclient import TestClient
+from test_clinical import R1, R2, approve, include, result, workspace
 
 
 def history(workspace):

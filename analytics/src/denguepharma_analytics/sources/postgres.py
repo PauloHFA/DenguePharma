@@ -4,8 +4,10 @@ from __future__ import annotations
 import os
 from pathlib import Path
 from uuid import UUID
+
 import psycopg
 from psycopg.rows import dict_row
+
 from .snapshot import load_snapshot
 
 

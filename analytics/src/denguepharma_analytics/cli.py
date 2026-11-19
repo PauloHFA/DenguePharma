@@ -3,6 +3,7 @@ from __future__ import annotations
 import argparse
 import json
 from pathlib import Path
+
 from .sources.snapshot import from_file
 from .storage import default_root, export, publish, verify_run
 
@@ -34,15 +35,17 @@ def main():
         if name=="clinical-review-package": command.add_argument("--output",type=Path,required=True)
     args = parser.parse_args(); root = (args.data_dir or default_root()).resolve()
     if args.command=="snapshot-collection":
-        from .sources.postgres import load_env
-        from .sources.collection_snapshot import snapshot_from_runs
         from .clinical.full_collection import immutable_write
+        from .sources.collection_snapshot import snapshot_from_runs
+        from .sources.postgres import load_env
         if args.output.exists():raise ValueError("SNAPSHOT_OUTPUT_EXISTS")
-        load_env(args.env_file);snapshot=snapshot_from_runs(args.protocol,args.run_id)
+        if args.env_file.exists():load_env(args.env_file)
+        snapshot=snapshot_from_runs(args.protocol,args.run_id)
         args.output.parent.mkdir(parents=True,exist_ok=True);immutable_write(args.output,snapshot.content)
         print(json.dumps(dict(input_hash=snapshot.input_hash,documents=len(snapshot.data["documents"]),output=str(args.output),metadata_only=True),indent=2))
     elif args.command=="compare":
-        from .comparison import compare,export as export_comparison
+        from .comparison import compare
+        from .comparison import export as export_comparison
         result=compare(root,args.baseline,args.current)
         if args.output:print(json.dumps(export_comparison(result,args.output),indent=2))
         else:print(json.dumps(result,indent=2,ensure_ascii=True))
@@ -64,21 +67,21 @@ def main():
     elif args.command=="clinical-collect-pilot":
         from .clinical.collection import collect
         from .sources.postgres import load_env
-        load_env(args.env_file)
+        if args.env_file.exists():load_env(args.env_file)
         print(json.dumps(collect(json.loads(args.protocol.read_bytes()),args.cutoff,args.output),indent=2))
     elif args.command in {"clinical-collection-plan","clinical-collect-full"}:
-        from .clinical.workspace import Workspace
+        from .clinical.full_collection import advance, plan
         from .clinical.models import Principal
-        from .clinical.full_collection import plan,advance
+        from .clinical.workspace import Workspace
         workspace=Workspace(root,args.workspace)
         if args.command=="clinical-collection-plan":result=plan(workspace,Principal("LOCAL_READ_ONLY_OPERATOR",("ADMINISTRADOR",)))
         else:
             from .sources.postgres import load_env
-            load_env(args.env_file)
+            if args.env_file.exists():load_env(args.env_file)
             result=advance(workspace,args.collection,resume_failed=args.resume_failed,recover_id=args.recover_id)
         print(json.dumps(result,indent=2,ensure_ascii=True))
     elif args.command in {"clinical-backup","clinical-restore"}:
-        from .clinical.backup import backup,restore
+        from .clinical.backup import backup, restore
         if args.command=="clinical-backup":
             from .clinical.workspace import Workspace
             result=backup(Workspace(root,args.workspace),args.output)
@@ -89,15 +92,15 @@ def main():
         workspace=create(root,from_file(args.input),json.loads(args.protocol.read_bytes()))
         print(json.dumps({"workspace_id":workspace.key,"clinical":workspace.freeze()["screening"]},indent=2))
     elif args.command=="clinical-enrich":
-        from .clinical.workspace import Workspace
         from .clinical.sources import enrich
+        from .clinical.workspace import Workspace
         from .sources.postgres import load_env
-        load_env(args.env_file)
+        if args.env_file.exists():load_env(args.env_file)
         print(json.dumps(enrich(Workspace(root,args.workspace)),indent=2))
     elif args.command in {"clinical-progress","clinical-review-package"}:
-        from .clinical.workspace import Workspace
         from .clinical.models import Principal
-        from .clinical.review import progress,package
+        from .clinical.review import package, progress
+        from .clinical.workspace import Workspace
         workspace=Workspace(root,args.workspace); operator=Principal("LOCAL_READ_ONLY_OPERATOR",("ADMINISTRADOR",))
         if args.command=="clinical-progress": print(json.dumps(progress(workspace,operator),indent=2,ensure_ascii=True))
         else:
@@ -114,6 +117,7 @@ def main():
         print(json.dumps({"run_id":manifest["run_id"],"input_hash":manifest["input_hash"],"clinical_results":manifest["tables"]["clinical_results"]["rows"]},indent=2))
     else:
         import uvicorn
+
         from .api import create_app
         uvicorn.run(create_app(root), host=args.host, port=args.port)
 

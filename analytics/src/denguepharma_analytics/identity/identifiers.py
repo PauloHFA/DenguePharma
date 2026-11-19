@@ -1,5 +1,7 @@
 from __future__ import annotations
+
 import re
+
 
 def text(value):
     return value.strip() if isinstance(value, str) and value.strip() else None

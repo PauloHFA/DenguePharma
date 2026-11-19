@@ -9,9 +9,8 @@ Atende rigorosamente aos requisitos:
 from __future__ import annotations
 
 import math
-from typing import Any, Mapping, Sequence
 from statistics import NormalDist
-
+from typing import Any, Mapping, Sequence
 
 VALID_BIOLOGICAL_CONTEXTS = {"HUMANO", "ANIMAL", "IN_VITRO", "IN_SILICO"}
 VALID_CLINICAL_PURPOSES = {"TRATAMENTO", "PROFILAXIA", "SINTOMATICO"}
