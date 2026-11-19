@@ -102,7 +102,7 @@ def test_reviewed_conflicts_missing_and_contexts(tmp_path, snapshot):
     assert all(r["design_status"] == "CONFLITO" and r["serotype_status"] == "SEM_REVISAO" for r in rows)
 
 
-@pytest.mark.requirement("REQ-MIG-004")
+@pytest.mark.requirement("REQ-MIG-004", "REQ-OPS-009")
 def test_reproducible_marts(tmp_path, snapshot):
     first = export(snapshot, tmp_path / "a"); second = export(snapshot, tmp_path / "b")
     assert first["run_id"] == second["run_id"]

@@ -24,6 +24,7 @@ from denguepharma_analytics.sources import (
 )
 
 
+@pytest.mark.requirement("REQ-ING-001")
 def test_req_ing_001_search_run_registration_and_exact_sum():
     """ACC-ING-001: Dado uma coleta no ClinicalTrials.gov com condição dengue,
 
@@ -60,6 +61,7 @@ def test_req_ing_001_search_run_registration_and_exact_sum():
     assert run.records_seen == expected_sum
 
 
+@pytest.mark.requirement("REQ-ING-002")
 def test_req_ing_002_idempotent_reimport_preserves_study_and_version_counts():
     """ACC-ING-002: Dado um NCT já importado, quando reimportar sem mudança,
 
@@ -115,6 +117,7 @@ def test_req_ing_002_idempotent_reimport_preserves_study_and_version_counts():
     assert res3["current_version_no"] == 2
 
 
+@pytest.mark.requirement("REQ-ING-003")
 def test_req_ing_003_bronze_immutable_snapshots_and_tamper_rejection():
     """ACC-ING-003: Dado um snapshot gravado, quando se tentar alterá-lo ou apagá-lo,
 
@@ -147,6 +150,7 @@ def test_req_ing_003_bronze_immutable_snapshots_and_tamper_rejection():
     assert retrieved.payload == payload
 
 
+@pytest.mark.requirement("REQ-ING-004")
 def test_req_ing_004_rate_limit_resilience_and_deduplication():
     """ACC-ING-004: Dado um 429 simulado na página 3 de 10, quando a coleta continuar,
 
@@ -190,6 +194,7 @@ def test_req_ing_004_rate_limit_resilience_and_deduplication():
     assert fetcher.telemetry_retries[0]["page"] == 3
 
 
+@pytest.mark.requirement("REQ-ING-005")
 def test_req_ing_005_checkpoint_resumption_from_interrupted_page():
     """ACC-ING-005: Dado uma coleta interrompida na página 5, quando reiniciar,
 
@@ -229,6 +234,7 @@ def test_req_ing_005_checkpoint_resumption_from_interrupted_page():
     assert len(records) == 15  # 3 páginas * 5 registros
 
 
+@pytest.mark.requirement("REQ-ING-007")
 def test_req_ing_007_license_enforcement_and_unobtained_text():
     """ACC-ING-007: Dado um artigo sem licença de reuso, quando for importado,
 
@@ -274,6 +280,7 @@ def test_req_ing_007_license_enforcement_and_unobtained_text():
     assert res_open["full_text"] == raw_fulltext
 
 
+@pytest.mark.requirement("REQ-ING-009")
 def test_req_ing_009_source_data_manifest_with_verifiable_hashes():
     """ACC-ING-009: Dado uma execução concluída, quando o manifesto for gerado,
 

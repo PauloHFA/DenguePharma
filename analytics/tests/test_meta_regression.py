@@ -70,8 +70,7 @@ def test_blocks_reports_with_ranking_or_best_drug():
         assert_no_efficacy_ranking(invalid_report_3)
 
 
-@pytest.mark.requirement("REQ-ANA-002")
-@pytest.mark.requirement("REQ-ANA-009")
+@pytest.mark.requirement("REQ-ANA-002", "REQ-ANA-009")
 def test_meta_regression_clean_estimation_and_no_ranking():
     """Valida o cálculo do modelo de meta-regressão aleatória e ausência de rankings."""
     compatible_studies = [

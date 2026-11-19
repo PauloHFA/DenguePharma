@@ -12,7 +12,9 @@ jobs:
         with:
           version: '1.10.19'
       - run: python -m pip install -r analytics/requirements.lock
+      - run: python -m pip install -e workers
       - run: python -m pip install --no-deps -e analytics
       - run: python spec/check.py
+      - run: python -m pytest workers/tests --junitxml=workers/target/junit.xml
       - run: QUARTO_BIN=$(command -v quarto) python -m pytest analytics/tests --junitxml=analytics/target/junit.xml
-      - run: python spec/check.py --junit analytics/target/junit.xml
+      - run: python spec/check.py --junit analytics/target/junit.xml workers/target/junit.xml

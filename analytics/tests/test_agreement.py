@@ -7,6 +7,7 @@ from denguepharma_analytics.clinical.agreement import (
 )
 
 
+@pytest.mark.requirement("REQ-CLN-008")
 def test_cohen_kappa_perfect_agreement():
     # 20 estudos: 10 ambos INCLUIR, 10 ambos EXCLUIR
     matrix = {
@@ -21,6 +22,7 @@ def test_cohen_kappa_perfect_agreement():
     assert res["expected_agreement"] == 0.5
 
 
+@pytest.mark.requirement("REQ-CLN-008")
 def test_cohen_kappa_chance_agreement():
     # Concordância exatamente igual ao acaso
     matrix = {
@@ -35,6 +37,7 @@ def test_cohen_kappa_chance_agreement():
     assert res["kappa"] == 0.0
 
 
+@pytest.mark.requirement("REQ-CLN-008")
 def test_gwet_ac1_prevalence_paradox():
     # Paradoxo de alta concordância com alta prevalência de EXCLUIR
     # 90 ambos EXCLUIR, 5 ambos INCLUIR, 3 discordantes (r1=INCLUIR, r2=EXCLUIR), 2 discordantes (r1=EXCLUIR, r2=INCLUIR)
@@ -57,6 +60,7 @@ def test_gwet_ac1_prevalence_paradox():
     assert g_res["ac1"] > 0.90
 
 
+@pytest.mark.requirement("REQ-CLN-008")
 def test_compute_inter_rater_agreement_empty_or_unpaired():
     # Sem pares
     res = compute_inter_rater_agreement([])
@@ -71,6 +75,7 @@ def test_compute_inter_rater_agreement_empty_or_unpaired():
     assert res_invalid["excluded_unpaired"] == 2
 
 
+@pytest.mark.requirement("REQ-CLN-008")
 def test_compute_inter_rater_agreement_realistic_pilot():
     # 20 estudos com triagem duplo-cega
     votes = [
@@ -106,6 +111,7 @@ def test_compute_inter_rater_agreement_realistic_pilot():
     assert res["contingency_matrix"]["INCERTO"]["INCERTO"] == 1
 
 
+@pytest.mark.requirement("REQ-CLN-008")
 def test_interpret_agreement():
     assert interpret_agreement(None) == "INDETERMINADO"
     assert interpret_agreement(-0.1) == "CONCORDANCIA_INFERIOR_AO_ACASO"

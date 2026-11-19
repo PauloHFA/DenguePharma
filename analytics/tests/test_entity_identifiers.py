@@ -20,6 +20,7 @@ from denguepharma_analytics.clinical import (
 )
 
 
+@pytest.mark.requirement("REQ-IDN-001")
 def test_req_idn_001_complementary_identifiers_and_discrepancy_resolution():
     """ACC-IDN-001: Dois documentos com o mesmo DOI mas com NCTs distintos geram status DIVERGENT
 
@@ -70,6 +71,7 @@ def test_req_idn_001_complementary_identifiers_and_discrepancy_resolution():
     assert res_pending["requires_human_review"] is True
 
 
+@pytest.mark.requirement("REQ-IDN-002")
 def test_req_idn_002_link_confidence_threshold_and_audited_undo():
     """ACC-IDN-002: Confiança de vínculo abaixo do limiar exige confirmação humana
 
@@ -129,6 +131,7 @@ def test_req_idn_002_link_confidence_threshold_and_audited_undo():
     assert audit[-1].previous_state["study_id"] == "STUDY-DEN-002"
 
 
+@pytest.mark.requirement("REQ-IDN-003")
 def test_req_idn_003_substance_normalization_and_combination_isolation():
     """ACC-IDN-003: Substâncias mapeadas em ontologias (PubChem/ChEMBL)
 
@@ -170,6 +173,7 @@ def test_req_idn_003_substance_normalization_and_combination_isolation():
     assert cloro.pubchem_cid == 2719
 
 
+@pytest.mark.requirement("REQ-IDN-004")
 def test_req_idn_004_participant_deduplication_under_study_id():
     """ACC-IDN-004: Agrupamento sob study_id garante que registros de ensaios, publicações
 

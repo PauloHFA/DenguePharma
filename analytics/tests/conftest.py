@@ -9,8 +9,8 @@ from denguepharma_analytics.sources.snapshot import load_snapshot
 
 @pytest.fixture(autouse=True)
 def requirement_properties(request):
-    marker = request.node.get_closest_marker("requirement")
-    if marker: request.node.user_properties.append(("requirements", ",".join(marker.args)))
+    reqs = [arg for m in request.node.iter_markers("requirement") for arg in m.args]
+    if reqs: request.node.user_properties.append(("requirements", ",".join(reqs)))
 
 
 @pytest.fixture

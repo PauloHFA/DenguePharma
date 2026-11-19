@@ -30,6 +30,7 @@ from denguepharma_analytics.clinical import (
 )
 
 
+@pytest.mark.requirement("REQ-ANA-001")
 def test_req_ana_001_study_panorama_counts_studies_and_consistent_sum():
     """ACC-ANA-001: Dado um conjunto de teste, quando agrupar por finalidade,
 
@@ -102,6 +103,7 @@ def test_req_ana_001_study_panorama_counts_studies_and_consistent_sum():
     assert len(res["limitations"]) > 0
 
 
+@pytest.mark.requirement("REQ-REV-001")
 def test_req_rev_001_side_by_side_curation_records_audit_trail():
     """ACC-REV-001: Dado uma sugestão corrigida, quando salva,
 
@@ -134,6 +136,7 @@ def test_req_rev_001_side_by_side_curation_records_audit_trail():
     assert log.author_id == "dr_silva_revisor"
 
 
+@pytest.mark.requirement("REQ-REV-002")
 def test_req_rev_002_critical_fields_require_adjudicator_approval():
     """ACC-REV-002: Dado um campo crítico aprovado só por um revisor,
 
@@ -172,6 +175,7 @@ def test_req_rev_002_critical_fields_require_adjudicator_approval():
     assert res["status"] == "APPROVED_FOR_PUBLICATION"
 
 
+@pytest.mark.requirement("REQ-REV-003")
 def test_req_rev_003_approved_value_protected_against_ai_overwrite():
     """ACC-REV-003: Dado um valor aprovado, quando nova extração divergir,
 
@@ -206,6 +210,7 @@ def test_req_rev_003_approved_value_protected_against_ai_overwrite():
     assert alert["divergent_ai_value"] == "PHASE3"
 
 
+@pytest.mark.requirement("REQ-REV-004")
 def test_req_rev_004_drafts_sanitized_from_public_exports():
     """ACC-REV-004: Dado um rascunho, quando exportar o catálogo público,
 
@@ -228,6 +233,7 @@ def test_req_rev_004_drafts_sanitized_from_public_exports():
     assert "REC-004" not in public_ids
 
 
+@pytest.mark.requirement("REQ-SEL-001", "REQ-SEL-002")
 def test_req_sel_001_and_002_dual_blind_screening_and_conflict_escalation():
     """ACC-SEL-001 & ACC-SEL-002: Dado dois revisores, quando ambos decidirem,
 
@@ -273,6 +279,7 @@ def test_req_sel_001_and_002_dual_blind_screening_and_conflict_escalation():
     assert item_stored["decision_2"].reviewer_id == "rev_2_souza"
 
 
+@pytest.mark.requirement("REQ-SEL-003")
 def test_req_sel_003_ai_model_cannot_autonomously_exclude_records():
     """ACC-SEL-003: Dado um modelo de priorização, quando a triagem terminar,
 
@@ -300,6 +307,7 @@ def test_req_sel_003_ai_model_cannot_autonomously_exclude_records():
         ranker.attempt_autonomous_exclusion(item_id="ART-01", model_decision="EXCLUIR")
 
 
+@pytest.mark.requirement("REQ-SEL-005")
 def test_req_sel_005_paywalled_articles_preserved_and_coverage_reported():
     """ACC-SEL-005: Dado um artigo atrás de paywall, quando triado,
 
